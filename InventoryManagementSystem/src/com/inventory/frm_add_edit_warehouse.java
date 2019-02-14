@@ -79,17 +79,16 @@ public class frm_add_edit_warehouse extends JDialog{
 		}
 		JPanel JPContainer = new JPanel();
 		JPContainer.setLayout(null);
-		//-- Add the JLPic1
+		
 		JLPic1.setBounds(5,5,32,32);
 		JPContainer.add(JLPic1);
 
-		//-- Add the JLBanner
+		
 		JLBanner.setBounds(55,5,268,48);
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPContainer.add(JLBanner);
 
-		//******************** Start adding of input field
-		//-- Add Id Input Field
+		
 		JLId.setBounds(5,50,105,20);
 		JLId.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -99,7 +98,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLId);
 		JPContainer.add(JTFId);
 
-		//-- Add Name Input Field
+		
 		JLName.setBounds(5,72,105,20);
 		JLName.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -109,7 +108,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLName);
 		JPContainer.add(JTFName);
 
-		//-- Add Contact Person Input Field
+		
 		JLCPerson.setBounds(5,94,105,20);
 		JLCPerson.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -119,7 +118,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLCPerson);
 		JPContainer.add(JTFCPerson);
 
-		//-- Add Primary Address Input Field
+		
 		JLCTitle.setBounds(5,116,105,20);
 		JLCTitle.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -129,7 +128,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLCTitle);
 		JPContainer.add(JTFCTitle);
 
-		//-- Add Secondary Address Input Field
+		
 		JLAddr.setBounds(5,138,105,20);
 		JLAddr.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -139,7 +138,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLAddr);
 		JPContainer.add(JTFAddr);
 
-		//-- Add CityTown Input Field
+		
 		JLCity.setBounds(5,160,105,20);
 		JLCity.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -149,7 +148,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLCity);
 		JPContainer.add(JTFCity);
 
-		//-- Add StateProvince Input Field
+		
 		JLStateProv.setBounds(5,182,105,20);
 		JLStateProv.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -159,7 +158,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLStateProv);
 		JPContainer.add(JTFStateProv);
 
-		//-- Add Zip Code Input Field
+		
 		JLZipCode.setBounds(5,204,105,20);
 		JLZipCode.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -169,7 +168,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLZipCode);
 		JPContainer.add(JTFZipCode);
 
-		//-- Add Contact Number Input Field
+		
 		JLPhone.setBounds(5,226,105,20);
 		JLPhone.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -179,7 +178,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLPhone);
 		JPContainer.add(JTFPhone);
 
-		//-- Add E-mail Address Input Field
+		
 		JLFax.setBounds(5,248,105,20);
 		JLFax.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -189,9 +188,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JPContainer.add(JLFax);
 		JPContainer.add(JTFFax);
 
-		//******************** End adding of input field
-
-		//-- Add the JBUpdate
+		
 		JBUpdate.setBounds(5,292,105,25);
 		JBUpdate.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBUpdate.setMnemonic(KeyEvent.VK_A);
@@ -199,7 +196,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JBUpdate.setActionCommand("update");
 		JPContainer.add(JBUpdate);
 
-		//-- Add the JBReset
+		
 		JBReset.setBounds(112,292,99,25);
 		JBReset.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBReset.setMnemonic(KeyEvent.VK_R);
@@ -207,7 +204,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		JBReset.setActionCommand("reset");
 		JPContainer.add(JBReset);
 
-		//-- Add the JBCancel
+		
 		JBCancel.setBounds(212,292,99,25);
 		JBCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBCancel.setMnemonic(KeyEvent.VK_C);
@@ -222,7 +219,7 @@ public class frm_add_edit_warehouse extends JDialog{
 	}
 	private boolean RequiredFieldEmpty(){
 		if(JTFId.getText().equals("") || JTFName.getText().equals("") || JTFCPerson.getText().equals("")){
-			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Naparansoft Inventory System",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Inventory System",JOptionPane.WARNING_MESSAGE);
 			JTFId.requestFocus();
 			return true;
 		}else{
@@ -302,7 +299,7 @@ public class frm_add_edit_warehouse extends JDialog{
 		   							   	        JTFFax.getText() +
 		   							   	        "' WHERE WarehouseIndex = " + RowIndex);
 		   					FrmWarehouse.reloadRecord("SELECT * FROM tblWarehouse WHERE WarehouseIndex = " + RowIndex + " ORDER BY WarehouseName ASC");
-							JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Naparansoft Inventory System",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Inventory System",JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 						}catch(SQLException sqlEx){
 		   					System.out.println(sqlEx.getMessage());
