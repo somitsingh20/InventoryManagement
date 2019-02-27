@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
@@ -274,6 +275,56 @@ public class MainClass extends JFrame implements WindowListener {
 					itmInvoice.setBackground(new Color(255, 255, 255));
 					
 					recordsMenu.add(itmInvoice);
+					
+					JMenuItem ItmPO = new JMenuItem("Purchase Orders");
+					ItmPO.setFont(new Font("Dialog", Font.PLAIN, 12));
+					ItmPO.setMnemonic('O');
+					ItmPO.setIcon(new ImageIcon("images/purchaseorder.png"));
+					ItmPO.setAccelerator(
+						KeyStroke.getKeyStroke(
+								KeyEvent.VK_O,ActionEvent.CTRL_MASK
+							)
+						);
+					ItmPO.setActionCommand("PO");
+					ItmPO.addActionListener(JMenuActionListener);
+					ItmPO.setBackground(new Color(255,255,255));
+
+					recordsMenu.add(ItmPO);
+
+					
+					JMenuItem ItmRecieve = new JMenuItem("Purchase Receipt");
+					ItmRecieve.setFont(new Font("Dialog", Font.PLAIN, 12));
+					ItmRecieve.setMnemonic('R');
+					ItmRecieve.setIcon(new ImageIcon("images/recieve.png"));
+					ItmRecieve.setAccelerator(
+						KeyStroke.getKeyStroke(
+								KeyEvent.VK_R,ActionEvent.CTRL_MASK
+							)
+						);
+					ItmRecieve.setActionCommand("preceipt");
+					ItmRecieve.addActionListener(JMenuActionListener);
+					ItmRecieve.setBackground(new Color(255,255,255));
+
+					recordsMenu.add(ItmRecieve);
+
+					
+					JMenuItem ItmExpense = new JMenuItem("Expenses");
+					ItmExpense.setFont(new Font("Dialog", Font.PLAIN, 12));
+					ItmExpense.setMnemonic('E');
+					ItmExpense.setIcon(new ImageIcon("images/expense.png"));
+					ItmExpense.setAccelerator(
+						KeyStroke.getKeyStroke(
+								KeyEvent.VK_E,ActionEvent.CTRL_MASK
+							)
+						);
+					ItmExpense.setActionCommand("expense");
+					ItmExpense.addActionListener(JMenuActionListener);
+					ItmExpense.setBackground(new Color(255,255,255));
+
+					recordsMenu.add(ItmExpense);
+					
+					
+					
 			
 			JMenu processMenu = new JMenu("Process");
 			processMenu.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -291,6 +342,53 @@ public class MainClass extends JFrame implements WindowListener {
 				itmNewInvoice.setBackground(new Color(255,255,255));
 
 				processMenu.add(itmNewInvoice);
+				
+				JMenuItem ItmNewPO = new JMenuItem("New Purchase Order");
+				ItmNewPO.setFont(new Font("Dialog", Font.PLAIN, 12));
+				ItmNewPO.setMnemonic('P');
+				ItmNewPO.setIcon(new ImageIcon("images/newpurchaseorder.png"));
+				ItmNewPO.setAccelerator(
+					KeyStroke.getKeyStroke(
+							KeyEvent.VK_F2,ActionEvent.CTRL_MASK
+						)
+					);
+				ItmNewPO.setActionCommand("newPO");
+				ItmNewPO.addActionListener(JMenuActionListener);
+				ItmNewPO.setBackground(new Color(255,255,255));
+
+				processMenu.add(ItmNewPO);
+
+				
+				JMenuItem ItmNewRecieve = new JMenuItem("New Purchase Receipt");
+				ItmNewRecieve.setFont(new Font("Dialog", Font.PLAIN, 12));
+				ItmNewRecieve.setMnemonic('E');
+				ItmNewRecieve.setIcon(new ImageIcon("images/newrecieve.png"));
+				ItmNewRecieve.setAccelerator(
+					KeyStroke.getKeyStroke(
+							KeyEvent.VK_F4,ActionEvent.CTRL_MASK
+						)
+					);
+				ItmNewRecieve.setActionCommand("newpreceipt");
+				ItmNewRecieve.addActionListener(JMenuActionListener);
+				ItmNewRecieve.setBackground(new Color(255,255,255));
+
+				processMenu.add(ItmNewRecieve);
+
+				
+				JMenuItem ItmNewExpense = new JMenuItem("New Expense");
+				ItmNewExpense.setFont(new Font("Dialog", Font.PLAIN, 12));
+				ItmNewExpense.setMnemonic('E');
+				ItmNewExpense.setIcon(new ImageIcon("images/newexpense.png"));
+				ItmNewExpense.setAccelerator(
+					KeyStroke.getKeyStroke(
+							KeyEvent.VK_F3,ActionEvent.CTRL_MASK
+						)
+					);
+				ItmNewExpense.setActionCommand("newexpense");
+				ItmNewExpense.addActionListener(JMenuActionListener);
+				ItmNewExpense.setBackground(new Color(255,255,255));
+
+				processMenu.add(ItmNewExpense);
 			
 			JMenu reportsMenu = new JMenu("Reports");
 			reportsMenu.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -304,6 +402,18 @@ public class MainClass extends JFrame implements WindowListener {
 			systemMenu.setMnemonic('S');
 			systemMenu.setBackground(new Color(255,255,255));
 			NewJMenuBar.add(systemMenu);
+			
+			JMenu MnuWin = new JMenu("Window");
+			MnuWin.setFont(new Font("Dialog", Font.PLAIN, 12));
+			MnuWin.setMnemonic('W');
+			MnuWin.setBackground(new Color(255,255,255));
+			NewJMenuBar.add(MnuWin);
+			
+			JMenu MnuHelp = new JMenu("Help");
+			MnuHelp.setFont(new Font("Dialog", Font.PLAIN, 12));
+			MnuHelp.setMnemonic('H');
+			MnuHelp.setBackground(new Color(255,255,255));
+			NewJMenuBar.add(MnuHelp);
 			
 			NewJMenuBar.setBackground(new Color(255,255,255));
 			return NewJMenuBar;
@@ -334,9 +444,9 @@ public class MainClass extends JFrame implements WindowListener {
 			NewJToolBar.add(CreateJToolbarButton("New Purchase Receipt","images/newrecieve.png","toolNewRecieveStock"));
 			NewJToolBar.add(CreateJToolbarButton("New Expense","images/newexpense.png","toolNewExpense"));
 			NewJToolBar.addSeparator();
-			//NewJToolBar.add(CreateJToolbarButton("Business Setup","images/businesssetup.png","toolBussSet"));
-			//NewJToolBar.add(CreateJToolbarButton("Security Option","images/security.png","toolSecOpt"));
-			//NewJToolBar.add(CreateJToolbarButton("Lock Application","images/lockapplication.png","toolLockApp"));
+			NewJToolBar.add(CreateJToolbarButton("Business Setup","images/businesssetup.png","toolBussSet"));
+			NewJToolBar.add(CreateJToolbarButton("Security Option","images/security.png","toolSecOpt"));
+			NewJToolBar.add(CreateJToolbarButton("Lock Application","images/lockapplication.png","toolLockApp"));
 			NewJToolBar.addSeparator();
 			NewJToolBar.add(BusinessTitleLabel);
 			NewJToolBar.addSeparator();
@@ -415,7 +525,11 @@ public class MainClass extends JFrame implements WindowListener {
 					}
 				}
 				else if(srcObject=="toolInv"){
-					loadInvoiceForm();
+					try {
+						loadInvoiceForm();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		};
@@ -463,8 +577,27 @@ public class MainClass extends JFrame implements WindowListener {
 
 		}
 
-		protected void loadInvoiceForm() {
-			
+		protected void loadInvoiceForm() throws SQLException{
+			//Verify if the form is already loaded
+			boolean AlreadyLoaded = isLoaded("Invoice");
+			if(AlreadyLoaded==false){
+				FormInvoice = new FrmInvoice();
+				desk.add(FormInvoice);
+				//Load the FormWarehouse
+				FormInvoice.setVisible(true);
+				FormInvoice.show();
+				try{
+					FormInvoice.setIcon(false);
+					FormInvoice.setSelected(true);
+				}catch(PropertyVetoException e){
+				}
+			}else{
+				try{
+					FormInvoice.setIcon(false);
+					FormInvoice.setSelected(true);
+				}catch(PropertyVetoException e){
+				}
+			}
 		}
 
 		@Override
@@ -474,7 +607,18 @@ public class MainClass extends JFrame implements WindowListener {
 
 
 		protected void UnloadWindow(){
-			
+			String ObjButtons[] = {"Yes","No"};
+			int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Inventory System",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+			if(PromptResult==0){
+				System.out.println(
+					"\n\n" +
+					" ------------------------------------------------------------\n\n" +
+					" THANK YOU FOR USING INVENTORY MANAGEMENT SYSTEM\n\n" +
+					" ------------------------------------------------------------\n\n" +
+					"\n\n"
+					);
+				System.exit(0);
+			}
 		}
 
 		protected void loadWarehouseForm() throws SQLException {
@@ -525,7 +669,6 @@ public class MainClass extends JFrame implements WindowListener {
 				FormSupplier = new FrmSupplier(con,this);
 				desk.add(FormSupplier);
 
-				//Load the FormSupplier
 				FormSupplier.setVisible(true);
 				FormSupplier.show();
 				try{
@@ -533,7 +676,6 @@ public class MainClass extends JFrame implements WindowListener {
 					FormSupplier.setSelected(true);
 				}catch(PropertyVetoException e){
 				}
-				//End load the FormSupplier
 			}else{
 				try{
 					FormSupplier.setIcon(false);
@@ -551,7 +693,6 @@ public class MainClass extends JFrame implements WindowListener {
 				FormCustomer = new FrmCustomer(con,this);
 				desk.add(FormCustomer);
 
-				//Load the FormCustomer
 				FormCustomer.setVisible(true);
 				FormCustomer.show();
 				try{
@@ -559,7 +700,7 @@ public class MainClass extends JFrame implements WindowListener {
 					FormCustomer.setSelected(true);
 				}catch(PropertyVetoException e){
 				}
-				//End load the FormCustomer
+				
 			}else{
 				try{
 					FormCustomer.setIcon(false);
@@ -575,36 +716,26 @@ public class MainClass extends JFrame implements WindowListener {
 			// TODO Auto-generated method stub
 			
 		}
-
-
 		@Override
 		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
+			UnloadWindow();
 			
 		}
-
-
 		@Override
 		public void windowDeactivated(WindowEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
-
-
 		@Override
 		public void windowDeiconified(WindowEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
-
-
 		@Override
 		public void windowIconified(WindowEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
-
-
 		@Override
 		public void windowOpened(WindowEvent e) {
 			// TODO Auto-generated method stub
