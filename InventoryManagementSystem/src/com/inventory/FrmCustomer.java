@@ -139,8 +139,8 @@ public class FrmCustomer extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_customer(false,JFParentFrame,cnCus,"SELECT * FROM tblCustomer WHERE CustomerID = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
-								JDEdit.setVisible(true);
+								JDialog JDEdit = new frm_add_edit_customer(false,JFParentFrame,cnCus,"SELECT * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDEdit.show();
 
 							}
 					}catch(Exception sqlE){
@@ -162,7 +162,7 @@ public class FrmCustomer extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblCustomer WHERE CustomerID = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();

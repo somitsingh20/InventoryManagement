@@ -293,7 +293,7 @@ public class frm_add_edit_customer extends JDialog
 		   					
 		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 		   					String ObjButtons[] = {"Yes","No"};
-							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Naparansoft Inventory System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
+							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
 							if(PromptResult==0){
 								clearFields();
 								JTFId.requestFocus(true);
@@ -336,5 +336,4 @@ public class frm_add_edit_customer extends JDialog
 			}
 		}
 	};
-	
 }

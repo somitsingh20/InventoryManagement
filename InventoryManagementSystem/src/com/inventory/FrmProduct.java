@@ -54,7 +54,7 @@ public class FrmProduct extends JInternalFrame{
 
 		cnCus = srcCN;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblItem";
+		strSQL = "SELECT * FROM tblItems";
 
 	
 		JLPicture1.setBounds(5,5,48,48);
@@ -139,7 +139,7 @@ public class FrmProduct extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItem WHERE ItemID = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItems WHERE ItemNo = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
 								JDEdit.show();
 
 							}
@@ -161,7 +161,7 @@ public class FrmProduct extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItem WHERE Itemid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItems WHERE ItemNo = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
@@ -218,7 +218,7 @@ public class FrmProduct extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stCus.execute("DELETE * FROM tblItem WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								stCus.execute("DELETE * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}

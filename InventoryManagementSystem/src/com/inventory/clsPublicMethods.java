@@ -43,7 +43,6 @@ public class clsPublicMethods {
 		try{
 			stMaxRow = sCN.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 			rsMaxRow = stMaxRow.executeQuery(strSQL);
-			//Move to the last record
 			rsMaxRow.afterLast(); 
 			
 			if(rsMaxRow.previous()){

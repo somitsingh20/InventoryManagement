@@ -94,13 +94,10 @@ public class frm_add_edit_supplier extends JDialog{
 		JLPic1.setBounds(5,5,32,32);
 		JPContainer.add(JLPic1);
 		
-		//-- Add the JLBanner
 		JLBanner.setBounds(55,5,268,48);
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPContainer.add(JLBanner);
 		
-		//******************** Start adding of input field
-		//-- Add Id Input Field
 		JLId.setBounds(5,50,105,20);
 		JLId.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -110,7 +107,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLId);
 		JPContainer.add(JTFId);
 		
-		//-- Add Name Input Field
 		JLName.setBounds(5,72,105,20);
 		JLName.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -119,7 +115,7 @@ public class frm_add_edit_supplier extends JDialog{
 		
 		JPContainer.add(JLName);
 		JPContainer.add(JTFName);
-		//-- Add Contact Name Input Field
+		
 		JLContName.setBounds(5,94,105,20);
 		JLContName.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -129,7 +125,7 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLContName);
 		JPContainer.add(JTFContName);
 		
-		//-- Add Contact Title Input Field
+		
 		JLContTitle.setBounds(5,116,105,20);
 		JLContTitle.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -139,7 +135,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLContTitle);
 		JPContainer.add(JTFContTitle);
 		
-		//-- Add Address Input Field
 		JLAddr.setBounds(5,138,105,20);
 		JLAddr.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -149,7 +144,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLAddr);
 		JPContainer.add(JTFAddr);
 		
-		//-- Add City Input Field
 		JLCity.setBounds(5,160,105,20);
 		JLCity.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -159,7 +153,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLCity);
 		JPContainer.add(JTFCity);
 		
-		//-- Add State/Province Input Field
 		JLState.setBounds(5,182,105,20);
 		JLState.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -169,7 +162,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLState);
 		JPContainer.add(JTFState);
 		
-		//-- Add Zip Code Input Field
 		JLZipCode.setBounds(5,204,105,20);
 		JLZipCode.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -179,7 +171,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLZipCode);
 		JPContainer.add(JTFZipCode);
 		
-		//-- Add Country Input Field
 		JLCountry.setBounds(5,226,105,20);
 		JLCountry.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -189,7 +180,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLCountry);
 		JPContainer.add(JCBCountry);
 		
-		//-- Add Phone Input Field
 		JLPhone.setBounds(5,248,105,20);
 		JLPhone.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -199,7 +189,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLPhone);
 		JPContainer.add(JTFPhone);
 		
-		//-- Add Fax Input Field
 		JLFax.setBounds(5,270,105,20);
 		JLFax.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -209,7 +198,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLFax);
 		JPContainer.add(JTFFax);
 		
-		//-- Add Website Input Field
 		JLWebsite.setBounds(5,292,105,20);
 		JLWebsite.setFont(new Font("Dialog",Font.PLAIN,12));
 		
@@ -219,9 +207,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JPContainer.add(JLWebsite);
 		JPContainer.add(JTFWebsite);
 		
-		//******************** End adding of input field
-		
-		//-- Add the JBUpdate
 		JBUpdate.setBounds(5,340,105,25);
 		JBUpdate.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBUpdate.setMnemonic(KeyEvent.VK_A);
@@ -229,7 +214,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JBUpdate.setActionCommand("update");
 		JPContainer.add(JBUpdate);
 		
-		//-- Add the JBReset
 		JBReset.setBounds(112,340,99,25);
 		JBReset.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBReset.setMnemonic(KeyEvent.VK_R);
@@ -237,7 +221,6 @@ public class frm_add_edit_supplier extends JDialog{
 		JBReset.setActionCommand("reset");
 		JPContainer.add(JBReset);
 		
-		//-- Add the JBCancel
 		JBCancel.setBounds(212,340,99,25);
 		JBCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBCancel.setMnemonic(KeyEvent.VK_C);
@@ -297,7 +280,6 @@ public class frm_add_edit_supplier extends JDialog{
 		   							   	        JTFFax.getText() + "', '" +
 		   							   	        JTFWebsite.getText() +
 		   							   	        "')");
-		   					// Start Display the new record
 		   					int total =0;
 		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblSupplier ORDER BY SupplierIndex ASC",cnAES,"SupplierIndex");
 		   					if(total != 0){
@@ -306,10 +288,10 @@ public class frm_add_edit_supplier extends JDialog{
 		   						FrmSupplier.reloadRecord("SELECT * FROM tblSupplier ORDER BY CompanyName ASC");	
 		   					}
 		   					total =0;
-		   					// End Display the new record
-		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Naparansoft Inventory System",JOptionPane.INFORMATION_MESSAGE);
+		   					
+		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Inventory ManagementSystem",JOptionPane.INFORMATION_MESSAGE);
 		   					String ObjButtons[] = {"Yes","No"};
-							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Naparansoft Inventory System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
+							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
 							if(PromptResult==0){
 								clearFields();
 								JTFId.requestFocus(true);
