@@ -19,31 +19,29 @@ public class frm_add_edit_product extends JDialog{
 	JLabel JLPic1 = new JLabel();
 	JLabel JLBanner = new JLabel("Please fill-up all the required fields.");
 
-	JLabel JLId = new JLabel("Warehouse ID:");
-	JLabel JLName = new JLabel("Warehouse Name:");
-	JLabel JLCPerson = new JLabel("Contact Person:");
-	JLabel JLCTitle = new JLabel("Contact Title:");
-	JLabel JLAddr = new JLabel("Address:");
-	JLabel JLCity = new JLabel("CityTown:");
-	JLabel JLStateProv = new JLabel("State/Province:");
-	JLabel JLZipCode = new JLabel("Zip Code:");
-	JLabel JLPhone = new JLabel("Phone:");
-	JLabel JLFax = new JLabel("Fax:");
+	JLabel JLItemNo = new JLabel("Item No:");
+	JLabel JLDescription = new JLabel("Description:");
+	JLabel JLQuantity = new JLabel("Quantity:");
+	JLabel JLUnitCost = new JLabel("Unit Cost:");
+	JLabel JLsalesprice = new JLabel("Sales Price:");
+	JLabel JLQtyonhand = new JLabel("Quantity On Hand:");
+	JLabel JLlocation = new JLabel("Location:");
+	JLabel JLcategoryindex = new JLabel("Category Index:");
+	JLabel JLsupplierindex = new JLabel("Supplier Index:");
 
-	JTextField JTFId = new JTextField();
-	JTextField JTFName = new JTextField();
-	JTextField JTFCPerson = new JTextField();
-	JTextField JTFCTitle = new JTextField();
-	JTextField JTFAddr = new JTextField();
-	JTextField JTFCity = new JTextField();
-	JTextField JTFStateProv = new JTextField();
-	JTextField JTFZipCode = new JTextField();
-	JTextField JTFPhone = new JTextField();
-	JTextField JTFFax = new JTextField();
+	JTextField JTFItemNo = new JTextField();
+	JTextField JTFDescription = new JTextField();
+	JTextField JTFQuantity = new JTextField();
+	JTextField JTFUnitCost = new JTextField();
+	JTextField JTFsalesprice = new JTextField();
+	JTextField JTFQtyonhand = new JTextField();
+	JTextField JTFlocation = new JTextField();
+	JComboBox JCBCategoryIndex;
+	JComboBox JCBSupplierIndex;
 
-	Connection cnAEW;
-	Statement stAEW;
-	ResultSet rsAEW;
+	Connection cnAEP;
+	Statement stAEP;
+	ResultSet rsAEP;
 
 	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -51,13 +49,17 @@ public class frm_add_edit_product extends JDialog{
 
 	public frm_add_edit_product(boolean ADD_STATE,JFrame OwnerForm,Connection srcCon,String srcSQL){
 		super(OwnerForm,true);
-		cnAEW = srcCon;
+		cnAEP = srcCon;
 		ADDING_STATE = ADD_STATE;
 		try{
-			stAEW = cnAEW.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			stAEP = cnAEP.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 		}catch( SQLException sqlEx){
 
 		}
+		
+		JCBSupplierIndex = clsPublicMethods.fillCombo("SELECT * FROM tblSupplier",cnAEP,"supplierindex");
+		JCBCategoryIndex = clsPublicMethods.fillCombo("SELECT * FROM tblCategory",cnAEP,"categoryindex");
+		
 		if(ADD_STATE==true){
 			JLPic1.setIcon(new ImageIcon("images/bNew.png"));
 			setTitle("Add New Product");
@@ -67,18 +69,17 @@ public class frm_add_edit_product extends JDialog{
 			setTitle("Modify Product Details");
 			JBUpdate.setText("Save");
 			try{
-				rsAEW = stAEW.executeQuery(srcSQL);
-				rsAEW.next();
-					JTFId.setText("" + rsAEW.getString("WarehouseID"));
-					JTFName.setText("" + rsAEW.getString("WarehouseName"));
-					JTFCPerson.setText("" + rsAEW.getString("ContactPerson"));
-					JTFCTitle.setText("" + rsAEW.getString("ContactTitle"));
-					JTFAddr.setText("" + rsAEW.getString("Address"));
-					JTFCity.setText("" + rsAEW.getString("CityTown"));
-					JTFStateProv.setText("" + rsAEW.getString("StateProvince"));
-					JTFZipCode.setText("" + rsAEW.getString("ZipCode"));
-					JTFPhone.setText("" + rsAEW.getString("Phone"));
-					JTFFax.setText("" + rsAEW.getString("Fax"));
+				rsAEP = stAEP.executeQuery(srcSQL);
+				rsAEP.next();
+					JTFItemNo.setText("" + rsAEP.getString("itemno"));
+					JTFDescription.setText("" + rsAEP.getString("Description"));
+					JTFQuantity.setText("" + rsAEP.getString("Quantity"));
+					JTFUnitCost.setText("" + rsAEP.getString("Unitcost"));
+					JTFsalesprice.setText("" + rsAEP.getString("salesprice"));
+					JTFQtyonhand.setText("" + rsAEP.getString("qtyonhand"));
+					JTFlocation.setText("" + rsAEP.getString("location"));
+					JCBCategoryIndex.setSelectedItem("" + rsAEP.getString("categoryindex"));
+					JCBSupplierIndex.setSelectedItem("" + rsAEP.getString("SupplierIndex"));
 			}catch(SQLException sqlEx){
 				System.out.println(sqlEx.getMessage());
 			}
@@ -95,105 +96,94 @@ public class frm_add_edit_product extends JDialog{
 		JPContainer.add(JLBanner);
 
 		
-		JLId.setBounds(5,50,105,20);
-		JLId.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLItemNo.setBounds(5,50,105,20);
+		JLItemNo.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFId.setBounds(110,50,200,20);
-		JTFId.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFItemNo.setBounds(110,50,200,20);
+		JTFItemNo.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLId);
-		JPContainer.add(JTFId);
-
-		
-		JLName.setBounds(5,72,105,20);
-		JLName.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JTFName.setBounds(110,72,200,20);
-		JTFName.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JPContainer.add(JLName);
-		JPContainer.add(JTFName);
+		JPContainer.add(JLItemNo);
+		JPContainer.add(JTFItemNo);
 
 		
-		JLCPerson.setBounds(5,94,105,20);
-		JLCPerson.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLDescription.setBounds(5,72,105,20);
+		JLDescription.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFCPerson.setBounds(110,94,200,20);
-		JTFCPerson.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFDescription.setBounds(110,72,200,20);
+		JTFDescription.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLCPerson);
-		JPContainer.add(JTFCPerson);
-
-		
-		JLCTitle.setBounds(5,116,105,20);
-		JLCTitle.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JTFCTitle.setBounds(110,116,200,20);
-		JTFCTitle.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JPContainer.add(JLCTitle);
-		JPContainer.add(JTFCTitle);
+		JPContainer.add(JLDescription);
+		JPContainer.add(JTFDescription);
 
 		
-		JLAddr.setBounds(5,138,105,20);
-		JLAddr.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLQuantity.setBounds(5,94,105,20);
+		JLQuantity.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFAddr.setBounds(110,138,200,20);
-		JTFAddr.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFQuantity.setBounds(110,94,200,20);
+		JTFQuantity.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLAddr);
-		JPContainer.add(JTFAddr);
-
-		
-		JLCity.setBounds(5,160,105,20);
-		JLCity.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JTFCity.setBounds(110,160,200,20);
-		JTFCity.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JPContainer.add(JLCity);
-		JPContainer.add(JTFCity);
+		JPContainer.add(JLQuantity);
+		JPContainer.add(JTFQuantity);
 
 		
-		JLStateProv.setBounds(5,182,105,20);
-		JLStateProv.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLUnitCost.setBounds(5,116,105,20);
+		JLUnitCost.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFStateProv.setBounds(110,182,200,20);
-		JTFStateProv.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFUnitCost.setBounds(110,116,200,20);
+		JTFUnitCost.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLStateProv);
-		JPContainer.add(JTFStateProv);
-
-		
-		JLZipCode.setBounds(5,204,105,20);
-		JLZipCode.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JTFZipCode.setBounds(110,204,200,20);
-		JTFZipCode.setFont(new Font("Dialog",Font.PLAIN,12));
-
-		JPContainer.add(JLZipCode);
-		JPContainer.add(JTFZipCode);
+		JPContainer.add(JLUnitCost);
+		JPContainer.add(JTFUnitCost);
 
 		
-		JLPhone.setBounds(5,226,105,20);
-		JLPhone.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLsalesprice.setBounds(5,138,105,20);
+		JLsalesprice.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFPhone.setBounds(110,226,200,20);
-		JTFPhone.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFsalesprice.setBounds(110,138,200,20);
+		JTFsalesprice.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLPhone);
-		JPContainer.add(JTFPhone);
+		JPContainer.add(JLsalesprice);
+		JPContainer.add(JTFsalesprice);
 
 		
-		JLFax.setBounds(5,248,105,20);
-		JLFax.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLQtyonhand.setBounds(5,160,105,20);
+		JLQtyonhand.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFFax.setBounds(110,248,200,20);
-		JTFFax.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFQtyonhand.setBounds(110,160,200,20);
+		JTFQtyonhand.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLFax);
-		JPContainer.add(JTFFax);
+		JPContainer.add(JLQtyonhand);
+		JPContainer.add(JTFQtyonhand);
 
+		
+		JLlocation.setBounds(5,182,105,20);
+		JLlocation.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JTFlocation.setBounds(110,182,200,20);
+		JTFlocation.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JPContainer.add(JLlocation);
+		JPContainer.add(JTFlocation);
+
+		
+		JLcategoryindex.setBounds(5,204,105,20);
+		JLcategoryindex.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JCBCategoryIndex.setBounds(110,204,200,20);
+		JCBCategoryIndex.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JPContainer.add(JLcategoryindex);
+		JPContainer.add(JCBCategoryIndex);
+
+		
+		JLsupplierindex.setBounds(5,226,105,20);
+		JLsupplierindex.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JCBSupplierIndex.setBounds(110,226,200,20);
+		JCBSupplierIndex.setFont(new Font("Dialog",Font.PLAIN,12));
+
+		JPContainer.add(JLsupplierindex);
+		JPContainer.add(JCBSupplierIndex);
 		
 		JBUpdate.setBounds(5,292,105,25);
 		JBUpdate.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -224,25 +214,24 @@ public class frm_add_edit_product extends JDialog{
 		setLocation((screen.width - 325)/2,((screen.height-357)/2));
 	}
 	private boolean RequiredFieldEmpty(){
-		if(JTFId.getText().equals("") || JTFName.getText().equals("") || JTFCPerson.getText().equals("")){
+		if(JTFItemNo.getText().equals("") || JTFDescription.getText().equals("") || JTFQuantity.getText().equals("")){
 			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
-			JTFId.requestFocus();
+			JTFItemNo.requestFocus();
 			return true;
 		}else{
 			return false;
 		}
 	}
 	private void clearFields(){
-		JTFId.setText("");
-		JTFName.setText("");
-		JTFCPerson.setText("");
-		JTFCTitle.setText("");
-		JTFAddr.setText("");
-		JTFCity.setText("");
-		JTFStateProv.setText("");
-		JTFZipCode.setText("");
-		JTFPhone.setText("");
-		JTFFax.setText("");
+		JTFItemNo.setText("");
+		JTFDescription.setText("");
+		JTFQuantity.setText("");
+		JTFUnitCost.setText("");
+		JTFsalesprice.setText("");
+		JTFQtyonhand.setText("");
+		JTFlocation.setText("");
+		JCBCategoryIndex.setSelectedIndex(0);
+		JCBSupplierIndex.setSelectedIndex(0);
 	}
 
 	ActionListener JBActionListener = new ActionListener(){
@@ -252,34 +241,33 @@ public class frm_add_edit_product extends JDialog{
 				if(RequiredFieldEmpty()==false){
 					if(ADDING_STATE == true){
 						try{
-							stAEW.executeUpdate("INSERT INTO tblWarehouse(WarehouseID,WarehouseName,ContactPerson,ContactTitle,Address,CityTown,StateProvince,ZipCode,Phone,Fax) " +
+							stAEP.executeUpdate("INSERT INTO tblItems(Itemno,description,quantity,unitcost,salesprice,qtyonhand,location,categoryindex,supplierindex) " +
 		   							   	        "VALUES ('" +
-		   							   	        JTFId.getText() + "', '" +
-		   							   	        JTFName.getText() + "', '" +
-		   							   	        JTFCPerson.getText() + "', '" +
-		   							   	        JTFCTitle.getText() + "', '" +
-		   							   	        JTFAddr.getText() + "', '" +
-		   							   	        JTFCity.getText() + "', '" +
-		   							   	        JTFStateProv.getText() + "', '" +
-		   							   	        JTFZipCode.getText() + "', '" +
-		   							   	        JTFPhone.getText() + "', '" +
-		   							   	        JTFFax.getText() +
+		   							   	        JTFItemNo.getText() + "', '" +
+		   							   	        JTFDescription.getText() + "', '" +
+		   							   	        JTFQuantity.getText() + "', '" +
+		   							   	        JTFUnitCost.getText() + "', '" +
+		   							   	        JTFsalesprice.getText() + "', '" +
+		   							   	        JTFQtyonhand.getText() + "', '" +
+		   							   	        JTFlocation.getText() + "', '" +
+		   							   	        JCBCategoryIndex.getSelectedItem().toString() + "', '" +
+		   							   	        JCBSupplierIndex.getSelectedItem().toString() + "', '" +
 		   							   	        "')");
 		   					
 		   					int total =0;
-		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblWarehouse ORDER BY WarehouseIndex ASC",cnAEW,"WarehouseIndex");
+		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblitems ORDER BY itemindex ASC",cnAEP,"itemindex");
 		   					if(total != 0){
-		   						FrmWarehouse.reloadRecord("SELECT * FROM tblWarehouse WHERE WarehouseIndex = " + total + " ORDER BY WarehouseName ASC");
+		   						FrmWarehouse.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + total + " ORDER BY description ASC");
 		   					}else{
-		   						FrmWarehouse.reloadRecord("SELECT * FROM tblWarehouse ORDER BY WarehouseName ASC");
+		   						FrmWarehouse.reloadRecord("SELECT * FROM tblitems ORDER BY description ASC");
 		   					}
 		   					total =0;
-		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Naparansoft Inventory System",JOptionPane.INFORMATION_MESSAGE);
+		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 		   					String ObjButtons[] = {"Yes","No"};
-							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Naparansoft Inventory System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
+							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
 							if(PromptResult==0){
 								clearFields();
-								JTFId.requestFocus(true);
+								JTFItemNo.requestFocus(true);
 							}else{
 								dispose();
 							}
@@ -289,21 +277,20 @@ public class frm_add_edit_product extends JDialog{
 					}else{
 						try{
 							String RowIndex;
-							RowIndex = rsAEW.getString("WarehouseIndex");
-							stAEW.executeUpdate("UPDATE tblWarehouse SET WarehouseID = '" +
-		   							   	        JTFId.getText() + "', WarehouseName = '" +
-		   							   	        JTFName.getText() + "', ContactPerson = '" +
-		   							   	        JTFCPerson.getText() + "', ContactTitle = '" +
-		   							   	        JTFCTitle.getText()  + "', Address = '" +
-		   							   	        JTFAddr.getText()  + "', CityTown = '" +
-		   							   	        JTFCity.getText()   + "', StateProvince = '" +
-		   							   	        JTFStateProv.getText()   + "', ZipCode = '" +
-		   							   	        JTFZipCode.getText()   + "', Phone = '" +
-		   							   	        JTFPhone.getText()  + "', Fax = '" +
-		   							   	        JTFFax.getText() +
-		   							   	        "' WHERE WarehouseIndex = " + RowIndex);
-		   					FrmWarehouse.reloadRecord("SELECT * FROM tblWarehouse WHERE WarehouseIndex = " + RowIndex + " ORDER BY WarehouseName ASC");
-							JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Inventory System",JOptionPane.INFORMATION_MESSAGE);
+							RowIndex = rsAEP.getString("itemindex");
+							stAEP.executeUpdate("UPDATE tblitems SET itemno = '" +
+		   							   	        JTFItemNo.getText() + "', Description = '" +
+		   							   	        JTFDescription.getText() + "', Quantity = '" +
+		   							   	        JTFQuantity.getText() + "', UnitCost = '" +
+		   							   	        JTFUnitCost.getText()  + "', salesprice = '" +
+		   							   	        JTFsalesprice.getText()  + "', Qtyonhand = '" +
+		   							   	        JTFQtyonhand.getText()   + "', location = '" +
+		   							   	        JTFlocation.getText()   + "', categoryindex = '" +
+		   							   	        JCBCategoryIndex.getSelectedItem().toString()   + "', supplierindex = '" +
+		   							   	        JCBSupplierIndex.getSelectedItem().toString()  + "', ItemIndex = '" +
+		   							   	        "' WHERE itemIndex = " + RowIndex);
+		   					FrmWarehouse.reloadRecord("SELECT * FROM tblitems WHERE itemIndex = " + RowIndex + " ORDER BY description ASC");
+							JOptionPane.showMessageDialog(null,"Changes in the record have been successfully saved.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 						}catch(SQLException sqlEx){
 		   					System.out.println(sqlEx.getMessage());
