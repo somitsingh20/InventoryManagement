@@ -162,7 +162,7 @@ public class FrmCustomer extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblCustomer WHERE CustomerID = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();

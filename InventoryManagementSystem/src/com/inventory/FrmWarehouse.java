@@ -56,7 +56,7 @@ public class FrmWarehouse extends JInternalFrame{
 
 		cnWrh = srcCon;
 		stWrh = cnWrh.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblWarehouse WHERE WarehouseIndex = 0 ORDER BY WarehouseName ASC";
+		strSQL = "SELECT * FROM tblWarehouse";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -116,23 +116,23 @@ public class FrmWarehouse extends JInternalFrame{
 		setSize(747,450);
 		setLocation((screen.width - 747)/2,((screen.height-450)/2)-45);
 		setFrameIcon(new ImageIcon("images/Warehouse.png"));
-		//End set the form properties
+		
 
 	}
 
 	ActionListener JBActionListener = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			String srcObj = e.getActionCommand();
-			//Add Record
+			
 			if(srcObj=="add"){
 				JDialog JDAdd = new frm_add_edit_warehouse(true,JFParentFrame,cnWrh,"");
 				JDAdd.show();
-			//Modify Record
+			
 			}else if(srcObj=="modify"){
 				if(total != 0){
 					try{
 							if(JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),JTWrhTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_warehouse(false,JFParentFrame,cnWrh,"SELECT * FROM tblWarehouse WHERE WarehouseIndex = " + JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_warehouse(false,JFParentFrame,cnWrh,"SELECT * FROM tblWarehouse WHERE WarehouseID = " + JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),1));
 								JDEdit.show();
 
 							}
@@ -155,7 +155,7 @@ public class FrmWarehouse extends JInternalFrame{
 					try{
 							if(JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),JTWrhTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stWrh.executeQuery("SELECT * FROM tblWarehouse WHERE WarehouseIndex = " + JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),0));
+								ResultSet rsPrint = stWrh.executeQuery("SELECT * FROM tblWarehouse WHERE WarehouseID = " + JTWrhTable.getValueAt(JTWrhTable.getSelectedRow(),1));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();

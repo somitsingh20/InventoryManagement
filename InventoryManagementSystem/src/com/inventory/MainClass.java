@@ -487,7 +487,15 @@ public class MainClass extends JFrame implements WindowListener {
 						loadWarehouseForm();
 					}catch(SQLException sqle){
 					}
-				}else if(srcObject=="loggoff"){
+				}
+				else if(srcObject=="invoice"){
+					try{
+						loadWarehouseForm();
+					}catch(SQLException sqle){
+					}
+				}
+				
+				else if(srcObject=="loggoff"){
 
 				}else if(srcObject=="exit"){
 					UnloadWindow();
@@ -566,7 +574,7 @@ public class MainClass extends JFrame implements WindowListener {
 					FormProduct.setSelected(true);
 				}catch(PropertyVetoException e){
 				}
-				//End load the FormWarehouse
+				
 			}else{
 				try{
 					FormProduct.setIcon(false);
@@ -578,12 +586,12 @@ public class MainClass extends JFrame implements WindowListener {
 		}
 
 		protected void loadInvoiceForm() throws SQLException{
-			//Verify if the form is already loaded
+			
 			boolean AlreadyLoaded = isLoaded("Invoice");
 			if(AlreadyLoaded==false){
 				FormInvoice = new FrmInvoice();
 				desk.add(FormInvoice);
-				//Load the FormWarehouse
+				
 				FormInvoice.setVisible(true);
 				FormInvoice.show();
 				try{

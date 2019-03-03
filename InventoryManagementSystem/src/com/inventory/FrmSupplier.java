@@ -54,7 +54,7 @@ public class FrmSupplier extends JInternalFrame{
 
 		cnSup = srcCon;
 		stSup = cnSup.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblSupplier WHERE SupplierIndex = 0 ORDER BY CompanyName ASC";
+		strSQL = "SELECT * FROM tblSupplier";
 
 		
 		JLPicture1.setBounds(5,5,48,48);
@@ -131,7 +131,7 @@ public class FrmSupplier extends JInternalFrame{
 	ActionListener JBActionListener = new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			String srcObj = e.getActionCommand();
-			//Add Record
+			
 			if(srcObj=="add"){
 				JDialog JDAdd = new frm_add_edit_supplier(true,JFParentFrame,cnSup,"");
 				JDAdd.show();
@@ -140,7 +140,7 @@ public class FrmSupplier extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTSupTable.getValueAt(JTSupTable.getSelectedRow(),JTSupTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_supplier(false,JFParentFrame,cnSup,"SELECT * FROM tblSupplier WHERE SupplierIndex = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_supplier(false,JFParentFrame,cnSup,"SELECT * FROM tblSupplier WHERE SupplierId = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),1));
 								JDEdit.show();
 
 							}
@@ -163,7 +163,7 @@ public class FrmSupplier extends JInternalFrame{
 					try{
 						if(JTSupTable.getValueAt(JTSupTable.getSelectedRow(),JTSupTable.getSelectedColumn()) != null){
 							clsPublicMethods PrintingClass = new clsPublicMethods();
-							ResultSet rsPrint = stSup.executeQuery("SELECT * FROM tblSupplier WHERE SupplierIndex = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
+							ResultSet rsPrint = stSup.executeQuery("SELECT * FROM tblSupplier WHERE SupplierID = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),1));
 							if(rsPrint.next()==true){
 								String RecordToPrint = "";
 								java.util.Date CurrentDate = new java.util.Date();

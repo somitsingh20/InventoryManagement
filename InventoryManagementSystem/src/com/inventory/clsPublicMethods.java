@@ -16,9 +16,9 @@ public class clsPublicMethods {
 		try{
 			stRE = sCN.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 			rsRE = stRE.executeQuery(strSQL);
-			//Move to the last record
+	
 			rsRE.afterLast(); 
-			//Get the current record position
+			
 			if(rsRE.previous()){
 				Total = rsRE.getRow();
 			}else{

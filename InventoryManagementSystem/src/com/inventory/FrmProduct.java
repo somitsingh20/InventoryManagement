@@ -54,7 +54,7 @@ public class FrmProduct extends JInternalFrame{
 
 		cnCus = srcCN;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblItem WHERE ItemIndex = 0 ORDER BY Description ASC";
+		strSQL = "SELECT * FROM tblItem";
 
 	
 		JLPicture1.setBounds(5,5,48,48);
@@ -139,7 +139,7 @@ public class FrmProduct extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItem WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItem WHERE ItemID = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								JDEdit.show();
 
 							}
@@ -161,7 +161,7 @@ public class FrmProduct extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItem WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItem WHERE Itemid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
@@ -231,10 +231,8 @@ public class FrmProduct extends JInternalFrame{
 						}
 					}
 				}
-			//Reload Record
 			}else if(srcObj=="reload"){
 				reloadRecord();
-			//Close the Form
 			}
 		}
 	};

@@ -54,7 +54,7 @@ public class FrmSalesRep extends JInternalFrame {
 
 		cnSlr = srcCon;
 		stSlr = cnSlr.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblSalesRep WHERE SalesRepIndex = 0 ORDER BY Name ASC";
+		strSQL = "SELECT * FROM tblSalesRep";
 
 		JLPicture1.setBounds(5, 5, 48, 48);
 		JPContainer.add(JLPicture1);
@@ -133,7 +133,7 @@ public class FrmSalesRep extends JInternalFrame {
 								JTSlrTable.getSelectedColumn()) != null) {
 							JDialog JDEdit = new frm_add_edit_salesrep(false, JFParentFrame, cnSlr,
 									"SELECT * FROM tblSalesRep WHERE SalesRepIndex = "
-											+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
+											+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 1));
 							JDEdit.show();
 
 						}
@@ -158,8 +158,8 @@ public class FrmSalesRep extends JInternalFrame {
 						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
 								JTSlrTable.getSelectedColumn()) != null) {
 							clsPublicMethods PrintingClass = new clsPublicMethods();
-							ResultSet rsPrint = stSlr.executeQuery("SELECT * FROM tblSalesRep WHERE SalesRepIndex = "
-									+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
+							ResultSet rsPrint = stSlr.executeQuery("SELECT * FROM tblSalesRep WHERE SalesRepID = "
+									+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 1));
 							if (rsPrint.next() == true) {
 								String RecordToPrint = "";
 								java.util.Date CurrentDate = new java.util.Date();

@@ -60,11 +60,11 @@ public class frm_add_edit_product extends JDialog{
 		}
 		if(ADD_STATE==true){
 			JLPic1.setIcon(new ImageIcon("images/bNew.png"));
-			setTitle("Add New Warehouse");
+			setTitle("Add New Product");
 			JBUpdate.setText("Update");
 		}else{
 			JLPic1.setIcon(new ImageIcon("images/bModify.png"));
-			setTitle("Modify Warehouse");
+			setTitle("Modify Product Details");
 			JBUpdate.setText("Save");
 			try{
 				rsAEW = stAEW.executeQuery(srcSQL);
@@ -225,7 +225,7 @@ public class frm_add_edit_product extends JDialog{
 	}
 	private boolean RequiredFieldEmpty(){
 		if(JTFId.getText().equals("") || JTFName.getText().equals("") || JTFCPerson.getText().equals("")){
-			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Naparansoft Inventory System",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
 			JTFId.requestFocus();
 			return true;
 		}else{
