@@ -192,7 +192,6 @@ public class frm_add_edit_product extends JDialog{
 		JBUpdate.setActionCommand("update");
 		JPContainer.add(JBUpdate);
 
-		
 		JBReset.setBounds(112,292,99,25);
 		JBReset.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBReset.setMnemonic(KeyEvent.VK_R);
@@ -200,7 +199,6 @@ public class frm_add_edit_product extends JDialog{
 		JBReset.setActionCommand("reset");
 		JPContainer.add(JBReset);
 
-		
 		JBCancel.setBounds(212,292,99,25);
 		JBCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBCancel.setMnemonic(KeyEvent.VK_C);
