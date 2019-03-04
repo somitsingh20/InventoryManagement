@@ -54,7 +54,7 @@ public class FrmSupplier extends JInternalFrame{
 
 		cnSup = srcCon;
 		stSup = cnSup.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblSup";
+		strSQL = "SELECT * FROM tblSupplier";
 
 		
 		JLPicture1.setBounds(5,5,48,48);
