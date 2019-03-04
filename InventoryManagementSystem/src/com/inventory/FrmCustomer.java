@@ -153,7 +153,7 @@ public class FrmCustomer extends JInternalFrame{
 					}
 				}
 			
-			}else if(srcObj=="search"){
+			}else if(srcObj=="seah"){
 				JDialog JDSearchRec = new FrmSearchCustomer(JFParentFrame);
 				JDSearchRec.show(true);
 			
