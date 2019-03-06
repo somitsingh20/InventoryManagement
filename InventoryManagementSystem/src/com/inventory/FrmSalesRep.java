@@ -158,8 +158,8 @@ public class FrmSalesRep extends JInternalFrame {
 						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
 								JTSlrTable.getSelectedColumn()) != null) {
 							clsPublicMethods PrintingClass = new clsPublicMethods();
-							ResultSet rsPrint = stSlr.executeQuery("SELECT * FROM tblSalesRep WHERE SalesRepID = "
-									+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 1));
+							ResultSet rsPrint = stSlr.executeQuery("SELECT * FROM tblSalesRep WHERE SalesRepIndex = "
+									+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
 							if (rsPrint.next() == true) {
 								String RecordToPrint = "";
 								java.util.Date CurrentDate = new java.util.Date();
@@ -173,16 +173,15 @@ public class FrmSalesRep extends JInternalFrame {
 								RecordToPrint += "-----------------------------------------------------------------------\n\n";
 
 								RecordToPrint += " SalesRep ID: " + rsPrint.getString("SalesRepID")
-										+ "           SalesRep Name: " + rsPrint.getString("SalesRepName") + "\n\n";
+										+ "           SalesRep Name: " + rsPrint.getString("Name") + "\n\n";
 
-								RecordToPrint += " Primary Address: " + rsPrint.getString("Address1") + "\n";
-								RecordToPrint += " Secondary Address: " + rsPrint.getString("Address2") + "\n";
-								RecordToPrint += " City: " + rsPrint.getString("City") + "\n";
+								RecordToPrint += " Primary Address: " + rsPrint.getString("Address") + "\n";
+								RecordToPrint += " City: " + rsPrint.getString("Citytown") + "\n";
 								RecordToPrint += " State/Province: " + rsPrint.getString("StateProvince") + "\n";
 								RecordToPrint += " Zip Code: " + rsPrint.getString("ZipCode") + "\n";
 								RecordToPrint += " Contact No: " + rsPrint.getString("ContactNo") + "\n";
-								RecordToPrint += " Email Address: " + rsPrint.getString("EmailAddress") + "\n\n";
-
+								RecordToPrint += " Emergency Contact No: " + rsPrint.getString("EmerContactNo") + "\n\n";
+								
 								RecordToPrint += "-----------------------------------------------------------------------\n\n\n";
 
 								PrintingClass.printRecord(RecordToPrint, JFParentFrame);
@@ -221,7 +220,7 @@ public class FrmSalesRep extends JInternalFrame {
 									JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons,
 									ObjButtons[1]);
 							if (PromptResult == 0) {
-								stSlr.execute("DELETE * FROM tblSalesRep WHERE SalesRepIndex = "
+								stSlr.execute("DELETE FROM tblSalesRep WHERE SalesRepIndex = "
 										+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null, "Record has been successfully deleted.",

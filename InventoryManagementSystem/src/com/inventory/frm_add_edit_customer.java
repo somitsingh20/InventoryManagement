@@ -321,7 +321,7 @@ public class frm_add_edit_customer extends JDialog
 		   							   	        JTFFax.getText() +
 		   							   	        "' WHERE CustomerIndex = " + RowIndex);
 		   					FrmCustomer.reloadRecord("SELECT * FROM tblCustomer WHERE CustomerIndex = " + RowIndex + " ORDER BY CompanyName ASC");	
-		   					JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
+		   					JOptionPane.showMessageDialog(null,"Changes in the record have been successfully saved.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 		   					RowIndex="";
 							dispose();
 						}catch(SQLException sqlEx){

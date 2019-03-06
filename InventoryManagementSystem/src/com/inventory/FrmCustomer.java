@@ -153,7 +153,7 @@ public class FrmCustomer extends JInternalFrame{
 					}
 				}
 			
-			}else if(srcObj=="seah"){
+			}else if(srcObj=="search"){
 				JDialog JDSearchRec = new FrmSearchCustomer(JFParentFrame);
 				JDSearchRec.show(true);
 			
@@ -217,7 +217,7 @@ public class FrmCustomer extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stCus.execute("DELETE * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								stCus.execute("DELETE FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}
