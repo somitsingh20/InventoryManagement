@@ -139,7 +139,7 @@ public class FrmProduct extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItems WHERE ItemNo = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
+								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								JDEdit.show();
 
 							}
@@ -154,38 +154,34 @@ public class FrmProduct extends JInternalFrame{
 				}
 			}else if(srcObj=="search"){
 				JDialog JDSearchRec = new FrmSearchProduct(JFParentFrame);
-				JDSearchRec.isVisible();
+				JDSearchRec.show(true);
 			
 			}else if(srcObj=="print"){
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItems WHERE ItemNo = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
 									SimpleDateFormat SDFDateFormatter = new SimpleDateFormat("MMM. dd, yyyy",Locale.getDefault());
 
-									RecordToPrint += "                            C U S T O M E R   R E C O R D							 \n";
+									RecordToPrint += "                            P R O D U C T   R E C O R D							 \n";
 									RecordToPrint += "                              " + SDFDateFormatter.format(CurrentDate).toString() + "\n\n\n";
 
 
 									RecordToPrint += "___________________________________________________________________________________\n\n\n";
 
-									RecordToPrint += " Product ID: " + rsPrint.getString("ProductID") + "                 Company Name: " + rsPrint.getString("CompanyName") + "\n";
+									RecordToPrint += " Product ID: " + rsPrint.getString("ItemNo") + "                 Description: " + rsPrint.getString("description") + "\n";
 									RecordToPrint += "___________________________________________________________________________________\n";
 									RecordToPrint += "___________________________________________________________________________________\n\n";
 
-									RecordToPrint += " Contact Person: " + rsPrint.getString("ContactName") + "\n";
-									RecordToPrint += " Contact Title: " + rsPrint.getString("ContactTitle") + "\n";
-									RecordToPrint += " Address: " + rsPrint.getString("Address") + "\n";
-									RecordToPrint += " City: " + rsPrint.getString("CityTown") + "\n";
-									RecordToPrint += " State/Province: " + rsPrint.getString("StateProvince") + "\n";
-									RecordToPrint += " Zip Code: " + rsPrint.getString("ZipCode") + "\n";
-									RecordToPrint += " Country: " + rsPrint.getString("Country") + "\n";
-									RecordToPrint += " Phone: " + rsPrint.getString("Phone") + "\n";
-									RecordToPrint += " Fax: " + rsPrint.getString("Fax") + "\n\n";
+									RecordToPrint += " Quantity: " + rsPrint.getString("Quantity") + "\n";
+									RecordToPrint += " Unit Cost: " + rsPrint.getString("UnitCost") + "\n";
+									RecordToPrint += " Sales Price: " + rsPrint.getString("salesprice") + "\n";
+									RecordToPrint += " Quantity On Hand: " + rsPrint.getString("Qtyonhand") + "\n";
+									RecordToPrint += " Location: " + rsPrint.getString("location") + "\n";
 
 									RecordToPrint += "___________________________________________________________________________________\n\n";
 
@@ -198,7 +194,7 @@ public class FrmProduct extends JInternalFrame{
 								}else{
 									JOptionPane.showMessageDialog(null,"The selected record has been change since last modified. Please click the 'Reload' button and try again!","No record to print",JOptionPane.WARNING_MESSAGE);
 								}
-								//Dispose the variable
+								
 								rsPrint=null;
 
 							}
@@ -218,13 +214,14 @@ public class FrmProduct extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stCus.execute("DELETE * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								stCus.execute("DELETE FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}
 						}
 					}catch(Exception sqlE){
 						if(sqlE.getMessage()!=null){
+							sqlE.printStackTrace();
 							JOptionPane.showMessageDialog(null,"You cannot delete this customer because it already have an invoice transaction.\nIn order to delete this customer, delete its invoice first.","Comfirm Delete",JOptionPane.WARNING_MESSAGE);
 						}else{
 							JOptionPane.showMessageDialog(null,"Please select a record in the list to deleted.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
@@ -239,7 +236,7 @@ public class FrmProduct extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Index","Item No","Description","Sales Price","On Hand" ,"On Order"
+			"Index","Item No","Description","Sales Price","On Hand" ,"Location"
 		};
 		try{
 			rsCus = stCus.executeQuery(strSQL);
@@ -258,7 +255,7 @@ public class FrmProduct extends JInternalFrame{
 					Content[rowNum][2] = "" + rsCus.getString("Description");
 					Content[rowNum][3] = "" + rsCus.getString("SalesPrice");
 					Content[rowNum][4] = "" + rsCus.getString("QtyOnHand");
-					Content[rowNum][5] = "" + rsCus.getString("QtyOnOrder");
+					Content[rowNum][5] = "" + rsCus.getString("Location");
 					rowNum++;
 				}
 			}else{

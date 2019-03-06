@@ -47,7 +47,6 @@ public class FrmSupplier extends JInternalFrame{
 		
 		super("Supplier Records",false,true,false,true);
 		
-
 		JPContainer.setLayout(null);
 
 		JFParentFrame = getParentFrame;
@@ -222,7 +221,7 @@ public class FrmSupplier extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stSup.execute("DELETE * FROM tblSupplier WHERE SupplierIndex = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
+								stSup.execute("DELETE FROM tblSupplier WHERE SupplierIndex = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}

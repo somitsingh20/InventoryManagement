@@ -589,7 +589,7 @@ public class MainClass extends JFrame implements WindowListener {
 			
 			boolean AlreadyLoaded = isLoaded("Invoice");
 			if(AlreadyLoaded==false){
-				FormInvoice = new FrmInvoice();
+				FormInvoice = new FrmInvoice(con,this);
 				desk.add(FormInvoice);
 				
 				FormInvoice.setVisible(true);

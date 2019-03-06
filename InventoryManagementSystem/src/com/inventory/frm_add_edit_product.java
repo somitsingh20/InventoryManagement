@@ -247,19 +247,19 @@ public class frm_add_edit_product extends JDialog{
 		   							   	        JTFUnitCost.getText() + "', '" +
 		   							   	        JTFsalesprice.getText() + "', '" +
 		   							   	        JTFQtyonhand.getText() + "', '" +
-		   							   	        JTFlocation.getText() + "', '" +
+		   							   	        JTFlocation.getText() + "','" +
 		   							   	        JCBCategoryIndex.getSelectedItem().toString() + "', '" +
-		   							   	        JCBSupplierIndex.getSelectedItem().toString() + "', '" +
-		   							   	        "')");
+		   							   	        JCBSupplierIndex.getSelectedItem().toString() + "')");
 		   					
 		   					int total =0;
 		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblitems ORDER BY itemindex ASC",cnAEP,"itemindex");
 		   					if(total != 0){
-		   						FrmWarehouse.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + total + " ORDER BY description ASC");
+		   						FrmProduct.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + total + " ORDER BY description ASC");
 		   					}else{
-		   						FrmWarehouse.reloadRecord("SELECT * FROM tblitems ORDER BY description ASC");
+		   						FrmProduct.reloadRecord("SELECT * FROM tblitems ORDER BY description ASC");
 		   					}
 		   					total =0;
+		   					
 		   					JOptionPane.showMessageDialog(null,"New record has been successfully added.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 		   					String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
@@ -275,7 +275,7 @@ public class frm_add_edit_product extends JDialog{
 					}else{
 						try{
 							String RowIndex;
-							RowIndex = rsAEP.getString("itemindex");
+							RowIndex = rsAEP.getString("ItemIndex");
 							stAEP.executeUpdate("UPDATE tblitems SET itemno = '" +
 		   							   	        JTFItemNo.getText() + "', Description = '" +
 		   							   	        JTFDescription.getText() + "', Quantity = '" +
@@ -285,10 +285,11 @@ public class frm_add_edit_product extends JDialog{
 		   							   	        JTFQtyonhand.getText()   + "', location = '" +
 		   							   	        JTFlocation.getText()   + "', categoryindex = '" +
 		   							   	        JCBCategoryIndex.getSelectedItem().toString()   + "', supplierindex = '" +
-		   							   	        JCBSupplierIndex.getSelectedItem().toString()  + "', ItemIndex = '" +
+		   							   	        JCBSupplierIndex.getSelectedItem().toString()  +
 		   							   	        "' WHERE itemIndex = " + RowIndex);
-		   					FrmWarehouse.reloadRecord("SELECT * FROM tblitems WHERE itemIndex = " + RowIndex + " ORDER BY description ASC");
+							FrmProduct.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + RowIndex + " ORDER BY description ASC");
 							JOptionPane.showMessageDialog(null,"Changes in the record have been successfully saved.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
+							RowIndex="";
 							dispose();
 						}catch(SQLException sqlEx){
 		   					System.out.println(sqlEx.getMessage());
