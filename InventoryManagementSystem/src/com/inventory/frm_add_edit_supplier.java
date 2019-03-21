@@ -13,31 +13,15 @@ public class frm_add_edit_supplier extends JDialog{
 	JLabel JLPic1 = new JLabel();
 	JLabel JLBanner = new JLabel("Please fill-up all the required fields.");
 	
-	JLabel JLId = new JLabel("Supplier ID:");
-	JLabel JLName = new JLabel("Supplier Name:");
-	JLabel JLContName = new JLabel("Contact Name:");
-	JLabel JLContTitle = new JLabel("Contact Title:");
-	JLabel JLAddr = new JLabel("Address:");
-	JLabel JLCity = new JLabel("City/Town:");
-	JLabel JLState = new JLabel("State/Province:");
-	JLabel JLZipCode = new JLabel("Zip Code:");
-	JLabel JLCountry = new JLabel("Country:");
-	JLabel JLPhone = new JLabel("Phone:");
-	JLabel JLFax = new JLabel("Fax:");
-	JLabel JLWebsite = new JLabel("Website:");
+	JLabel JLSupplierId = new JLabel("Supplier ID:");
+	JLabel JLSupplierName = new JLabel("Supplier Name:");
+	JLabel JLLocation = new JLabel("Contact Name:");
+	JLabel JLPhoneNumber = new JLabel("Contact Title:");
 	
-	JTextField JTFId = new JTextField();
-	JTextField JTFName = new JTextField();
-	JTextField JTFContName = new JTextField();
-	JTextField JTFContTitle = new JTextField();
-	JTextField JTFAddr = new JTextField();
-	JTextField JTFCity = new JTextField();
-	JTextField JTFState = new JTextField();
-	JTextField JTFZipCode = new JTextField();
-	JComboBox  JCBCountry;
-	JTextField JTFPhone = new JTextField();
-	JTextField JTFFax = new JTextField();
-	JTextField JTFWebsite = new JTextField();
+	JTextField JTFSupplierId = new JTextField();
+	JTextField JTFSupplierName = new JTextField();
+	JTextField JTFLocation = new JTextField();
+	JTextField JTFPhoneNumber = new JTextField();
 	
 	Connection cnAES;
 	Statement stAES;
@@ -57,8 +41,6 @@ public class frm_add_edit_supplier extends JDialog{
 			System.out.println("\nERROR IN frm_add_edit_supplier(frm_add_edit_supplier):" + sqlEx + "\n");
 		}
 		
-		JCBCountry = clsPublicMethods.fillCombo("SELECT * FROM tblCountry",cnAES,"Name");
-		
 		if(ADD_STATE==true){
 			JLPic1.setIcon(new ImageIcon("images/bNew.png"));
 			setTitle("Add New Supplier");
@@ -71,19 +53,10 @@ public class frm_add_edit_supplier extends JDialog{
 			try{
 				rsAES = stAES.executeQuery(srcSQL);
 				rsAES.next();					
-					JTFId.setText("" + rsAES.getString("SupplierID"));
-					JTFName.setText("" + rsAES.getString("CompanyName"));
-					JTFContName.setText("" + rsAES.getString("ContactName"));
-					JTFContTitle.setText("" + rsAES.getString("ContactTitle"));
-					JTFAddr.setText("" + rsAES.getString("Address"));
-					JTFCity.setText("" + rsAES.getString("CityTown"));
-					JTFState.setText("" + rsAES.getString("StateProvince"));
-					JTFZipCode.setText("" + rsAES.getString("ZipCode"));
-					//searchInComboPos
-					JCBCountry.setSelectedItem("" + rsAES.getString("Country"));
-					JTFPhone.setText("" + rsAES.getString("Phone"));
-					JTFFax.setText("" + rsAES.getString("Fax"));
-					JTFWebsite.setText("" + rsAES.getString("Website"));
+					JTFSupplierId.setText("" + rsAES.getString("sid"));
+					JTFSupplierName.setText("" + rsAES.getString("supplier"));
+					JTFLocation.setText("" + rsAES.getString("location"));
+					JTFPhoneNumber.setText("" + rsAES.getString("pnumber"));
 			}catch(SQLException sqlEx){
 				System.out.println(sqlEx.getMessage());
 			}
@@ -98,44 +71,45 @@ public class frm_add_edit_supplier extends JDialog{
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPContainer.add(JLBanner);
 		
-		JLId.setBounds(5,50,105,20);
-		JLId.setFont(new Font("Dialog",Font.PLAIN,12));
+		/*JLSupplierId.setBounds(5,50,105,20);
+		JLSupplierId.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JTFId.setBounds(110,50,200,20);
-		JTFId.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFSupplierId.setBounds(110,50,200,20);
+		JTFSupplierId.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFSupplierId.setEditable(false);
 		
-		JPContainer.add(JLId);
-		JPContainer.add(JTFId);
+		JPContainer.add(JLSupplierId);
+		JPContainer.add(JTFSupplierId);*/
 		
-		JLName.setBounds(5,72,105,20);
-		JLName.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLSupplierName.setBounds(5,72,105,20);
+		JLSupplierName.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JTFName.setBounds(110,72,200,20);
-		JTFName.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFSupplierName.setBounds(110,72,200,20);
+		JTFSupplierName.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JPContainer.add(JLName);
-		JPContainer.add(JTFName);
+		JPContainer.add(JLSupplierName);
+		JPContainer.add(JTFSupplierName);
 		
-		JLContName.setBounds(5,94,105,20);
-		JLContName.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLLocation.setBounds(5,94,105,20);
+		JLLocation.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JTFContName.setBounds(110,94,200,20);
-		JTFContName.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFLocation.setBounds(110,94,200,20);
+		JTFLocation.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JPContainer.add(JLContName);
-		JPContainer.add(JTFContName);
+		JPContainer.add(JLLocation);
+		JPContainer.add(JTFLocation);
 		
 		
-		JLContTitle.setBounds(5,116,105,20);
-		JLContTitle.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLPhoneNumber.setBounds(5,116,105,20);
+		JLPhoneNumber.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JTFContTitle.setBounds(110,116,200,20);
-		JTFContTitle.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFPhoneNumber.setBounds(110,116,200,20);
+		JTFPhoneNumber.setFont(new Font("Dialog",Font.PLAIN,12));
 		
-		JPContainer.add(JLContTitle);
-		JPContainer.add(JTFContTitle);
+		JPContainer.add(JLPhoneNumber);
+		JPContainer.add(JTFPhoneNumber);
 		
-		JLAddr.setBounds(5,138,105,20);
+		/*JLAddr.setBounds(5,138,105,20);
 		JLAddr.setFont(new Font("Dialog",Font.PLAIN,12));
 		
 		JTFAddr.setBounds(110,138,200,20);
@@ -205,7 +179,7 @@ public class frm_add_edit_supplier extends JDialog{
 		JTFWebsite.setFont(new Font("Dialog",Font.PLAIN,12));
 		
 		JPContainer.add(JLWebsite);
-		JPContainer.add(JTFWebsite);
+		JPContainer.add(JTFWebsite);*/
 		
 		JBUpdate.setBounds(5,340,105,25);
 		JBUpdate.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -234,27 +208,19 @@ public class frm_add_edit_supplier extends JDialog{
 		setLocation((screen.width - 325)/2,((screen.height-405)/2));
 	}
 	private boolean RequiredFieldEmpty(){
-		if(JTFId.getText().equals("") || JTFName.getText().equals("")){
-			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Naparansoft Inventory System",JOptionPane.WARNING_MESSAGE);
-			JTFId.requestFocus();
+		if(JTFSupplierName.getText().equals("")){
+			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
+			JTFSupplierId.requestFocus();
 			return true;
 		}else{
 			return false;
 		}
 	}
 	private void clearFields(){
-		JTFId.setText("");
-		JTFName.setText("");
-		JTFContName.setText("");
-		JTFContTitle.setText("");
-		JTFAddr.setText("");
-		JTFCity.setText("");
-		JTFState.setText("");
-		JTFZipCode.setText("");
-		JCBCountry.setSelectedIndex(0);
-		JTFPhone.setText("");
-		JTFFax.setText("");
-		JTFWebsite.setText("");
+		JTFSupplierId.setText("");
+		JTFSupplierName.setText("");
+		JTFLocation.setText("");
+		JTFPhoneNumber.setText("");
 	}
 	
 	ActionListener JBActionListener = new ActionListener(){
@@ -265,27 +231,18 @@ public class frm_add_edit_supplier extends JDialog{
 					if(ADDING_STATE == true){
 						try{
 							
-							stAES.executeUpdate("INSERT INTO tblSupplier(SupplierID,CompanyName,ContactName,ContactTitle,Address,CityTown,StateProvince,ZipCode,Country,Phone,Fax,Website) " +
-		   							   	        "VALUES ('" + 		   							   	        
-		   							   	        JTFId.getText() + "', '" +
-		   							   	        JTFName.getText() + "', '" +
-		   							   	        JTFContName.getText() + "', '" +
-		   							   	        JTFContTitle.getText() + "', '" +
-		   							   	        JTFAddr.getText() + "', '" +
-		   							   	        JTFCity.getText() + "', '" +
-		   							   	        JTFState.getText() + "', '" +
-		   							   	        JTFZipCode.getText() + "', '" +
-		   							   	        JCBCountry.getSelectedItem().toString() + "', '" +
-		   							   	        JTFPhone.getText() + "', '" +
-		   							   	        JTFFax.getText() + "', '" +
-		   							   	        JTFWebsite.getText() +
+							stAES.executeUpdate("INSERT INTO imssupplier(SupplierID,CompanyName,ContactName,ContactTitle,Address,CityTown,StateProvince,ZipCode,Country,Phone,Fax,Website) " +
+		   							   	        "VALUES ('" +
+		   							   	        JTFSupplierName.getText() + "', '" +
+		   							   	        JTFLocation.getText() + "', '" +
+		   							   	        JTFPhoneNumber.getText()+
 		   							   	        "')");
 		   					int total =0;
-		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblSupplier ORDER BY SupplierIndex ASC",cnAES,"SupplierIndex");
+		   					total = clsPublicMethods.getMaxNum("SELECT * FROM imssupplier ORDER BY sid ASC",cnAES,"sid");
 		   					if(total != 0){
-		   						FrmSupplier.reloadRecord("SELECT * FROM tblSupplier WHERE SupplierIndex = " + total + " ORDER BY CompanyName ASC");	
+		   						FrmSupplier.reloadRecord("SELECT * FROM imssupplier WHERE sid = " + total + " ORDER BY supplier ASC");	
 		   					}else{
-		   						FrmSupplier.reloadRecord("SELECT * FROM tblSupplier ORDER BY CompanyName ASC");	
+		   						FrmSupplier.reloadRecord("SELECT * FROM imssupplier ORDER BY supplier ASC");	
 		   					}
 		   					total =0;
 		   					
@@ -294,7 +251,7 @@ public class frm_add_edit_supplier extends JDialog{
 							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
 							if(PromptResult==0){
 								clearFields();
-								JTFId.requestFocus(true);
+								JTFSupplierId.requestFocus(true);
 							}else{
 								dispose();
 							}
@@ -304,23 +261,14 @@ public class frm_add_edit_supplier extends JDialog{
 					}else{
 						try{
 							String RowIndex;
-							RowIndex = rsAES.getString("SupplierIndex");	        
-							stAES.executeUpdate("UPDATE tblSupplier SET SupplierID = '" +
-		   							   	        JTFId.getText() + "', CompanyName = '" +
-		   							   	        JTFName.getText() + "', ContactName = '" +
-		   							   	        JTFContName.getText() + "', ContactTitle = '" +
-		   							   	        JTFContTitle.getText() + "', Address = '" +
-		   							   	        JTFAddr.getText() + "', CityTown = '" +
-		   							   	        JTFCity.getText() + "', StateProvince = '" +
-		   							   	        JTFState.getText() + "', ZipCode = '" +
-		   							   	        JTFZipCode.getText() + "', Country = '" +
-		   							   	        JCBCountry.getSelectedItem().toString() + "', Phone = '" +
-		   							   	        JTFPhone.getText() + "', Fax = '" +
-		   							   	        JTFFax.getText() + "', Website = '" +
-		   							   	        JTFWebsite.getText() +
-		   							   	        "' WHERE SupplierIndex = " + RowIndex);
-		   					FrmSupplier.reloadRecord("SELECT * FROM tblSupplier WHERE SupplierIndex = " + RowIndex + " ORDER BY CompanyName ASC");	
-		   					JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Naparansoft Inventory System",JOptionPane.INFORMATION_MESSAGE);
+							RowIndex = rsAES.getString("sid");	        
+							stAES.executeUpdate("UPDATE imssupplier SET Supplier = '" +
+		   							   	        JTFSupplierName.getText() + "', Location = '" +
+		   							   	        JTFLocation.getText() + "', Pnumber = '" +
+		   							   	        JTFPhoneNumber.getText() +
+		   							   	        "' WHERE sid = " + RowIndex);
+		   					FrmSupplier.reloadRecord("SELECT * FROM imssupplier WHERE sid = " + RowIndex + " ORDER BY supplier ASC");	
+		   					JOptionPane.showMessageDialog(null,"Changes in the record has been successfully save.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 		   					RowIndex="";
 							dispose();
 						}catch(SQLException sqlEx){

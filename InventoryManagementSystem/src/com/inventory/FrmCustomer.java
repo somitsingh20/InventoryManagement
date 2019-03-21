@@ -25,6 +25,7 @@ public class FrmCustomer extends JInternalFrame{
 	JButton JBSearch = new JButton("Search",new ImageIcon("images/search.png"));
 	JButton JBPrint = new JButton("Print",new ImageIcon("images/print.png"));
 	JButton JBDelete = new JButton("Delete",new ImageIcon("images/delete.png"));
+	JButton JBBuyRecord = new JButton("SellRecord",new ImageIcon("images/new.png"));
 	JButton JBReload = new JButton("Reload",new ImageIcon("images/reload.png"));
 
 	Connection cnCus;
@@ -49,36 +50,30 @@ public class FrmCustomer extends JInternalFrame{
 		super("Customer Records",false,true,false,true);
 		
 		JPContainer.setLayout(null);
-
 		JFParentFrame = getParentFrame;
 
 		cnCus = srcCon;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblCustomer";
+		strSQL = "SELECT * FROM imscustomer";
 
-		
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
-
 		
 		JLHelpText.setBounds(55,5,570,48);
 		JLHelpText.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JPContainer.add(JLHelpText);
 
-		
 		JTCusTable=CreateTable();
 		CusTableJSP.getViewport().add(JTCusTable);
 		CusTableJSP.setBounds(5,55,727,320);
 		JPContainer.add(CusTableJSP);
 
-		
 		JBAddNew.setBounds(5,382,105,25);
 		JBAddNew.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBAddNew.setMnemonic(KeyEvent.VK_A);
 		JBAddNew.addActionListener(JBActionListener);
 		JBAddNew.setActionCommand("add");
 		JPContainer.add(JBAddNew);
-
 		
 		JBModify.setBounds(112,382,99,25);
 		JBModify.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -86,7 +81,6 @@ public class FrmCustomer extends JInternalFrame{
 		JBModify.addActionListener(JBActionListener);
 		JBModify.setActionCommand("modify");
 		JPContainer.add(JBModify);
-
 		
 		JBSearch.setBounds(212,382,99,25);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -94,7 +88,6 @@ public class FrmCustomer extends JInternalFrame{
 		JBSearch.addActionListener(JBActionListener);
 		JBSearch.setActionCommand("search");
 		JPContainer.add(JBSearch);
-
 		
 		JBPrint.setBounds(312,382,99,25);
 		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -102,7 +95,6 @@ public class FrmCustomer extends JInternalFrame{
 		JBPrint.addActionListener(JBActionListener);
 		JBPrint.setActionCommand("print");
 		JPContainer.add(JBPrint);
-
 		
 		JBDelete.setBounds(413,382,105,25);
 		JBDelete.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -110,7 +102,13 @@ public class FrmCustomer extends JInternalFrame{
 		JBDelete.addActionListener(JBActionListener);
 		JBDelete.setActionCommand("delete");
 		JPContainer.add(JBDelete);
-
+		
+		JBBuyRecord.setBounds(513,382,110,25);
+		JBBuyRecord.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JBBuyRecord.setMnemonic(KeyEvent.VK_D);
+		JBBuyRecord.addActionListener(JBActionListener);
+		JBBuyRecord.setActionCommand("buy");
+		JPContainer.add(JBBuyRecord);
 		
 		JBReload.setBounds(627,382,105,25);
 		JBReload.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -123,7 +121,6 @@ public class FrmCustomer extends JInternalFrame{
 		setSize(747,450);
 		setLocation((screen.width - 747)/2,((screen.height-450)/2)-45);
 		setFrameIcon(new ImageIcon("images/customer.png"));
-		//End set the form properties
 
 	}
 	ActionListener JBActionListener = new ActionListener(){
@@ -139,7 +136,7 @@ public class FrmCustomer extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_customer(false,JFParentFrame,cnCus,"SELECT * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_customer(false,JFParentFrame,cnCus,"SELECT * FROM imscustomer WHERE cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								JDEdit.show();
 
 							}
@@ -162,7 +159,7 @@ public class FrmCustomer extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM imscustomer WHERE Cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
@@ -174,7 +171,7 @@ public class FrmCustomer extends JInternalFrame{
 
 									RecordToPrint += "______________________________________________________________________\n\n\n";
 
-									RecordToPrint += " Customer ID: " + rsPrint.getString("CustomerID") + "                 Company Name: " + rsPrint.getString("CompanyName") + "\n";
+									RecordToPrint += " Customer ID: " + rsPrint.getString("Cid") + "                 Company Name: " + rsPrint.getString("CompanyName") + "\n";
 									RecordToPrint += "______________________________________________________________________\n";
 									RecordToPrint += "______________________________________________________________________\n\n";
 									RecordToPrint += " Contact Person: " + rsPrint.getString("ContactName") + "\n";
@@ -217,7 +214,7 @@ public class FrmCustomer extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stCus.execute("DELETE FROM tblCustomer WHERE CustomerIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								stCus.execute("DELETE FROM imscustomer WHERE Cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -231,7 +228,26 @@ public class FrmCustomer extends JInternalFrame{
 					}
 				}
 			
-			}else if(srcObj=="reload"){
+			}else if(srcObj=="buy"){
+				if(total != 0){
+					try{
+							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
+								JDialog JDEdit = new frm_buy(false,JFParentFrame,cnCus,"SELECT * FROM imscustomer WHERE cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDEdit.show();
+
+							}
+					}catch(Exception sqlE){
+						if(sqlE.getMessage() != null){
+							System.out.println(sqlE.getMessage());
+						}else{
+							JOptionPane.showMessageDialog(null,"Please select a record in the list.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
+						}
+
+					}
+				}
+			
+			}
+			else if(srcObj=="reload"){
 				reloadRecord();
 			
 			}
@@ -240,7 +256,7 @@ public class FrmCustomer extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Index","Customer ID","Customer Name","Contact Name"
+			"Customer ID","Customer Name","Contact","Date"
 		};
 		try{
 			rsCus = stCus.executeQuery(strSQL);
@@ -254,10 +270,10 @@ public class FrmCustomer extends JInternalFrame{
 			if(total > 0){
 				Content = new String[total][4];
 				while(rsCus.next()){
-					Content[rowNum][0] = "" + rsCus.getString("CustomerIndex");
-					Content[rowNum][1] = "" + rsCus.getString("CustomerID");
-					Content[rowNum][2] = "" + rsCus.getString("CompanyName");
-					Content[rowNum][3] = "" + rsCus.getString("ContactName");
+					Content[rowNum][0] = "" + rsCus.getString("cid");
+					Content[rowNum][1] = "" + rsCus.getString("cname");
+					Content[rowNum][2] = "" + rsCus.getString("phone");
+					Content[rowNum][3] = "" + rsCus.getString("datetime");
 					rowNum++;
 				}
 			}else{

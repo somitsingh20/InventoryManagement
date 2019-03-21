@@ -1,11 +1,24 @@
 package com.inventory;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
-public class FrmSearchCustomer extends JDialog{
-	
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class FrmSearchAddProduct extends JDialog {
+
 	JButton JBSearch = new JButton("Search",new ImageIcon("images/search.png"));
 	JButton JBCancel = new JButton("Cancel",new ImageIcon("images/cancel.png"));
 
@@ -22,22 +35,19 @@ public class FrmSearchCustomer extends JDialog{
 
 	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public FrmSearchCustomer(JFrame OwnerForm){
+	public FrmSearchAddProduct(JFrame OwnerForm){
 		super(OwnerForm,true);
 	    setTitle("Search Customer");
 
-		
-		String StrListItem[]={"CName","Phone"};
+		String StrListItem[]={"productname"};
 		JCSearchIn = new JComboBox(StrListItem);
 		StrListItem = null;
 
 		JPDialogContainer.setLayout(null);
 
-		
 		JLPic1.setBounds(5,5,32,32);
 		JPDialogContainer.add(JLPic1);
 
-		
 		JLBanner.setBounds(55,5,280,48);
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPDialogContainer.add(JLBanner);
@@ -51,7 +61,6 @@ public class FrmSearchCustomer extends JDialog{
 		JPDialogContainer.add(JLSearchFor);
 		JPDialogContainer.add(JTFSearchFor);
 
-		
 		JLSearchIn.setBounds(5,72,105,20);
 		JLSearchIn.setFont(new Font("Dialog",Font.PLAIN,12));
 
@@ -68,7 +77,6 @@ public class FrmSearchCustomer extends JDialog{
 		JBSearch.setActionCommand("search");
 		JPDialogContainer.add(JBSearch);
 
-		
 		JBCancel.setBounds(237,100,99,25);
 		JBCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBCancel.setMnemonic(KeyEvent.VK_C);
@@ -90,8 +98,7 @@ public class FrmSearchCustomer extends JDialog{
 					JOptionPane.showMessageDialog(null,"Please enter a text to search.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
 					JTFSearchFor.requestFocus();
 				}else{
-					FrmCustomer.reloadRecord("SELECT * FROM imscustomer WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
-					//FrmSales.setCustomer("Select cname from imscustomer where " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
+					FrmSales.reloadRecord("SELECT productname,quantity,sprice FROM imsproducts WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%'");
 					dispose();
 				}
 
@@ -100,4 +107,5 @@ public class FrmSearchCustomer extends JDialog{
 			}
 		}
 	};
+
 }

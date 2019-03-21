@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class FrmSearchCustomer extends JDialog{
+public class FrmSearchCustomer1 extends JDialog{
 	
 	JButton JBSearch = new JButton("Search",new ImageIcon("images/search.png"));
 	JButton JBCancel = new JButton("Cancel",new ImageIcon("images/cancel.png"));
@@ -22,7 +22,7 @@ public class FrmSearchCustomer extends JDialog{
 
 	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public FrmSearchCustomer(JFrame OwnerForm){
+	public FrmSearchCustomer1(JFrame OwnerForm){
 		super(OwnerForm,true);
 	    setTitle("Search Customer");
 
@@ -90,8 +90,8 @@ public class FrmSearchCustomer extends JDialog{
 					JOptionPane.showMessageDialog(null,"Please enter a text to search.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
 					JTFSearchFor.requestFocus();
 				}else{
-					FrmCustomer.reloadRecord("SELECT * FROM imscustomer WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
-					//FrmSales.setCustomer("Select cname from imscustomer where " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
+					//FrmCustomer.reloadRecord("SELECT * FROM imscustomer WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
+					FrmSales.setCustomer("Select cname,phone from imscustomer where " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%'");
 					dispose();
 				}
 

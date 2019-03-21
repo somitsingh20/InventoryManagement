@@ -53,7 +53,7 @@ public class FrmSupplier extends JInternalFrame{
 
 		cnSup = srcCon;
 		stSup = cnSup.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblSupplier";
+		strSQL = "SELECT * FROM imssupplier";
 
 		
 		JLPicture1.setBounds(5,5,48,48);
@@ -139,7 +139,7 @@ public class FrmSupplier extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTSupTable.getValueAt(JTSupTable.getSelectedRow(),JTSupTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_supplier(false,JFParentFrame,cnSup,"SELECT * FROM tblSupplier WHERE SupplierId = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),1));
+								JDialog JDEdit = new frm_add_edit_supplier(false,JFParentFrame,cnSup,"SELECT * FROM imssupplier WHERE sid = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
 								JDEdit.show();
 
 							}
@@ -162,7 +162,7 @@ public class FrmSupplier extends JInternalFrame{
 					try{
 						if(JTSupTable.getValueAt(JTSupTable.getSelectedRow(),JTSupTable.getSelectedColumn()) != null){
 							clsPublicMethods PrintingClass = new clsPublicMethods();
-							ResultSet rsPrint = stSup.executeQuery("SELECT * FROM tblSupplier WHERE SupplierID = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),1));
+							ResultSet rsPrint = stSup.executeQuery("SELECT * FROM imssupplier WHERE sid = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
 							if(rsPrint.next()==true){
 								String RecordToPrint = "";
 								java.util.Date CurrentDate = new java.util.Date();
@@ -221,7 +221,7 @@ public class FrmSupplier extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stSup.execute("DELETE FROM tblSupplier WHERE SupplierIndex = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
+								stSup.execute("DELETE FROM imssupplier WHERE sid = " + JTSupTable.getValueAt(JTSupTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -244,7 +244,7 @@ public class FrmSupplier extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Index","Supplier ID","Company Name","Contact Name"
+			"Supplier ID","Supplier Name","Location","Phone Number"
 		};
 		
 		try{
@@ -258,10 +258,10 @@ public class FrmSupplier extends JInternalFrame{
 			if(total > 0){
 				Content = new String[total][4];
 				while(rsSup.next()){
-					Content[rowNum][0] = "" + rsSup.getString("SupplierIndex");
-					Content[rowNum][1] = "" + rsSup.getString("SupplierID");
-					Content[rowNum][2] = "" + rsSup.getString("CompanyName");
-					Content[rowNum][3] = "" + rsSup.getString("ContactName");
+					Content[rowNum][0] = "" + rsSup.getString("sid");
+					Content[rowNum][1] = "" + rsSup.getString("supplier");
+					Content[rowNum][2] = "" + rsSup.getString("location");
+					Content[rowNum][3] = "" + rsSup.getString("pnumber");
 					rowNum++;
 				}
 			}else{

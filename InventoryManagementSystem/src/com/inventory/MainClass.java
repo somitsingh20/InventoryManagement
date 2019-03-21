@@ -61,6 +61,7 @@ public class MainClass extends JFrame implements WindowListener {
 		FrmWarehouse FormWarehouse;
 		FrmProduct   FormProduct;
 		FrmInvoice   FormInvoice;
+		FrmSales 	 FormSales;
 		
 		FrmSplash FormSplash = new FrmSplash();
 		
@@ -322,9 +323,6 @@ public class MainClass extends JFrame implements WindowListener {
 					ItmExpense.setBackground(new Color(255,255,255));
 
 					recordsMenu.add(ItmExpense);
-					
-					
-					
 			
 			JMenu processMenu = new JMenu("Process");
 			processMenu.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -435,7 +433,7 @@ public class MainClass extends JFrame implements WindowListener {
 			NewJToolBar.add(CreateJToolbarButton("Stock Adjustment Record","images/adjustment.png","toolStockAdj"));
 			NewJToolBar.addSeparator();
 			NewJToolBar.add(CreateJToolbarButton("Invoices Record","images/invoice.png","toolInv"));
-			NewJToolBar.add(CreateJToolbarButton("Purchase Orders Record","images/purchaseorder.png","toolPur"));
+			NewJToolBar.add(CreateJToolbarButton("New Sale Order","images/purchaseorder.png","toolSale"));
 			NewJToolBar.add(CreateJToolbarButton("Purchase Receipt Record","images/recieve.png","toolRecieve"));
 			NewJToolBar.add(CreateJToolbarButton("Expenses Record","images/expense.png","toolExpense"));
 			NewJToolBar.addSeparator();
@@ -535,9 +533,18 @@ public class MainClass extends JFrame implements WindowListener {
 				else if(srcObject=="toolInv"){
 					try {
 						loadInvoiceForm();
-					} catch (SQLException e1) {
+					}catch (SQLException e1) {
 						e1.printStackTrace();
 					}
+				
+				}
+				else if(srcObject=="toolSale"){
+					try {
+						loadNewSaleForm();
+					}catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				
 				}
 			}
 		};
@@ -560,6 +567,30 @@ public class MainClass extends JFrame implements WindowListener {
 
 		}
 		
+		protected void loadNewSaleForm() throws SQLException {
+			boolean AlreadyLoaded = isLoaded("New Sale");
+			if(AlreadyLoaded==false){
+				FormSales = new FrmSales(con,this);
+				desk.add(FormSales);
+				
+				FormSales.setVisible(true);
+				FormSales.show();
+				try{
+					FormSales.setIcon(false);
+					FormSales.setSelected(true);
+				}catch(PropertyVetoException e){
+				}
+				
+			}else{
+				try{
+					FormSales.setIcon(false);
+					FormSales.setSelected(true);
+				}catch(PropertyVetoException e){
+				}
+			}
+
+		}
+
 		protected void loadProductForm() throws SQLException{
 			
 			boolean AlreadyLoaded = isLoaded("Product List");

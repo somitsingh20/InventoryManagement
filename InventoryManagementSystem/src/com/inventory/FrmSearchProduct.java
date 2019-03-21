@@ -27,7 +27,7 @@ public class FrmSearchProduct extends JDialog{
 		super(OwnerForm,true);
 	    setTitle("Search Customer");
 
-		String StrListItem[]={"Item No","Description"};
+		String StrListItem[]={"ProductID","ProductName"};
 		JCSearchIn = new JComboBox(StrListItem);
 		StrListItem = null;
 
@@ -86,7 +86,8 @@ public class FrmSearchProduct extends JDialog{
 					JOptionPane.showMessageDialog(null,"Please enter a text to search.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
 					JTFSearchFor.requestFocus();
 				}else{
-					FrmProduct.reloadRecord("SELECT * FROM tblItem WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY Description ASC");
+					FrmProduct.reloadRecord("SELECT * FROM imsproducts WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY productname ASC");
+					
 					dispose();
 				}
 

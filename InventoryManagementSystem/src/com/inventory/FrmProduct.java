@@ -54,7 +54,7 @@ public class FrmProduct extends JInternalFrame{
 
 		cnCus = srcCN;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblItems";
+		strSQL = "SELECT * FROM imsproducts";
 
 	
 		JLPicture1.setBounds(5,5,48,48);
@@ -139,7 +139,7 @@ public class FrmProduct extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_add_edit_product(false,JFParentFrame,cnCus,"SELECT * FROM imsproducts WHERE pid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								JDEdit.show();
 
 							}
@@ -161,7 +161,7 @@ public class FrmProduct extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM imsproducts WHERE pid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								if(rsPrint.next()==true){
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
@@ -173,15 +173,13 @@ public class FrmProduct extends JInternalFrame{
 
 									RecordToPrint += "___________________________________________________________________________________\n\n\n";
 
-									RecordToPrint += " Product ID: " + rsPrint.getString("ItemNo") + "                 Description: " + rsPrint.getString("description") + "\n";
+									RecordToPrint += " Product ID: " + rsPrint.getString("pid") + "                 Description: " + rsPrint.getString("description") + "\n";
 									RecordToPrint += "___________________________________________________________________________________\n";
 									RecordToPrint += "___________________________________________________________________________________\n\n";
 
 									RecordToPrint += " Quantity: " + rsPrint.getString("Quantity") + "\n";
 									RecordToPrint += " Unit Cost: " + rsPrint.getString("UnitCost") + "\n";
-									RecordToPrint += " Sales Price: " + rsPrint.getString("salesprice") + "\n";
-									RecordToPrint += " Quantity On Hand: " + rsPrint.getString("Qtyonhand") + "\n";
-									RecordToPrint += " Location: " + rsPrint.getString("location") + "\n";
+									RecordToPrint += " Sales Price: " + rsPrint.getString("sprice") + "\n";
 
 									RecordToPrint += "___________________________________________________________________________________\n\n";
 
@@ -214,7 +212,7 @@ public class FrmProduct extends JInternalFrame{
 							String ObjButtons[] = {"Yes","No"};
 							int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to delete the selected record?","Delete Record",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,ObjButtons,ObjButtons[1]);
 							if(PromptResult==0){
-								stCus.execute("DELETE FROM tblItems WHERE ItemIndex = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								stCus.execute("DELETE FROM imsproducts WHERE pid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
 								reloadRecord();
 								JOptionPane.showMessageDialog(null,"Record has been successfully deleted.","Comfirm Delete",JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -222,7 +220,7 @@ public class FrmProduct extends JInternalFrame{
 					}catch(Exception sqlE){
 						if(sqlE.getMessage()!=null){
 							sqlE.printStackTrace();
-							JOptionPane.showMessageDialog(null,"You cannot delete this customer because it already have an invoice transaction.\nIn order to delete this customer, delete its invoice first.","Comfirm Delete",JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null,"You cannot delete this product because it already have an invoice transaction.\nIn order to delete this customer, delete its invoice first.","Comfirm Delete",JOptionPane.WARNING_MESSAGE);
 						}else{
 							JOptionPane.showMessageDialog(null,"Please select a record in the list to deleted.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -236,7 +234,7 @@ public class FrmProduct extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Index","Item No","Description","Sales Price","On Hand" ,"Location"
+			"Product ID","Product Name","Quantity","Unit Cost" ,"Sales Price"
 		};
 		try{
 			rsCus = stCus.executeQuery(strSQL);
@@ -248,24 +246,22 @@ public class FrmProduct extends JInternalFrame{
 			
 			rsCus.beforeFirst();
 			if(total > 0){
-				Content = new String[total][6];
+				Content = new String[total][5];
 				while(rsCus.next()){
-					Content[rowNum][0] = "" + rsCus.getString("ItemIndex");
-					Content[rowNum][1] = "" + rsCus.getString("ItemNo");
-					Content[rowNum][2] = "" + rsCus.getString("Description");
-					Content[rowNum][3] = "" + rsCus.getString("SalesPrice");
-					Content[rowNum][4] = "" + rsCus.getString("QtyOnHand");
-					Content[rowNum][5] = "" + rsCus.getString("Location");
+					Content[rowNum][0] = "" + rsCus.getString("pid");
+					Content[rowNum][1] = "" + rsCus.getString("productname");
+					Content[rowNum][2] = "" + rsCus.getString("quantity");
+					Content[rowNum][3] = "" + rsCus.getString("unitcost");
+					Content[rowNum][4] = "" + rsCus.getString("sprice");
 					rowNum++;
 				}
 			}else{
-				Content = new String[0][6];
+				Content = new String[0][5];
 				Content[0][0] = " ";
 				Content[0][1] = " ";
 				Content[0][2] = " ";
 				Content[0][3] = " ";
 				Content[0][4] = " ";
-				Content[0][5] = " ";
 			}
 		}catch(Exception eE){
 		}
@@ -286,7 +282,7 @@ public class FrmProduct extends JInternalFrame{
 		NewTable.getColumnModel().getColumn(2).setPreferredWidth(300);
 		NewTable.getColumnModel().getColumn(3).setPreferredWidth(100);
 		NewTable.getColumnModel().getColumn(4).setPreferredWidth(50);
-		NewTable.getColumnModel().getColumn(5).setPreferredWidth(50);
+		//NewTable.getColumnModel().getColumn(5).setPreferredWidth(50);
 		
 		ColumnHeaderName=null;
 		Content=null;

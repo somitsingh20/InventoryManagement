@@ -1,10 +1,5 @@
 package com.inventory;
 
-import java.sql.Connection;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-
 import javax.swing.*;
 import java.sql.*;
 import java.awt.*;
@@ -19,25 +14,25 @@ public class frm_add_edit_product extends JDialog{
 	JLabel JLPic1 = new JLabel();
 	JLabel JLBanner = new JLabel("Please fill-up all the required fields.");
 
-	JLabel JLItemNo = new JLabel("Item No:");
-	JLabel JLDescription = new JLabel("Description:");
+	JLabel JLPid = new JLabel("Product ID");
+	JLabel JLProductName = new JLabel("Product Name");
 	JLabel JLQuantity = new JLabel("Quantity:");
 	JLabel JLUnitCost = new JLabel("Unit Cost:");
 	JLabel JLsalesprice = new JLabel("Sales Price:");
-	JLabel JLQtyonhand = new JLabel("Quantity On Hand:");
-	JLabel JLlocation = new JLabel("Location:");
-	JLabel JLcategoryindex = new JLabel("Category Index:");
-	JLabel JLsupplierindex = new JLabel("Supplier Index:");
+	//JLabel JLQtyonhand = new JLabel("Quantity On Hand:");
+	//JLabel JLlocation = new JLabel("Location:");
+	//JLabel JLcategoryindex = new JLabel("Category Index:");
+	JLabel JLsuppliername = new JLabel("Supplier Name:");
 
-	JTextField JTFItemNo = new JTextField();
-	JTextField JTFDescription = new JTextField();
+	JTextField JTFPid = new JTextField();
+	JTextField JTFProductName = new JTextField();
 	JTextField JTFQuantity = new JTextField();
 	JTextField JTFUnitCost = new JTextField();
 	JTextField JTFsalesprice = new JTextField();
-	JTextField JTFQtyonhand = new JTextField();
-	JTextField JTFlocation = new JTextField();
-	JComboBox JCBCategoryIndex;
-	JComboBox JCBSupplierIndex;
+	//JTextField JTFQtyonhand = new JTextField();
+	//JTextField JTFlocation = new JTextField();
+	//JComboBox JCBCategoryIndex;
+	JComboBox JCBSupplierID;
 
 	Connection cnAEP;
 	Statement stAEP;
@@ -57,8 +52,7 @@ public class frm_add_edit_product extends JDialog{
 
 		}
 		
-		JCBSupplierIndex = clsPublicMethods.fillCombo("SELECT * FROM tblSupplier",cnAEP,"supplierindex");
-		JCBCategoryIndex = clsPublicMethods.fillCombo("SELECT * FROM tblCategory",cnAEP,"categoryindex");
+		JCBSupplierID = clsPublicMethods.fillCombo("SELECT * FROM imssupplier", cnAEP, "sid");
 		
 		if(ADD_STATE==true){
 			JLPic1.setIcon(new ImageIcon("images/bNew.png"));
@@ -71,15 +65,15 @@ public class frm_add_edit_product extends JDialog{
 			try{
 				rsAEP = stAEP.executeQuery(srcSQL);
 				rsAEP.next();
-					JTFItemNo.setText("" + rsAEP.getString("itemno"));
-					JTFDescription.setText("" + rsAEP.getString("Description"));
+					JTFPid.setText("" + rsAEP.getString("pid"));
+					JTFProductName.setText("" + rsAEP.getString("productname"));
 					JTFQuantity.setText("" + rsAEP.getString("Quantity"));
 					JTFUnitCost.setText("" + rsAEP.getString("Unitcost"));
-					JTFsalesprice.setText("" + rsAEP.getString("salesprice"));
-					JTFQtyonhand.setText("" + rsAEP.getString("qtyonhand"));
-					JTFlocation.setText("" + rsAEP.getString("location"));
-					JCBCategoryIndex.setSelectedItem("" + rsAEP.getString("categoryindex"));
-					JCBSupplierIndex.setSelectedItem("" + rsAEP.getString("SupplierIndex"));
+					JTFsalesprice.setText("" + rsAEP.getString("sprice"));
+					//JTFQtyonhand.setText("" + rsAEP.getString("qtyonhand"));
+					//JTFlocation.setText("" + rsAEP.getString("location"));
+					//JCBCategoryIndex.setSelectedItem("" + rsAEP.getString("categoryindex"));
+					JCBSupplierID.setSelectedItem("" + rsAEP.getString("sid"));
 			}catch(SQLException sqlEx){
 				System.out.println(sqlEx.getMessage());
 			}
@@ -96,24 +90,24 @@ public class frm_add_edit_product extends JDialog{
 		JPContainer.add(JLBanner);
 
 		
-		JLItemNo.setBounds(5,50,105,20);
-		JLItemNo.setFont(new Font("Dialog",Font.PLAIN,12));
+		/*JLPid.setBounds(5,50,105,20);
+		JLPid.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFItemNo.setBounds(110,50,200,20);
-		JTFItemNo.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFPid.setBounds(110,50,200,20);
+		JTFPid.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFPid.setEditable(false);
 
-		JPContainer.add(JLItemNo);
-		JPContainer.add(JTFItemNo);
+		JPContainer.add(JLPid);
+		JPContainer.add(JTFPid);*/
 
-		
-		JLDescription.setBounds(5,72,105,20);
-		JLDescription.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLProductName.setBounds(5,72,105,20);
+		JLProductName.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JTFDescription.setBounds(110,72,200,20);
-		JTFDescription.setFont(new Font("Dialog",Font.PLAIN,12));
+		JTFProductName.setBounds(110,72,200,20);
+		JTFProductName.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLDescription);
-		JPContainer.add(JTFDescription);
+		JPContainer.add(JLProductName);
+		JPContainer.add(JTFProductName);
 
 		
 		JLQuantity.setBounds(5,94,105,20);
@@ -146,7 +140,7 @@ public class frm_add_edit_product extends JDialog{
 		JPContainer.add(JTFsalesprice);
 
 		
-		JLQtyonhand.setBounds(5,160,105,20);
+		/*JLQtyonhand.setBounds(5,160,105,20);
 		JLQtyonhand.setFont(new Font("Dialog",Font.PLAIN,12));
 
 		JTFQtyonhand.setBounds(110,160,200,20);
@@ -173,17 +167,17 @@ public class frm_add_edit_product extends JDialog{
 		JCBCategoryIndex.setFont(new Font("Dialog",Font.PLAIN,12));
 
 		JPContainer.add(JLcategoryindex);
-		JPContainer.add(JCBCategoryIndex);
+		JPContainer.add(JCBCategoryIndex);*/
 
 		
-		JLsupplierindex.setBounds(5,226,105,20);
-		JLsupplierindex.setFont(new Font("Dialog",Font.PLAIN,12));
+		JLsuppliername.setBounds(5,226,105,20);
+		JLsuppliername.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JCBSupplierIndex.setBounds(110,226,200,20);
-		JCBSupplierIndex.setFont(new Font("Dialog",Font.PLAIN,12));
+		JCBSupplierID.setBounds(110,226,200,20);
+		JCBSupplierID.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JPContainer.add(JLsupplierindex);
-		JPContainer.add(JCBSupplierIndex);
+		JPContainer.add(JLsuppliername);
+		JPContainer.add(JCBSupplierID);
 		
 		JBUpdate.setBounds(5,292,105,25);
 		JBUpdate.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -212,24 +206,24 @@ public class frm_add_edit_product extends JDialog{
 		setLocation((screen.width - 325)/2,((screen.height-357)/2));
 	}
 	private boolean RequiredFieldEmpty(){
-		if(JTFItemNo.getText().equals("") || JTFDescription.getText().equals("") || JTFQuantity.getText().equals("")){
+		if(JTFProductName.getText().equals("") || JTFQuantity.getText().equals("")){
 			JOptionPane.showMessageDialog(null,"Some required fields is/are empty.\nPlease check it and try again.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
-			JTFItemNo.requestFocus();
+			JTFPid.requestFocus();
 			return true;
 		}else{
 			return false;
 		}
 	}
 	private void clearFields(){
-		JTFItemNo.setText("");
-		JTFDescription.setText("");
+		JTFPid.setText("");
+		JTFProductName.setText("");
 		JTFQuantity.setText("");
 		JTFUnitCost.setText("");
 		JTFsalesprice.setText("");
-		JTFQtyonhand.setText("");
-		JTFlocation.setText("");
-		JCBCategoryIndex.setSelectedIndex(0);
-		JCBSupplierIndex.setSelectedIndex(0);
+		//JTFQtyonhand.setText("");
+		//JTFlocation.setText("");
+		//JCBCategoryIndex.setSelectedIndex(0);
+		JCBSupplierID.setSelectedIndex(0);
 	}
 
 	ActionListener JBActionListener = new ActionListener(){
@@ -239,24 +233,21 @@ public class frm_add_edit_product extends JDialog{
 				if(RequiredFieldEmpty()==false){
 					if(ADDING_STATE == true){
 						try{
-							stAEP.executeUpdate("INSERT INTO tblItems(Itemno,description,quantity,unitcost,salesprice,qtyonhand,location,categoryindex,supplierindex) " +
+							stAEP.executeUpdate("INSERT INTO imsproducts(productname,quantity,unitcost,sprice,sid,datetime) " +
 		   							   	        "VALUES ('" +
-		   							   	        JTFItemNo.getText() + "', '" +
-		   							   	        JTFDescription.getText() + "', '" +
+		   							   	        JTFProductName.getText() + "', '" +
 		   							   	        JTFQuantity.getText() + "', '" +
 		   							   	        JTFUnitCost.getText() + "', '" +
 		   							   	        JTFsalesprice.getText() + "', '" +
-		   							   	        JTFQtyonhand.getText() + "', '" +
-		   							   	        JTFlocation.getText() + "','" +
-		   							   	        JCBCategoryIndex.getSelectedItem().toString() + "', '" +
-		   							   	        JCBSupplierIndex.getSelectedItem().toString() + "')");
+		   							   	        JCBSupplierID.getSelectedItem().toString() + "',sysdate)");
 		   					
+							stAEP.executeUpdate("commit");
 		   					int total =0;
-		   					total = clsPublicMethods.getMaxNum("SELECT * FROM tblitems ORDER BY itemindex ASC",cnAEP,"itemindex");
+		   					total = clsPublicMethods.getMaxNum("SELECT * FROM imsproducts ORDER BY pid ASC",cnAEP,"pid");
 		   					if(total != 0){
-		   						FrmProduct.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + total + " ORDER BY description ASC");
+		   						FrmProduct.reloadRecord("SELECT * FROM imsproducts WHERE pid = " + total + " ORDER BY pid ASC");
 		   					}else{
-		   						FrmProduct.reloadRecord("SELECT * FROM tblitems ORDER BY description ASC");
+		   						FrmProduct.reloadRecord("SELECT * FROM imsproducts ORDER BY pid ASC");
 		   					}
 		   					total =0;
 		   					
@@ -265,7 +256,7 @@ public class frm_add_edit_product extends JDialog{
 							int PromptResult = JOptionPane.showOptionDialog(null,"Do you want add another record?","Inventory Management System",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[0]);
 							if(PromptResult==0){
 								clearFields();
-								JTFItemNo.requestFocus(true);
+								JTFPid.requestFocus(true);
 							}else{
 								dispose();
 							}
@@ -275,19 +266,16 @@ public class frm_add_edit_product extends JDialog{
 					}else{
 						try{
 							String RowIndex;
-							RowIndex = rsAEP.getString("ItemIndex");
-							stAEP.executeUpdate("UPDATE tblitems SET itemno = '" +
-		   							   	        JTFItemNo.getText() + "', Description = '" +
-		   							   	        JTFDescription.getText() + "', Quantity = '" +
+							RowIndex = rsAEP.getString("pid");
+							stAEP.executeUpdate("UPDATE imsproducts SET pid = '" +
+		   							   	        JTFPid.getText() + "', productname = '" +
+		   							   	        JTFProductName.getText() + "', Quantity = '" +
 		   							   	        JTFQuantity.getText() + "', UnitCost = '" +
-		   							   	        JTFUnitCost.getText()  + "', salesprice = '" +
-		   							   	        JTFsalesprice.getText()  + "', Qtyonhand = '" +
-		   							   	        JTFQtyonhand.getText()   + "', location = '" +
-		   							   	        JTFlocation.getText()   + "', categoryindex = '" +
-		   							   	        JCBCategoryIndex.getSelectedItem().toString()   + "', supplierindex = '" +
-		   							   	        JCBSupplierIndex.getSelectedItem().toString()  +
-		   							   	        "' WHERE itemIndex = " + RowIndex);
-							FrmProduct.reloadRecord("SELECT * FROM tblitems WHERE itemindex = " + RowIndex + " ORDER BY description ASC");
+		   							   	        JTFUnitCost.getText()  + "', sprice = '" +
+		   							   	        JTFsalesprice.getText()  + "', sid = '" +
+		   							   	        JCBSupplierID.getSelectedItem().toString()  +
+		   							   	        "' WHERE pid = " + RowIndex);
+							FrmProduct.reloadRecord("SELECT * FROM imsproducts WHERE pid = " + RowIndex + " ORDER BY pid ASC");
 							JOptionPane.showMessageDialog(null,"Changes in the record have been successfully saved.","Inventory Management System",JOptionPane.INFORMATION_MESSAGE);
 							RowIndex="";
 							dispose();

@@ -54,7 +54,7 @@ public class FrmSalesRep extends JInternalFrame {
 
 		cnSlr = srcCon;
 		stSlr = cnSlr.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM tblSalesRep";
+		strSQL = "SELECT sum(totalprice) from gtotalview";
 
 		JLPicture1.setBounds(5, 5, 48, 48);
 		JPContainer.add(JLPicture1);
