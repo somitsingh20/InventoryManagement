@@ -23,24 +23,6 @@ public class frm_add_edit_customer extends JDialog
 	JTextField JTFPhone = new JTextField();
 	JTextField JTFDate = new JTextField();
 
-	// JLabel JLId = new JLabel("Customer ID:");
-	// JLabel JLContName = new JLabel("Contact Name:");
-	// JLabel JLContTitle = new JLabel("Contact Title:");
-	// JLabel JLAddr = new JLabel("Address:");
-	// JLabel JLCity = new JLabel("City/Town:");
-	// JLabel JLState = new JLabel("State/Province:");
-	// JLabel JLZipCode = new JLabel("Zip Code:");
-	// JLabel JLCountry = new JLabel("Country:");
-
-	// JTextField JTFId = new JTextField();
-	// JTextField JTFContName = new JTextField();
-	// JTextField JTFContTitle = new JTextField();
-	// JTextField JTFAddr = new JTextField();
-	// JTextField JTFCity = new JTextField();
-	// JTextField JTFState = new JTextField();
-	// JTextField JTFZipCode = new JTextField();
-	// JComboBox JCBCountry;
-
 	Connection cnAEC;
 	Statement stAEC;
 	ResultSet rsAEC;
@@ -278,7 +260,7 @@ public class frm_add_edit_customer extends JDialog
 							String RowIndex;
 							RowIndex = rsAEC.getString("cid");
 							stAEC.executeUpdate("UPDATE imsCustomer SET CName = '" + JTFCName.getText() + "', phone = '"
-									+ JTFPhone.getText() + "', datetime = '" + JTFDate.getText() + "' WHERE cid = "
+									+ JTFPhone.getText() + "' WHERE cid = "
 									+ RowIndex);
 							FrmCustomer.reloadRecord(
 									"SELECT * FROM imsCustomer WHERE cid = " + RowIndex + " ORDER BY CName ASC");
