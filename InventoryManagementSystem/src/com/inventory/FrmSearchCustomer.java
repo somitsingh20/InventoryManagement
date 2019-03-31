@@ -1,8 +1,18 @@
+/*Search customer (Inside Customer Records)*/
+
 package com.inventory;
 
 import javax.swing.*;
+
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class FrmSearchCustomer extends JDialog{
 	
@@ -10,7 +20,7 @@ public class FrmSearchCustomer extends JDialog{
 	JButton JBCancel = new JButton("Cancel",new ImageIcon("images/cancel.png"));
 
 	JLabel JLPic1 = new JLabel(new ImageIcon("images/bSearch.png"));
-	JLabel JLBanner = new JLabel("Enter text and select where to locate.");
+	JLabel JLBanner = new JLabel("Enter text to locate.");
 	JPanel JPDialogContainer = new JPanel();
 
 	JLabel JLSearchFor = new JLabel("Search For:");
@@ -18,48 +28,76 @@ public class FrmSearchCustomer extends JDialog{
 
 	JTextField JTFSearchFor = new JTextField();
 
-	JComboBox JCSearchIn;
+	JComboBox JCSearchCustomer;
+	
+	public static Connection cnSearch;
+	public static Statement stSearch;
+	public static ResultSet rsSearch;
+	AutoCompleteDecorator decorator;
+	String StrListItem[]={};
+	ArrayList<String> list = new ArrayList<>();
 
 	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public FrmSearchCustomer(JFrame OwnerForm){
+	public FrmSearchCustomer(JFrame OwnerForm, Connection srcCon){
 		super(OwnerForm,true);
 	    setTitle("Search Customer");
 
-		
-		String StrListItem[]={"CName","Phone"};
-		JCSearchIn = new JComboBox(StrListItem);
+	    cnSearch = srcCon;
+	    try {
+			stSearch = cnSearch.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		//Search customer by Lookup
+		String getCustomerList = "Select cname from imscustomer";
+		try {
+			rsSearch = srcCon.createStatement().executeQuery(getCustomerList);
+			while(rsSearch.next()){
+				list.add(rsSearch.getString("cname"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		list.add(0, "");
+	    Object[] objects = list.toArray();
+	    JCSearchCustomer = new JComboBox(objects);
+		AutoCompleteDecorator.decorate(JCSearchCustomer);
 		StrListItem = null;
-
+		
+		//End search
+		
+		
 		JPDialogContainer.setLayout(null);
 
-		
 		JLPic1.setBounds(5,5,32,32);
 		JPDialogContainer.add(JLPic1);
 
-		
 		JLBanner.setBounds(55,5,280,48);
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPDialogContainer.add(JLBanner);
 		
-		JLSearchFor.setBounds(5,50,105,20);
+		/*JLSearchFor.setBounds(5,50,105,20);
 		JLSearchFor.setFont(new Font("Dialog",Font.PLAIN,12));
 
 		JTFSearchFor.setBounds(110,50,225,20);
 		JTFSearchFor.setFont(new Font("Dialog",Font.PLAIN,12));
 
 		JPDialogContainer.add(JLSearchFor);
-		JPDialogContainer.add(JTFSearchFor);
+		JPDialogContainer.add(JTFSearchFor);*/
 
 		
 		JLSearchIn.setBounds(5,72,105,20);
 		JLSearchIn.setFont(new Font("Dialog",Font.PLAIN,12));
 
-		JCSearchIn.setBounds(110,72,225,20);
-		JCSearchIn.setFont(new Font("Dialog",Font.PLAIN,12));
+		JCSearchCustomer.setBounds(110,72,225,20);
+		JCSearchCustomer.setFont(new Font("Dialog",Font.PLAIN,12));
 
 		JPDialogContainer.add(JLSearchIn);
-		JPDialogContainer.add(JCSearchIn);
+		JPDialogContainer.add(JCSearchCustomer);
 		
 		JBSearch.setBounds(137,100,99,25);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -86,16 +124,11 @@ public class FrmSearchCustomer extends JDialog{
 		public void actionPerformed(ActionEvent e){
 			String srcObj = e.getActionCommand();
 			if(srcObj=="search"){
-				if(JTFSearchFor.getText().equals("")){
-					JOptionPane.showMessageDialog(null,"Please enter a text to search.","Inventory Management System",JOptionPane.WARNING_MESSAGE);
-					JTFSearchFor.requestFocus();
-				}else{
-					FrmCustomer.reloadRecord("SELECT * FROM imscustomer WHERE " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
+					FrmCustomer.reloadRecord("SELECT * FROM imscustomer WHERE cname ='" + JCSearchCustomer.getSelectedItem() + "'");
 					//FrmSales.setCustomer("Select cname from imscustomer where " + JCSearchIn.getSelectedItem().toString().replaceAll(" ", "") + " LIKE '%" + JTFSearchFor.getText() + "%' ORDER BY CName ASC");
 					dispose();
-				}
-
-			}else{
+			}
+			else{
 				dispose();
 			}
 		}
