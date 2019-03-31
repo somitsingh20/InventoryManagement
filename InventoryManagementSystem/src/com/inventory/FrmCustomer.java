@@ -250,7 +250,8 @@ public class FrmCustomer extends JInternalFrame{
 			
 			}
 			else if(srcObj=="reload"){
-				reloadRecord();
+				String reloadRecord = "Select * from imscustomer";
+				reloadRecord(reloadRecord);
 			
 			}
 		}
