@@ -124,7 +124,7 @@ public class FrmSearchCustomer1 extends JDialog{
 		public void actionPerformed(ActionEvent e){
 			String srcObj = e.getActionCommand();
 			if(srcObj=="search"){
-				FrmSales.setCustomer("Select cname,phone from imscustomer where UPPER(" + JCSearchCustomer.getSelectedItem().toString().replaceAll(" ", "") + ") LIKE UPPER('%" + JTFSearchFor.getText() + "%')");
+				FrmSales.setCustomer("Select cname,phone from imscustomer where UPPER(cname) LIKE UPPER('%" + JTFSearchFor.getText() + "%')");
 				dispose();
 			}else{
 				dispose();
