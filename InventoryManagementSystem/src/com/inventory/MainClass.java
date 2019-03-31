@@ -7,6 +7,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.Toolkit;
@@ -15,11 +16,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -40,7 +45,17 @@ import javax.swing.KeyStroke;
 public class MainClass extends JFrame implements WindowListener {
 	
 		JPanel panel;
-		JDesktopPane desk = new JDesktopPane();
+		JDesktopPane desk = new JDesktopPane(){
+			ImageIcon icon = new ImageIcon("images/business.jpg");
+			Image image = icon.getImage();
+
+			Image newimage = image.getScaledInstance(1400, 650, Image.SCALE_SMOOTH);
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(newimage, 0, 0, this);
+        }};
 		
 		JLabel StatusLabel = new JLabel("Inventory Management system",JLabel.CENTER);
 		JLabel BusinessTitleLabel = new JLabel();
@@ -57,7 +72,7 @@ public class MainClass extends JFrame implements WindowListener {
 		
 		FrmCustomer  FormCustomer;
 		FrmSupplier  FormSupplier;
-		FrmSalesRep  FormSalesRep;
+		FrmRevenueRecord  FormRevenueRecord;
 		FrmWarehouse FormWarehouse;
 		FrmProduct   FormProduct;
 		FrmInvoice   FormInvoice;
@@ -73,7 +88,7 @@ public class MainClass extends JFrame implements WindowListener {
 			
 			FormSplash.dispose();
 			
-			StatusLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+			StatusLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 			
 			StrBusinessTitle = "Business Title";
 			
@@ -83,6 +98,7 @@ public class MainClass extends JFrame implements WindowListener {
 			
 			addWindowListener(this);
 			
+			//Add image here
 			desk.setBackground(Color.gray);
 			desk.setBorder(BorderFactory.createEmptyBorder());
 			
@@ -125,7 +141,6 @@ public class MainClass extends JFrame implements WindowListener {
 		
 		private void loadSplashScreen() {
 			ThFormSplash.start();
-			
 		}
 
 		protected JMenuBar CreateJMenuBar() {
@@ -425,7 +440,7 @@ public class MainClass extends JFrame implements WindowListener {
 
 			NewJToolBar.add(CreateJToolbarButton("Customers Record","images/customer.png","toolCus"));
 			NewJToolBar.add(CreateJToolbarButton("Suppliers Record","images/supplier.png","toolSup"));
-			NewJToolBar.add(CreateJToolbarButton("SalesRep Record","images/SalesRep.png","toolSalesrep"));
+			NewJToolBar.add(CreateJToolbarButton("Revenue Record","images/SalesRep.png","toolSalesrep"));
 			NewJToolBar.add(CreateJToolbarButton("Warehouse Record","images/Warehouse.png","toolWareh"));
 			NewJToolBar.addSeparator();
 			NewJToolBar.add(CreateJToolbarButton("Products Record","images/product.png","toolProd"));
@@ -682,20 +697,20 @@ public class MainClass extends JFrame implements WindowListener {
 		protected void loadSalesRepForm() throws SQLException{
 			boolean AlreadyLoaded = isLoaded("SalesRep Records");
 			if(AlreadyLoaded==false){
-				FormSalesRep = new FrmSalesRep(con,this);
-				desk.add(FormSalesRep);
+				FormRevenueRecord = new FrmRevenueRecord(con,this);
+				desk.add(FormRevenueRecord);
 				
-				FormSalesRep.setVisible(true);
-				FormSalesRep.show();
+				FormRevenueRecord.setVisible(true);
+				FormRevenueRecord.show();
 				try{
-					FormSalesRep.setIcon(false);
-					FormSalesRep.setSelected(true);
+					FormRevenueRecord.setIcon(false);
+					FormRevenueRecord.setSelected(true);
 				}catch(PropertyVetoException e){
 				}
 			}else{
 				try{
-					FormSalesRep.setIcon(false);
-					FormSalesRep.setSelected(true);
+					FormRevenueRecord.setIcon(false);
+					FormRevenueRecord.setSelected(true);
 				}catch(PropertyVetoException e){
 				}
 			}

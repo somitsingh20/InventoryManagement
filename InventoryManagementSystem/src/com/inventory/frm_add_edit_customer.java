@@ -242,15 +242,10 @@ public class frm_add_edit_customer extends JDialog
 			if (srcObj == "update") {
 				if (RequiredFieldEmpty() == false) {
 					if (ADDING_STATE == true) {
-						int min =101;
-						int max =999;
-						Random r = new Random();
-						int generatedInvoiceNumber = r.nextInt((max - min) + 1) + min;
-						
 						try {
 
-							stAEC.executeUpdate("INSERT INTO imsCustomer(cname,phone,datetime,invoice_number) " + "VALUES ('"
-									+ JTFCName.getText() + "', '" + JTFPhone.getText() + "',sysdate ,'"+ generatedInvoiceNumber+"')");
+							stAEC.executeUpdate("INSERT INTO imsCustomer(cname,phone,datetime) " + "VALUES ('"
+									+ JTFCName.getText() + "', '" + JTFPhone.getText() + "',sysdate)");
 							stAEC.executeUpdate("commit");
 							int total = 0;
 							total = clsPublicMethods.getMaxNum("SELECT * FROM imsCustomer ORDER BY cid ASC", cnAEC,

@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.*;
 import java.text.*;
 
-public class FrmSalesRep extends JInternalFrame {
+public class FrmRevenueRecord extends JInternalFrame {
 
 	public static JScrollPane SlrTableJSP = new JScrollPane();
 
@@ -21,12 +21,12 @@ public class FrmSalesRep extends JInternalFrame {
 
 	JFrame JFParentFrame;
 
-	JButton JBAddNew = new JButton("Add New", new ImageIcon("images/new.png"));
+	/*JButton JBAddNew = new JButton("Add New", new ImageIcon("images/new.png"));
 	JButton JBModify = new JButton("Modify", new ImageIcon("images/modify.png"));
-	JButton JBSearch = new JButton("Search", new ImageIcon("images/search.png"));
 	JButton JBPrint = new JButton("Print", new ImageIcon("images/print.png"));
 	JButton JBDelete = new JButton("Delete", new ImageIcon("images/delete.png"));
-	JButton JBReload = new JButton("Reload", new ImageIcon("images/reload.png"));
+	JButton JBReload = new JButton("Reload", new ImageIcon("images/reload.png"));*/
+	JButton JBSearch = new JButton("Search By Date", new ImageIcon("images/search.png"));
 
 	Connection cnSlr;
 
@@ -44,9 +44,9 @@ public class FrmSalesRep extends JInternalFrame {
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-	public FrmSalesRep(Connection srcCon, JFrame getParentFrame) throws SQLException {
+	public FrmRevenueRecord(Connection srcCon, JFrame getParentFrame) throws SQLException {
 
-		super("Sales Representative Records", false, true, false, true);
+		super("Revenue Records", false, true, false, true);
 
 		JPContainer.setLayout(null);
 
@@ -54,7 +54,7 @@ public class FrmSalesRep extends JInternalFrame {
 
 		cnSlr = srcCon;
 		stSlr = cnSlr.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT sum(totalprice) from gtotalview";
+		strSQL = "SELECT * from imsrevenuerecord";
 
 		JLPicture1.setBounds(5, 5, 48, 48);
 		JPContainer.add(JLPicture1);
@@ -68,7 +68,7 @@ public class FrmSalesRep extends JInternalFrame {
 		SlrTableJSP.setBounds(5, 55, 727, 320);
 		JPContainer.add(SlrTableJSP);
 
-		JBAddNew.setBounds(5, 382, 105, 25);
+		/*JBAddNew.setBounds(5, 382, 105, 25);
 		JBAddNew.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBAddNew.setMnemonic(KeyEvent.VK_A);
 		JBAddNew.addActionListener(JBActionListener);
@@ -80,16 +80,16 @@ public class FrmSalesRep extends JInternalFrame {
 		JBModify.setMnemonic(KeyEvent.VK_M);
 		JBModify.addActionListener(JBActionListener);
 		JBModify.setActionCommand("modify");
-		JPContainer.add(JBModify);
+		JPContainer.add(JBModify);*/
 
-		JBSearch.setBounds(212, 382, 99, 25);
+		JBSearch.setBounds(212, 382, 150, 25);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBSearch.setMnemonic(KeyEvent.VK_S);
 		JBSearch.addActionListener(JBActionListener);
 		JBSearch.setActionCommand("search");
 		JPContainer.add(JBSearch);
 
-		JBPrint.setBounds(312, 382, 99, 25);
+		/*JBPrint.setBounds(312, 382, 99, 25);
 		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBPrint.setMnemonic(KeyEvent.VK_P);
 		JBPrint.addActionListener(JBActionListener);
@@ -108,7 +108,7 @@ public class FrmSalesRep extends JInternalFrame {
 		JBReload.setMnemonic(KeyEvent.VK_R);
 		JBReload.addActionListener(JBActionListener);
 		JBReload.setActionCommand("reload");
-		JPContainer.add(JBReload);
+		JPContainer.add(JBReload);*/
 
 		getContentPane().add(JPContainer);
 
@@ -122,7 +122,7 @@ public class FrmSalesRep extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			String srcObj = e.getActionCommand();
 
-			if (srcObj == "add") {
+			/*if (srcObj == "add") {
 				JDialog JDAdd = new frm_add_edit_salesrep(true, JFParentFrame, cnSlr, "");
 				JDAdd.show();
 
@@ -148,11 +148,11 @@ public class FrmSalesRep extends JInternalFrame {
 					}
 				}
 
-			} else if (srcObj == "search") {
-				JDialog JDSearchRec = new FrmSearchSalesRep(JFParentFrame);
+			}*/ if (srcObj == "search") {
+				JDialog JDSearchRec = new FrmRevenueByDate(JFParentFrame);
 				JDSearchRec.setVisible(true);
 
-			} else if (srcObj == "print") {
+			} /*else if (srcObj == "print") {
 				if (total != 0) {
 					try {
 						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
@@ -242,12 +242,12 @@ public class FrmSalesRep extends JInternalFrame {
 			} else if (srcObj == "reload") {
 				reloadRecord();
 
-			}
+			}*/
 		}
 	};
 
 	public static JTable CreateTable() {
-		String ColumnHeaderName[] = { "Index", "Sales Rep. ID", "Name" };
+		String ColumnHeaderName[] = { "Invoice Number", "Sales", "Date" };
 		try {
 			rsSlr = stSlr.executeQuery(strSQL);
 			total = 0;
@@ -261,9 +261,9 @@ public class FrmSalesRep extends JInternalFrame {
 			if (total != 0) {
 				Content = new String[total][3];
 				while (rsSlr.next()) {
-					Content[rowNum][0] = "" + rsSlr.getString("SalesRepIndex");
-					Content[rowNum][1] = "" + rsSlr.getString("SalesRepID");
-					Content[rowNum][2] = "" + rsSlr.getString("Name");
+					Content[rowNum][0] = "" + rsSlr.getString("invoice_number");
+					Content[rowNum][1] = "" + rsSlr.getString("sales");
+					Content[rowNum][2] = "" + rsSlr.getString("datetime");
 					rowNum++;
 				}
 			} else {

@@ -29,9 +29,6 @@ public class frm_add_edit_product extends JDialog{
 	JTextField JTFQuantity = new JTextField();
 	JTextField JTFUnitCost = new JTextField();
 	JTextField JTFsalesprice = new JTextField();
-	//JTextField JTFQtyonhand = new JTextField();
-	//JTextField JTFlocation = new JTextField();
-	//JComboBox JCBCategoryIndex;
 	JComboBox JCBSupplierID;
 
 	Connection cnAEP;

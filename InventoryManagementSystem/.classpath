@@ -3,5 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="E:/Somit/Spring_Hibernate/Jar Files/SpringHibernate Integration Jar-20180727T152822Z-001/SpringHibernate Integration Jar/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VIKAS/Downloads/jdatepicker-1.3.2.jar/jdatepicker-1.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VIKAS/Downloads/jar_files/swingx-all-1.6.5-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

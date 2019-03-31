@@ -25,7 +25,7 @@ public class FrmCustomer extends JInternalFrame{
 	JButton JBSearch = new JButton("Search",new ImageIcon("images/search.png"));
 	JButton JBPrint = new JButton("Print",new ImageIcon("images/print.png"));
 	JButton JBDelete = new JButton("Delete",new ImageIcon("images/delete.png"));
-	JButton JBBuyRecord = new JButton("SellRecord",new ImageIcon("images/new.png"));
+	JButton JBBuyRecord = new JButton("View",new ImageIcon("images/new.png"));
 	JButton JBReload = new JButton("Reload",new ImageIcon("images/reload.png"));
 
 	Connection cnCus;
@@ -107,7 +107,7 @@ public class FrmCustomer extends JInternalFrame{
 		JBBuyRecord.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBBuyRecord.setMnemonic(KeyEvent.VK_D);
 		JBBuyRecord.addActionListener(JBActionListener);
-		JBBuyRecord.setActionCommand("buy");
+		JBBuyRecord.setActionCommand("view");
 		JPContainer.add(JBBuyRecord);
 		
 		JBReload.setBounds(627,382,105,25);
@@ -228,11 +228,13 @@ public class FrmCustomer extends JInternalFrame{
 					}
 				}
 			
-			}else if(srcObj=="buy"){
+			}else if(srcObj=="view"){
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_buy(false,JFParentFrame,cnCus,"SELECT * FROM imscustomer WHERE cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_view(false,JFParentFrame,cnCus,"SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
+								//System.out.println("Inside srcobj view");
+								frm_view.reloadRecord("SELECT * FROM imscustomer WHERE cid= '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
 								JDEdit.show();
 
 							}
@@ -256,7 +258,7 @@ public class FrmCustomer extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Customer ID","Customer Name","Contact","Date"
+			"Customer ID","Customer Name","Contact","Enrollment Date"
 		};
 		try{
 			rsCus = stCus.executeQuery(strSQL);
@@ -294,13 +296,9 @@ public class FrmCustomer extends JInternalFrame{
 		NewTable.setPreferredScrollableViewportSize(new Dimension(727, 320));
 		NewTable.setBackground(Color.white);
 
-		
-		NewTable.getColumnModel().getColumn(0).setMaxWidth(0);
-		NewTable.getColumnModel().getColumn(0).setMinWidth(0);
-		NewTable.getColumnModel().getColumn(0).setWidth(0);
-		NewTable.getColumnModel().getColumn(0).setPreferredWidth(0);
-		NewTable.getColumnModel().getColumn(1).setPreferredWidth(100);
-		NewTable.getColumnModel().getColumn(2).setPreferredWidth(300);
+		NewTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+		NewTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+		NewTable.getColumnModel().getColumn(2).setPreferredWidth(150);
 		NewTable.getColumnModel().getColumn(3).setPreferredWidth(200);
 		
 		ColumnHeaderName=null;
