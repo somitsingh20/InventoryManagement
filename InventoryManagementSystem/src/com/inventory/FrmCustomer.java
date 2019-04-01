@@ -39,6 +39,7 @@ public class FrmCustomer extends JInternalFrame{
 
 	public static int rowNum = 0;
 	public static int total = 0;
+	public static int gtotal=0;
 
 	boolean goEOF;
 
@@ -177,8 +178,13 @@ public class FrmCustomer extends JInternalFrame{
 									RecordToPrint += "----------------------------------------------------------------------\n\n";
 									while(rsPrint.next()){
 										RecordToPrint += ""+rsPrint.getString("dt")+"               "+rsPrint.getString("invoice_number")+"                 "+rsPrint.getString("to_char(purchasetime,'hh24:mi:ss')")+"             "+rsPrint.getString("total")+"\n\n";
+										gtotal += Integer.parseInt(rsPrint.getString("total"));
 									}
-									RecordToPrint += "                                                                    \n\n";
+									//System.out.println(gtotal);
+									
+									RecordToPrint += "---------------------------------------------------------------------\n\n";
+									RecordToPrint += "                                                  Grand Total:"+gtotal+" \n\n";
+									RecordToPrint += "---------------------------------------------------------------------\n\n";
 									RecordToPrint += "                                                                    \n\n";
 									RecordToPrint += "____________________________________________________________________\n\n";
 									PrintingClass.printRecord(RecordToPrint,JFParentFrame);
