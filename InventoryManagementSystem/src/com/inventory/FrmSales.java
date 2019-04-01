@@ -84,6 +84,7 @@ public class FrmSales extends JInternalFrame {
 	public static int rowNum = 0;
 	public static int total = 0;
 	public static int count = 0;
+	public static int cuscount = 0;
 	boolean goEOF;
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -133,9 +134,6 @@ public class FrmSales extends JInternalFrame {
 				JTFCustID.setText((custID+1)+"");
 			}
 		}
-		
-		
-		
 		
 		String getCustomer = "Select cname,phone from imscustomer";
 		rsSale2 = srcCon.createStatement().executeQuery(getCustomer);
@@ -238,13 +236,14 @@ public class FrmSales extends JInternalFrame {
 			if (srcObj == "searchCustomer") {
 				JDialog JDSearchCus = new FrmSearchCustomer1(JFParentFrame,cnSale);
 				JDSearchCus.show(true);
+				cuscount++;
 			}
 			//Search for product in DB
 			if (srcObj == "searchProduct") {
 				JDialog JDSearchRec = new FrmSearchAddProduct(JFParentFrame,cnSale);
 				JDSearchRec.show(true);
 			}
-			
+			//System.out.println(cuscount);
 			//Print invoice
 			if (srcObj == "print") {
 				int rCount = model.getRowCount();
@@ -334,11 +333,60 @@ public class FrmSales extends JInternalFrame {
 				//for()
 				strUpdateCustomerTable = "INSERT INTO imscustomer(cname,phone,datetime) values('"
 						+ JTFCustomerName.getText() + "','" + JTFPhone.getText() + "',sysdate)";
-				strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
-						+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
+				/*strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
+						+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";*/
 				
 				commitTable = "commit";
+				String getCustId = "Select MAX(cid) as custID from imscustomer";
 				try {
+					rsSale3 = cnSale.createStatement().executeQuery(getCustId);
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				System.out.println(cuscount);
+				if(cuscount>0){
+					try {
+						if(rsSale3.next()){
+							JTFCustID.setText(rsSale3.getString("custID"));
+						}
+						strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
+								+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
+						stSale.executeUpdate(strUpdateInvoiceTable);
+						stSale.executeUpdate(commitTable);
+						JOptionPane.showMessageDialog(null, "The record has been successfully saved.",
+								"Inventory Management System", JOptionPane.INFORMATION_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				else{
+					try {
+						if(rsSale3.next()){
+							String str = rsSale3.getString("custID");
+							if(str==null){
+								JTFCustID.setText(1+"");
+							}
+							else
+							{
+								int custID = Integer.parseInt(str);
+								JTFCustID.setText((custID+1)+"");
+							}
+						}
+						strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
+								+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
+						stSale.executeUpdate(strUpdateCustomerTable);
+						stSale.executeUpdate(strUpdateInvoiceTable);
+						stSale.executeUpdate(commitTable);
+						JOptionPane.showMessageDialog(null, "The record has been successfully saved.",
+								"Inventory Management System", JOptionPane.INFORMATION_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				/*try {
 					stSale.executeUpdate(strUpdateCustomerTable);
 					stSale.executeUpdate(strUpdateInvoiceTable);
 					stSale.executeUpdate(commitTable);
@@ -347,7 +395,7 @@ public class FrmSales extends JInternalFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}*/
 			}
 			if (srcObj == "total") {
 				int total = 0;
@@ -365,7 +413,7 @@ public class FrmSales extends JInternalFrame {
 
 		}
 	};
-
+	
 	public static JTable CreateTable() {
 		String[] values = new String[6];
 		try {
@@ -410,8 +458,6 @@ public class FrmSales extends JInternalFrame {
 		try {
 			rsSale = stSale.executeQuery(strSQL);
 			while (rsSale.next()) {
-				//System.out.println(rsSale.getString("cname"));
-				//System.out.println(rsSale.getString("phone"));
 				JTFCustomerName.setText(rsSale.getString("cname"));
 				JTFPhone.setText(rsSale.getString("phone"));
 			}
