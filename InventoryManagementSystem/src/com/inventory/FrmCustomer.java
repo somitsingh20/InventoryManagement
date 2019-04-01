@@ -151,7 +151,7 @@ public class FrmCustomer extends JInternalFrame{
 				}
 			
 			}else if(srcObj=="search"){
-				JDialog JDSearchRec = new FrmSearchCustomer(JFParentFrame);
+				JDialog JDSearchRec = new FrmSearchCustomer(JFParentFrame,cnCus);
 				JDSearchRec.show(true);
 			
 			}else if(srcObj=="print"){
@@ -159,8 +159,8 @@ public class FrmCustomer extends JInternalFrame{
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
 								clsPublicMethods PrintingClass = new clsPublicMethods();
-								ResultSet rsPrint = stCus.executeQuery("SELECT * FROM imscustomer WHERE Cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
-								if(rsPrint.next()==true){
+								ResultSet rsPrint = stCus.executeQuery("SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								
 									String RecordToPrint = "";
 									java.util.Date CurrentDate = new java.util.Date();
 									SimpleDateFormat SDFDateFormatter = new SimpleDateFormat("MMM. dd, yyyy",Locale.getDefault());
@@ -171,29 +171,22 @@ public class FrmCustomer extends JInternalFrame{
 
 									RecordToPrint += "______________________________________________________________________\n\n\n";
 
-									RecordToPrint += " Customer ID: " + rsPrint.getString("Cid") + "                 Company Name: " + rsPrint.getString("CompanyName") + "\n";
-									RecordToPrint += "______________________________________________________________________\n";
-									RecordToPrint += "______________________________________________________________________\n\n";
-									RecordToPrint += " Contact Person: " + rsPrint.getString("ContactName") + "\n";
-									RecordToPrint += " Contact Title: " + rsPrint.getString("ContactTitle") + "\n";
-									RecordToPrint += " Address: " + rsPrint.getString("Address") + "\n";
-									RecordToPrint += " City: " + rsPrint.getString("CityTown") + "\n";
-									RecordToPrint += " State/Province: " + rsPrint.getString("StateProvince") + "\n";
-									RecordToPrint += " Zip Code: " + rsPrint.getString("ZipCode") + "\n";
-									RecordToPrint += " Country: " + rsPrint.getString("Country") + "\n";
-									RecordToPrint += " Phone: " + rsPrint.getString("Phone") + "\n";
-									RecordToPrint += " Fax: " + rsPrint.getString("Fax") + "\n\n";
-
+									RecordToPrint += " Customer ID: " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0) + "         Customer Name: " + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),1) + "\n";
+									RecordToPrint += "----------------------------------------------------------------------\n";
+									RecordToPrint += "Purchase Date           Invoice_number        Purchase Time    Total  \n";
+									RecordToPrint += "----------------------------------------------------------------------\n\n";
+									while(rsPrint.next()){
+										RecordToPrint += ""+rsPrint.getString("dt")+"               "+rsPrint.getString("invoice_number")+"                 "+rsPrint.getString("to_char(purchasetime,'hh24:mi:ss')")+"             "+rsPrint.getString("total")+"\n\n";
+									}
+									RecordToPrint += "                                                                    \n\n";
+									RecordToPrint += "                                                                    \n\n";
 									RecordToPrint += "____________________________________________________________________\n\n";
 									PrintingClass.printRecord(RecordToPrint,JFParentFrame);
 
 									CurrentDate=null;
 									SDFDateFormatter=null;
 									RecordToPrint=null;
-
-								}else{
-									JOptionPane.showMessageDialog(null,"The selected record has been change since last modified. Please click the 'Reload' button and try again!","No record to print",JOptionPane.WARNING_MESSAGE);
-								}
+		
 								
 								rsPrint=null;
 
