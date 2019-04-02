@@ -43,10 +43,12 @@ public class frm_view extends JDialog {
 	JLabel JLCustomerName = new JLabel("Customer Name:");
 	JLabel JLPhoneNo = new JLabel("Phone No:");
 	JLabel JLCustomerID = new JLabel("Customer ID:");
+	JLabel JLInvoiceTotal = new JLabel("Total Sale:");
 	
 	static JTextField JTFCustomerName = new JTextField();
 	static JTextField JTFPhoneNo = new JTextField();
 	static JTextField JTFCustomerID = new JTextField();
+	static JTextField JTFInvoiceTotal = new JTextField();
 	
 	JButton JBViewInvoice = new JButton("JBViewInvoice");
 	
@@ -73,6 +75,7 @@ public class frm_view extends JDialog {
 			}
 		}
 		try {
+			int invoiceTotal = 0;
 			int count = 0;
 			int rows = model.getRowCount();
 			rsV = stV.executeQuery(srcSQL);
@@ -84,8 +87,10 @@ public class frm_view extends JDialog {
 				model.setValueAt(rsV.getString("to_char(purchasetime,'hh24:mi:ss')"), count, 2);
 				model.setValueAt(rsV.getString("total"), count, 3);
 				model.setRowCount(rows + 1);
+				total = total + Integer.parseInt(rsV.getString("total"));
 				count++;
 				}
+			JTFInvoiceTotal.setText(total+"");
 			}
 		catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -127,6 +132,15 @@ public class frm_view extends JDialog {
 		ViewTableJSP.setBounds(5,40,505,200);
 		JPContainer.add(ViewTableJSP);
 		
+		JLInvoiceTotal.setBounds(150, 250, 100, 25);
+		JLInvoiceTotal.setFont(new Font("Dialog", Font.BOLD, 14));
+		JTFInvoiceTotal.setBounds(270, 250, 50, 25);
+		JTFInvoiceTotal.setFont(new Font("Dialog", Font.BOLD, 14));
+		JTFInvoiceTotal.setEditable(false);
+		
+		JPContainer.add(JLInvoiceTotal);
+		JPContainer.add(JTFInvoiceTotal);
+		
 		JBViewInvoice.setBounds(190,370,150,25);
 		JBViewInvoice.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBViewInvoice.setMnemonic(KeyEvent.VK_S);
@@ -144,7 +158,7 @@ public class frm_view extends JDialog {
 	ActionListener JBActionListener = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
-			System.out.println("Inside view invoice action");
+			//System.out.println("Inside view invoice action");
 			String srcObj = e.getActionCommand();
 			if(srcObj=="viewInvoice"){
 					try{
