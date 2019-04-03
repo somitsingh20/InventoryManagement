@@ -50,7 +50,8 @@ public class frm_view extends JDialog {
 	static JTextField JTFCustomerID = new JTextField();
 	static JTextField JTFInvoiceTotal = new JTextField();
 	
-	JButton JBViewInvoice = new JButton("JBViewInvoice");
+	JButton JBViewInvoice = new JButton("View Invoice");
+	JButton JBPrint = new JButton("Print");
 	
 	Dimension screen = 	Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -59,10 +60,12 @@ public class frm_view extends JDialog {
 	JTable table = new JTable(model);
 	boolean ADDING_STATE;
 
-	public frm_view(boolean ADD_STATE, JFrame OwnerForm, Connection srcCon, String srcSQL) {
+	public frm_view(boolean ADD_STATE, JFrame getParentFrame, Connection srcCon, String srcSQL) {
 		
-		super(OwnerForm,true);
+		super(getParentFrame,true);
 		cnV = srcCon;
+		JFParentFrame = getParentFrame;
+		
 		ADDING_STATE = ADD_STATE;
 		try{
 			stV = cnV.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
@@ -141,12 +144,19 @@ public class frm_view extends JDialog {
 		JPContainer.add(JLInvoiceTotal);
 		JPContainer.add(JTFInvoiceTotal);
 		
-		JBViewInvoice.setBounds(190,370,150,25);
+		JBViewInvoice.setBounds(40,370,150,25);
 		JBViewInvoice.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBViewInvoice.setMnemonic(KeyEvent.VK_S);
 		JBViewInvoice.addActionListener(JBActionListener);
 		JBViewInvoice.setActionCommand("viewInvoice");
 		JPContainer.add(JBViewInvoice);
+		
+		JBPrint.setBounds(220,370,90,25);
+		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JBPrint.setMnemonic(KeyEvent.VK_S);
+		JBPrint.addActionListener(JBActionListener);
+		JBPrint.setActionCommand("print");
+		JPContainer.add(JBPrint);
 		
 		getContentPane().add(JPContainer);
 		setSize(530,450);
@@ -163,7 +173,7 @@ public class frm_view extends JDialog {
 			if(srcObj=="viewInvoice"){
 					try{
 	
-						System.out.println(table.getValueAt(table.getSelectedRow(), 1));	
+						//System.out.println(table.getValueAt(table.getSelectedRow(), 1));	
 						if(model.getValueAt(0, 1) != null){
 								JDialog JDView = new FrmViewInvoiceDetails(false,JFParentFrame,cnV,"SELECT * FROM imssalesrecord WHERE invoice_number = " + table.getValueAt(table.getSelectedRow(), 1));
 								JDView.show();
@@ -175,6 +185,59 @@ public class frm_view extends JDialog {
 							JOptionPane.showMessageDialog(null,"Please select a record in the list to modify.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
+			}
+			if(srcObj=="print"){
+				try{
+					int gtotal=0;
+					//System.out.println(table.getValueAt(table.getSelectedRow(), 1));	
+					if(model.getValueAt(0, 1) != null){
+						clsPublicMethods PrintingClass = new clsPublicMethods();
+						ResultSet rsPrint = stV.executeQuery("SELECT * FROM imssalesrecord WHERE invoice_number = " + table.getValueAt(table.getSelectedRow(), 1));
+						
+						String RecordToPrint = "";
+						
+						RecordToPrint += "                             I N V O I C E							 \n";
+
+						RecordToPrint += "___________________________________________________________________________\n\n\n";
+
+						RecordToPrint += " 	 CustomerName: " + JTFCustomerName.getText()
+								+ "                      Invoice No: " + table.getValueAt(table.getSelectedRow(), 1) + "\n";
+						RecordToPrint += "  Phone No: " + JTFPhoneNo.getText() + "                    Date: "
+								+ table.getValueAt(table.getSelectedRow(), 0) + "\n";
+						RecordToPrint += "___________________________________________________________________________\n";
+						RecordToPrint += " ProductName                                       Quantity    Price  \n ";
+						RecordToPrint += "___________________________________________________________________________\n\n";
+						
+						while(rsPrint.next()){
+						
+						RecordToPrint += " " + rsPrint.getString("productname") + "                                             "
+								+ rsPrint.getString("qty") + "      " + rsPrint.getString("cost") + "\n";
+							gtotal = gtotal + Integer.parseInt(rsPrint.getString("cost"));
+						}
+
+						RecordToPrint += "___________________________________________________________________________\n\n";
+						RecordToPrint += "                                              Grand Total : "
+								+ gtotal + "\n";
+						RecordToPrint += "____________________________________________________________________________\n\n";
+
+						PrintingClass.printRecord(RecordToPrint, JFParentFrame);
+
+						//CurrentDate = null;
+						//SDFDateFormatter = null;
+						//RecordToPrint = null;
+
+					
+					//rsPrint=null;
+
+						
+						}
+				}catch(Exception sqlE){
+					if(sqlE.getMessage() != null){
+						System.out.println(sqlE.getMessage());
+					}else{
+						JOptionPane.showMessageDialog(null,"Please select a record in the list to print.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
 			}
 			}
 		};
