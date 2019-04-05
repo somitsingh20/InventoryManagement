@@ -71,7 +71,6 @@ public class FrmViewInvoiceDetails extends JDialog {
 			e.printStackTrace();
 		}
 		
-		
 		JPContainer.setLayout(null);
 		
 		JLInvoiceNumber.setBounds(5, 5, 100, 20);
