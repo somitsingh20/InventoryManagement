@@ -1,3 +1,5 @@
+//new
+
 package com.inventory;
 
 import java.awt.Dimension;
@@ -80,12 +82,14 @@ public class FrmSales extends JInternalFrame {
 	public static String strUpdateProductTable;
 	public static String strUpdateCustomerTable;
 	public static String strUpdateInvoiceTable;
+	public static String strUpdateRevenueTable;
 	public static String commitTable;
 	public static int rowNum = 0;
 	public static int total = 0;
 	public static int count = 0;
 	public static int cuscount = 0;
 	boolean goEOF;
+	public static int cid;
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -243,7 +247,6 @@ public class FrmSales extends JInternalFrame {
 				JDialog JDSearchRec = new FrmSearchAddProduct(JFParentFrame,cnSale);
 				JDSearchRec.show(true);
 			}
-			//System.out.println(cuscount);
 			//Print invoice
 			if (srcObj == "print") {
 				int rCount = model.getRowCount();
@@ -311,6 +314,7 @@ public class FrmSales extends JInternalFrame {
 					numdata.add(model.getValueAt(count, 2).toString()); // available qty
 					numdata.add(model.getValueAt(count, 3).toString()); // buy quantity
 					numdata.add(model.getValueAt(count, 4).toString());
+					//Updating sales record
 					strSQL = "INSERT INTO imssalesrecord(cname,productname,qty,datetime,phone,invoice_number,cost) "
 							+ "VALUES ('" + JTFCustomerName.getText() + "','" + numdata.get(0) + "', '" + numdata.get(3)
 							+ "',sysdate,'" + JTFPhone.getText() + "','" + JTFInvoiceNumber.getText() + "','" + numdata.get(4) +"')";
@@ -318,6 +322,8 @@ public class FrmSales extends JInternalFrame {
 					quantity = Integer.parseInt(model.getValueAt(count, 2).toString())
 							- Integer.parseInt(model.getValueAt(count, 3).toString());
 					//System.out.println("Updated quantity =" + quantity);
+					
+					//Update product quantity
 					strUpdateProductTable = "UPDATE imsproducts SET quantity =" + quantity + " WHERE PRODUCTNAME ='"
 							+ model.getValueAt(count, 0).toString() + "'";
 					
@@ -330,7 +336,7 @@ public class FrmSales extends JInternalFrame {
 						e1.printStackTrace();
 					}
 				}
-				//for()
+				//Update customer record if new customer added
 				strUpdateCustomerTable = "INSERT INTO imscustomer(cname,phone,datetime) values('"
 						+ JTFCustomerName.getText() + "','" + JTFPhone.getText() + "',sysdate)";
 				/*strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
@@ -345,14 +351,13 @@ public class FrmSales extends JInternalFrame {
 					e2.printStackTrace();
 				}
 				System.out.println(cuscount);
-				if(cuscount>0){
+				if(cuscount>0){     //If customer exists
 					try {
-						if(rsSale3.next()){
-							JTFCustID.setText(rsSale3.getString("custID"));
-						}
+						strUpdateRevenueTable = "INSERT INTO imsrevenuerecord values('"+JTFInvoiceNumber.getText()+"','"+JTFGrandTotal.getText()+"',to_date(sysdate,'dd/mm/yy'))";
 						strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
-								+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
+								+ cid + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
 						stSale.executeUpdate(strUpdateInvoiceTable);
+						stSale.executeUpdate(strUpdateRevenueTable);
 						stSale.executeUpdate(commitTable);
 						JOptionPane.showMessageDialog(null, "The record has been successfully saved.",
 								"Inventory Management System", JOptionPane.INFORMATION_MESSAGE);
@@ -363,8 +368,10 @@ public class FrmSales extends JInternalFrame {
 				}
 				else{
 					try {
-						if(rsSale3.next()){
+						if(rsSale3.next()){  
 							String str = rsSale3.getString("custID");
+							
+							//If no customer records exist
 							if(str==null){
 								JTFCustID.setText(1+"");
 							}
@@ -374,9 +381,11 @@ public class FrmSales extends JInternalFrame {
 								JTFCustID.setText((custID+1)+"");
 							}
 						}
+						strUpdateRevenueTable = "INSERT INTO imsrevenuerecord values('"+JTFInvoiceNumber.getText()+"','"+JTFGrandTotal.getText()+"',to_date(sysdate,'dd/mm/yy'))";
 						strUpdateInvoiceTable = "INSERT INTO imsinvoice values('"
 								+ JTFCustID.getText() + "',sysdate,'" + JTFInvoiceNumber.getText() + "',sysdate,'" + JTFGrandTotal.getText() + "')";
 						stSale.executeUpdate(strUpdateCustomerTable);
+						stSale.executeUpdate(strUpdateRevenueTable);
 						stSale.executeUpdate(strUpdateInvoiceTable);
 						stSale.executeUpdate(commitTable);
 						JOptionPane.showMessageDialog(null, "The record has been successfully saved.",
@@ -386,16 +395,7 @@ public class FrmSales extends JInternalFrame {
 						e1.printStackTrace();
 					}
 				}
-				/*try {
-					stSale.executeUpdate(strUpdateCustomerTable);
-					stSale.executeUpdate(strUpdateInvoiceTable);
-					stSale.executeUpdate(commitTable);
-					JOptionPane.showMessageDialog(null, "The record has been successfully saved.",
-							"Inventory Management System", JOptionPane.INFORMATION_MESSAGE);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
+				
 			}
 			if (srcObj == "total") {
 				int total = 0;
@@ -460,6 +460,8 @@ public class FrmSales extends JInternalFrame {
 			while (rsSale.next()) {
 				JTFCustomerName.setText(rsSale.getString("cname"));
 				JTFPhone.setText(rsSale.getString("phone"));
+				cid = Integer.parseInt(rsSale.getString("cid"));
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

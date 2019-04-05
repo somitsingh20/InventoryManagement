@@ -16,7 +16,7 @@ public class FrmCustomer extends JInternalFrame{
 	public static JTable JTCusTable;
 
 	JLabel JLPicture1 = new JLabel(new ImageIcon("images/helper.png"));
-	JLabel JLHelpText = new JLabel("To display a certain  \n record click the 'search button' and look for the record that you want.");
+	JLabel JLHelpText = new JLabel("To display a certain \n record click the 'search button' and look for the record that you want.");
 
 	JFrame JFParentFrame;
 
@@ -55,7 +55,7 @@ public class FrmCustomer extends JInternalFrame{
 
 		cnCus = srcCon;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM imscustomer";
+		strSQL = "SELECT * FROM imscustomer ORDER BY datetime desc";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -67,6 +67,7 @@ public class FrmCustomer extends JInternalFrame{
 		JTCusTable=CreateTable();
 		CusTableJSP.getViewport().add(JTCusTable);
 		CusTableJSP.setBounds(5,55,727,320);
+		JTCusTable.setAutoCreateRowSorter(true);  //Enable default sorting in table(all columns)
 		JPContainer.add(CusTableJSP);
 
 		JBAddNew.setBounds(5,382,105,25);
@@ -231,7 +232,7 @@ public class FrmCustomer extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								JDialog JDEdit = new frm_view(false,JFParentFrame,cnCus,"SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
+								JDialog JDEdit = new frm_view(false,JFParentFrame,cnCus,"SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "' order by purchasedate desc");
 								//System.out.println("Inside srcobj view");
 								frm_view.reloadRecord("SELECT * FROM imscustomer WHERE cid= '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
 								JDEdit.show();

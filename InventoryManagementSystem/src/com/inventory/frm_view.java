@@ -2,6 +2,7 @@ package com.inventory;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.JobAttributes;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -134,6 +135,7 @@ public class frm_view extends JDialog {
 		ViewTableJSP.getViewport().add(table);
 		ViewTableJSP.setBounds(5,40,505,200);
 		JPContainer.add(ViewTableJSP);
+		table.setAutoCreateRowSorter(true);
 		
 		JLInvoiceTotal.setBounds(150, 250, 100, 25);
 		JLInvoiceTotal.setFont(new Font("Dialog", Font.BOLD, 14));
