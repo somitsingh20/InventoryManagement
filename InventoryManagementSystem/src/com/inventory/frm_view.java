@@ -39,7 +39,6 @@ public class frm_view extends JDialog {
 	
 	public static JScrollPane ViewTableJSP = new JScrollPane();
 	public static JTable JTViewTable;
-	public static int total = 0;
 	
 	JLabel JLCustomerName = new JLabel("Customer Name:");
 	JLabel JLPhoneNo = new JLabel("Phone No:");
@@ -60,7 +59,7 @@ public class frm_view extends JDialog {
 			new Object[] { "PurchaseDate", "Invoice Number", "Purchase Time","Total"}, 1);
 	JTable table = new JTable(model);
 	boolean ADDING_STATE;
-
+	int rows = model.getRowCount();
 	public frm_view(boolean ADD_STATE, JFrame getParentFrame, Connection srcCon, String srcSQL) {
 		
 		super(getParentFrame,true);
@@ -79,22 +78,24 @@ public class frm_view extends JDialog {
 			}
 		}
 		try {
-			int invoiceTotal = 0;
+			int total = 0;
 			int count = 0;
+			model.setRowCount(0);
 			int rows = model.getRowCount();
 			rsV = stV.executeQuery(srcSQL);
-			
 			while(rsV.next()){
-				//System.out.println(rsV.getString("cname"));
+				model.setRowCount(count+1);
 				model.setValueAt(rsV.getString("dt"), count, 0);
 				model.setValueAt(rsV.getString("invoice_number"), count, 1);
 				model.setValueAt(rsV.getString("to_char(purchasetime,'hh24:mi:ss')"), count, 2);
 				model.setValueAt(rsV.getString("total"), count, 3);
-				model.setRowCount(rows + 1);
-				total = total + Integer.parseInt(rsV.getString("total"));
+				total = total + Integer.parseInt(model.getValueAt(count, 3).toString());
+				//System.out.println(total);
 				count++;
 				}
 			JTFInvoiceTotal.setText(total+"");
+			total = 0;
+			System.out.println(total);
 			}
 		catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -165,6 +166,7 @@ public class frm_view extends JDialog {
 		setResizable(true);
 		setModalityType(JDialog.ModalityType.DOCUMENT_MODAL);
 		setLocation((screen.width - 420) / 2, ((screen.height - 660) / 2));
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 	ActionListener JBActionListener = new ActionListener(){

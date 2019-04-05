@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class FrmViewInvoiceDetails extends JDialog {
 
@@ -59,11 +60,11 @@ public class FrmViewInvoiceDetails extends JDialog {
 				model.setValueAt(rsVID.getString("cost"), count, 2);
 				JTFInvoiceNumber.setText(rsVID.getString("invoice_number"));
 				gtotal+= Integer.parseInt(model.getValueAt(count, 2).toString());
-				
 				model.setRowCount(rows + 1);
 				count++;
 			}
 			JTFGrandTotal.setText(gtotal+"");
+			model.fireTableDataChanged();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
