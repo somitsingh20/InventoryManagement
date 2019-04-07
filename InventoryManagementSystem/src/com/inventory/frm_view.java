@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +40,7 @@ public class frm_view extends JDialog {
 	public static String strSQL;
 	
 	public static JScrollPane ViewTableJSP = new JScrollPane();
-	public static JTable JTViewTable;
+	//public static JTable JTViewTable;
 	
 	JLabel JLCustomerName = new JLabel("Customer Name:");
 	JLabel JLPhoneNo = new JLabel("Phone No:");
@@ -57,7 +59,9 @@ public class frm_view extends JDialog {
 	
 	static DefaultTableModel model = new DefaultTableModel(
 			new Object[] { "PurchaseDate", "Invoice Number", "Purchase Time","Total"}, 1);
-	JTable table = new JTable(model);
+	
+	public static JTable table;
+	//JTable table = new JTable(model);
 	boolean ADDING_STATE;
 	int rows = model.getRowCount();
 	public frm_view(boolean ADD_STATE, JFrame getParentFrame, Connection srcCon, String srcSQL) {
@@ -95,7 +99,7 @@ public class frm_view extends JDialog {
 				}
 			JTFInvoiceTotal.setText(total+"");
 			total = 0;
-			System.out.println(total);
+			//System.out.println(total);
 			}
 		catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -131,12 +135,12 @@ public class frm_view extends JDialog {
 		JPContainer.add(JLCustomerID);
 		JPContainer.add(JTFCustomerID);
 		
-		//JTable table = new JTable(model);
+		table = new JTable(model);
 		
 		ViewTableJSP.getViewport().add(table);
 		ViewTableJSP.setBounds(5,40,505,200);
 		JPContainer.add(ViewTableJSP);
-		table.setAutoCreateRowSorter(true);
+		//table.setAutoCreateRowSorter(true);
 		
 		JLInvoiceTotal.setBounds(150, 250, 100, 25);
 		JLInvoiceTotal.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -166,25 +170,23 @@ public class frm_view extends JDialog {
 		setResizable(true);
 		setModalityType(JDialog.ModalityType.DOCUMENT_MODAL);
 		setLocation((screen.width - 420) / 2, ((screen.height - 660) / 2));
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 	ActionListener JBActionListener = new ActionListener(){
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e){
-			//System.out.println("Inside view invoice action");
 			String srcObj = e.getActionCommand();
 			if(srcObj=="viewInvoice"){
 					try{
-	
-						//System.out.println(table.getValueAt(table.getSelectedRow(), 1));	
-						if(model.getValueAt(0, 1) != null){
+						if(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()) != null){
+							//System.out.println("Selected row from invoice list :"+table.getValueAt(table.getSelectedRow(),1));
 								JDialog JDView = new FrmViewInvoiceDetails(false,JFParentFrame,cnV,"SELECT * FROM imssalesrecord WHERE invoice_number = " + table.getValueAt(table.getSelectedRow(), 1));
 								JDView.show();
 							}
 					}catch(Exception sqlE){
 						if(sqlE.getMessage() != null){
 							System.out.println(sqlE.getMessage());
+							sqlE.printStackTrace();
 						}else{
 							JOptionPane.showMessageDialog(null,"Please select a record in the list to modify.","No Record Selected",JOptionPane.INFORMATION_MESSAGE);
 						}

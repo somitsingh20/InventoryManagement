@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.management.modelmbean.ModelMBean;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,24 +17,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public class FrmViewInvoiceDetails extends JDialog {
 
-	//public static JScrollPane ProductTableJSP = new JScrollPane();
 	public static JPanel JPContainer = new JPanel();
 	public static JScrollPane ViewTableJSP = new JScrollPane();
+
 	JLabel JLInvoiceNumber = new JLabel("Invoice Number:");
 	JLabel JLGrandTotal = new JLabel("Grand Total");
 	
-	JTextField JTFInvoiceNumber = new JTextField();
-	JTextField JTFGrandTotal = new JTextField();
+	public static JTextField JTFInvoiceNumber = new JTextField();
+	public static JTextField JTFGrandTotal = new JTextField();
+	public static String invoice;
 	
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	static DefaultTableModel model = new DefaultTableModel(
-			new Object[] { "Product Name", "Quantity Purchased", "Cost"}, 1);
-	
+			new Object[] { "Product Name", "Quantity Purchased", "Cost"}, 0);
+
 	Connection cnVID;
 	Statement stVID;
 	ResultSet rsVID;
@@ -52,19 +53,19 @@ public class FrmViewInvoiceDetails extends JDialog {
 		try {
 			int gtotal = 0;
 			int count = 0;
-			int rows = model.getRowCount();
 			rsVID = stVID.executeQuery(srcSQL);
 			while(rsVID.next()){
+				model.setRowCount(count + 1);
 				model.setValueAt(rsVID.getString("productname"), count, 0);
 				model.setValueAt(rsVID.getString("qty"), count, 1);
 				model.setValueAt(rsVID.getString("cost"), count, 2);
-				JTFInvoiceNumber.setText(rsVID.getString("invoice_number"));
 				gtotal+= Integer.parseInt(model.getValueAt(count, 2).toString());
-				model.setRowCount(rows + 1);
+				JTFInvoiceNumber.setText(rsVID.getString("invoice_number"));
 				count++;
+				System.out.println(model.getDataVector());
 			}
 			JTFGrandTotal.setText(gtotal+"");
-			model.fireTableDataChanged();
+			gtotal=0;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -82,8 +83,8 @@ public class FrmViewInvoiceDetails extends JDialog {
 		JPContainer.add(JLInvoiceNumber);
 		JPContainer.add(JTFInvoiceNumber);
 		
-		JTable table = new JTable(model);
 		
+		JTable table = new JTable(model);
 		ViewTableJSP.getViewport().add(table);
 		ViewTableJSP.setBounds(5,40,370,100);
 		JPContainer.add(ViewTableJSP);
