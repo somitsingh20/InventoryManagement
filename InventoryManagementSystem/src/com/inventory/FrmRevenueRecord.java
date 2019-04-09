@@ -27,10 +27,10 @@ public class FrmRevenueRecord extends JInternalFrame {
 	JButton JBDelete = new JButton("Delete", new ImageIcon("images/delete.png"));*/
 	
 	JButton JBSearch = new JButton("Search By Date", new ImageIcon("images/search.png"));
-	JButton JBRangeSearch = new JButton("Search By Date Range", new ImageIcon("images/search.png"));
+	JButton JBCustSearch = new JButton("Search By Customer", new ImageIcon("images/search.png"));
 	
 	JLabel JLTotalSales = new JLabel("TOTAL SALES");
-	JTextField JTFTotalSales = new JTextField();
+	public static JTextField JTFTotalSales = new JTextField();
 	Connection cnSlr;
 
 	public static Statement stSlr;
@@ -57,7 +57,7 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 		cnSlr = srcCon;
 		stSlr = cnSlr.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM imsRevenueRecord";
+		strSQL = "SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM imsRevenueRecord order by invoice_number desc";
 
 		JLPicture1.setBounds(5, 5, 48, 48);
 		JPContainer.add(JLPicture1);
@@ -79,27 +79,27 @@ public class FrmRevenueRecord extends JInternalFrame {
 		JPContainer.add(JBAddNew);*/
 
 		JLTotalSales.setBounds(112, 300, 99, 25);
-		JLTotalSales.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JLTotalSales.setFont(new Font("Dialog", Font.BOLD, 12));
 		JTFTotalSales.setBounds(220, 300, 80, 25);
-		JTFTotalSales.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JTFTotalSales.setFont(new Font("Dialog", Font.BOLD, 12));
 		JTFTotalSales.setEditable(false);
 		
 		JPContainer.add(JLTotalSales);
 		JPContainer.add(JTFTotalSales);
 		
-		JBSearch.setBounds(50, 382, 130, 25);
+		JBSearch.setBounds(20, 382, 150, 25);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBSearch.setMnemonic(KeyEvent.VK_S);
 		JBSearch.addActionListener(JBActionListener);
 		JBSearch.setActionCommand("search");
 		JPContainer.add(JBSearch);
 		
-		JBRangeSearch.setBounds(200, 382, 150, 25);
-		JBRangeSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
-		JBRangeSearch.setMnemonic(KeyEvent.VK_S);
-		JBRangeSearch.addActionListener(JBActionListener);
-		JBRangeSearch.setActionCommand("rangesearch");
-		JPContainer.add(JBRangeSearch);
+		JBCustSearch.setBounds(210, 382, 180, 25);
+		JBCustSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JBCustSearch.setMnemonic(KeyEvent.VK_S);
+		JBCustSearch.addActionListener(JBActionListener);
+		JBCustSearch.setActionCommand("custsearch");
+		JPContainer.add(JBCustSearch);
 
 		/*JBPrint.setBounds(312, 382, 99, 25);
 		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -167,8 +167,8 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 			}
 			
-			if (srcObj == "rangesearch") {
-				JDialog JDSearchRec = new FrmRevenueByDateRange(JFParentFrame);
+			if (srcObj == "custsearch") {
+				JDialog JDSearchRec = new FrmRevenueByCustomer(JFParentFrame,cnSlr);
 				JDSearchRec.setVisible(true);
 
 			}
@@ -285,7 +285,7 @@ public class FrmRevenueRecord extends JInternalFrame {
 					Content[rowNum][0] = "" + rsSlr.getString("invoice_number");
 					Content[rowNum][1] = "" + rsSlr.getString("sales");
 					Content[rowNum][2] = "" + rsSlr.getString("dt");
-					//totalsales = Integer.parseInt(rsSlr.getString("sales"));
+					totalSales = totalSales + Integer.parseInt(rsSlr.getString("sales"));
 					rowNum++;
 				}
 			} else {
@@ -294,6 +294,7 @@ public class FrmRevenueRecord extends JInternalFrame {
 				Content[0][1] = " ";
 				Content[0][2] = " ";
 			}
+			JTFTotalSales.setText(totalSales+"");
 		} catch (Exception eE) {
 		}
 		JTable NewTable = new JTable(Content, ColumnHeaderName) {
