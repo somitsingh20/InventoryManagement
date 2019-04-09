@@ -9,6 +9,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -29,6 +32,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -49,13 +53,14 @@ public class FrmSales extends JInternalFrame {
 	JLabel JLHelpText = new JLabel(
 			"To display a certain  \n record click the 'search button' and look for the record that you want.");
 
-	JFrame JFParentFrame;
+	static JFrame JFParentFrame;
 
 	JButton JBAddNew = new JButton("Add", new ImageIcon("images/new.png"));
 	JButton JBSearchCustomer = new JButton("Search Customer", new ImageIcon("images/search.png"));
 	JButton JBSearchProduct = new JButton("Add Product", new ImageIcon("images/search.png"));
-	JButton JBPrint = new JButton("Print Invoice", new ImageIcon("images/print.png"));
+	JButton JBPrint = new JButton("Print", new ImageIcon("images/print.png"));
 	JButton JBGrandTotal = new JButton("Grand Total");
+	JButton JBReset = new JButton("Reset", new ImageIcon("images/reload.png"));
 
 	JLabel JLInvoiceNumber = new JLabel("Invoice Number");
 	JLabel JLCustomerName = new JLabel("Customer Name");
@@ -84,11 +89,11 @@ public class FrmSales extends JInternalFrame {
 	public static String strUpdateInvoiceTable;
 	public static String strUpdateRevenueTable;
 	public static String commitTable;
+	
 	public static int rowNum = 0;
 	public static int total = 0;
 	public static int count = 0;
 	public static int cuscount = 0;
-	boolean goEOF;
 	public static int cid;
 
 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -105,7 +110,7 @@ public class FrmSales extends JInternalFrame {
 
 		JPContainer.setLayout(null);
 		JFParentFrame = getParentFrame;
-
+		
 		cnSale = srcCon;
 		stSale = cnSale.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
@@ -213,17 +218,23 @@ public class FrmSales extends JInternalFrame {
 		JPContainer.add(JBGrandTotal);
 		JPContainer.add(JTFGrandTotal);
 
-		JBAddNew.setBounds(60, 390, 80, 20);
+		JBAddNew.setBounds(20, 390, 120, 20);
 		JBAddNew.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBAddNew.addActionListener(JBActionListener);
 		JBAddNew.setActionCommand("add");
-
-		JBPrint.setBounds(180, 390, 150, 20);
+		
+		JBReset.setBounds(150, 390, 120, 20);
+		JBReset.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JBReset.addActionListener(JBActionListener);
+		JBReset.setActionCommand("reset");
+		
+		JBPrint.setBounds(280, 390, 120, 20);
 		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBPrint.addActionListener(JBActionListener);
 		JBPrint.setActionCommand("print");
-
+		
 		JPContainer.add(JBAddNew);
+		JPContainer.add(JBReset);
 		JPContainer.add(JBPrint);
 
 		getContentPane().add(JPContainer);
@@ -303,9 +314,8 @@ public class FrmSales extends JInternalFrame {
 				}
 
 			}
+			//Add products to Invoice/purchase record
 			if (srcObj == "add") {
-				
-				//Add products to Invoice/purchase record
 				int quantity;
 				ArrayList<String> numdata = new ArrayList<String>();
 				for (int count = 0; count < model.getRowCount(); count++) {
@@ -350,7 +360,6 @@ public class FrmSales extends JInternalFrame {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-				System.out.println(cuscount);
 				if(cuscount>0){     //If customer exists
 					try {
 						strUpdateRevenueTable = "INSERT INTO imsrevenuerecord values('"+JTFInvoiceNumber.getText()+"','"+JTFGrandTotal.getText()+"',to_date(sysdate,'dd/mm/yy'))";
@@ -365,6 +374,7 @@ public class FrmSales extends JInternalFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					cuscount=0;
 				}
 				else{
 					try {
@@ -397,6 +407,7 @@ public class FrmSales extends JInternalFrame {
 				}
 				
 			}
+			//Calculate Grand Total of Invoice Items
 			if (srcObj == "total") {
 				int total = 0;
 				int noOfRows = model.getRowCount();
@@ -410,6 +421,46 @@ public class FrmSales extends JInternalFrame {
 				model.fireTableDataChanged();
 				JTFGrandTotal.setText(total+"");
 			}
+			//Reset all fields and clear table
+			if(srcObj == "reset"){
+				String generateInvoice = "SELECT MAX(invoice_number) as invoice from imsinvoice";
+				try {
+					rsSale1 = cnSale.createStatement().executeQuery(generateInvoice);
+					if(rsSale1.next()){
+						String str = rsSale1.getString("invoice");
+						if(str==null){
+							JTFInvoiceNumber.setText(101+"");
+						}
+						else
+						{
+							int invNumber = Integer.parseInt(str);
+							JTFInvoiceNumber.setText((invNumber+1)+"");
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				model.setRowCount(0);
+				try{
+				if(cuscount==0){
+					String getCustId = "Select MAX(cid) as custID from imscustomer";
+					rsSale3 = cnSale.createStatement().executeQuery(getCustId);
+					if(rsSale3.next()){
+						String str = rsSale3.getString("custID");
+						int custID = Integer.parseInt(str);
+						JTFCustID.setText((custID+1)+"");
+					}
+				}
+				}
+				catch(SQLException e1){
+					e1.printStackTrace();
+				}
+				JTFCustomerName.setText("");
+				JTFPhone.setText("");
+				JTFGrandTotal.setText("");
+				count=0;
+			}
 
 		}
 	};
@@ -421,6 +472,7 @@ public class FrmSales extends JInternalFrame {
 			model.setRowCount(rows + 1);
 			rsSale = stSale.executeQuery(strSQL);
 			while (rsSale.next()) {
+				System.out.println(rsSale.getString("productname"));
 				values[0] = "" + rsSale.getString("productname");
 				values[1] = "" + rsSale.getString("sprice");
 				values[2] = "" + rsSale.getString("quantity");
@@ -436,6 +488,7 @@ public class FrmSales extends JInternalFrame {
 					model.setValueAt(values[2], count, 2);
 					model.setValueAt(null, count, 3);
 					model.setValueAt(null, count, 4);
+					//count=0;
 				}
 			}
 		} catch (SQLException e) {
@@ -468,4 +521,5 @@ public class FrmSales extends JInternalFrame {
 			e.printStackTrace();
 		}
 	}
+	
 }
