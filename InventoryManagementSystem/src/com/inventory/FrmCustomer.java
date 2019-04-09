@@ -33,7 +33,7 @@ public class FrmCustomer extends JInternalFrame{
 	public static Statement stCus;
 
 	public static ResultSet rsCus;
-
+	public static ResultSet rsInv;
 	public static String strSQL;
 	public static String Content[][];
 
@@ -55,7 +55,7 @@ public class FrmCustomer extends JInternalFrame{
 
 		cnCus = srcCon;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM imscustomer";
+		strSQL = "SELECT * FROM imscustomer ORDER BY datetime desc";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -98,7 +98,7 @@ public class FrmCustomer extends JInternalFrame{
 		JBPrint.setActionCommand("print");
 		JPContainer.add(JBPrint);
 		
-		JBDelete.setBounds(413,382,105,25);
+		JBDelete.setBounds(413,382,99,25);
 		JBDelete.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBDelete.setMnemonic(KeyEvent.VK_D);
 		JBDelete.addActionListener(JBActionListener);
@@ -232,8 +232,8 @@ public class FrmCustomer extends JInternalFrame{
 				if(total != 0){
 					try{
 							if(JTCusTable.getValueAt(JTCusTable.getSelectedRow(),JTCusTable.getSelectedColumn()) != null){
-								System.out.println("Selected row from customer record :"+JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
-								JDialog JDEdit = new frm_view(false,JFParentFrame,cnCus,"SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
+								//System.out.println("Selected row from customer record :"+JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0));
+								JDialog JDEdit = new frm_view(false,JFParentFrame,cnCus,"SELECT to_char(purchasedate, 'DD.MM.YYYY') dt,invoice_number,to_char(purchasetime,'hh24:mi:ss'),total  FROM imsinvoice WHERE cid = '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "' ORDER BY purchasedate DESC");
 								//System.out.println("Inside srcobj view");
 								frm_view.reloadRecord("SELECT * FROM imscustomer WHERE cid= '" + JTCusTable.getValueAt(JTCusTable.getSelectedRow(),0)+ "'");
 								JDEdit.show();
@@ -251,7 +251,7 @@ public class FrmCustomer extends JInternalFrame{
 			
 			}
 			else if(srcObj=="reload"){
-				String reloadRecord = "Select * from imscustomer";
+				String reloadRecord = "SELECT * FROM imscustomer ORDER BY datetime desc";
 				reloadRecord(reloadRecord);
 			
 			}
@@ -260,7 +260,7 @@ public class FrmCustomer extends JInternalFrame{
 
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"Customer ID","Customer Name","Contact","Enrollment Date"
+			"Customer ID","Customer Name","Contact","Enrollment Date","Total","Last Buy"
 		};
 		try{
 			rsCus = stCus.executeQuery(strSQL);
@@ -272,7 +272,7 @@ public class FrmCustomer extends JInternalFrame{
 			
 			rsCus.beforeFirst();
 			if(total > 0){
-				Content = new String[total][4];
+				Content = new String[total][6];
 				while(rsCus.next()){
 					Content[rowNum][0] = "" + rsCus.getString("cid");
 					Content[rowNum][1] = "" + rsCus.getString("cname");
@@ -286,6 +286,16 @@ public class FrmCustomer extends JInternalFrame{
 				Content[0][1] = " ";
 				Content[0][2] = " ";
 				Content[0][3] = " ";
+				Content[0][4] = " ";
+				Content[0][5] = " ";
+			}
+			String sql = "Select sum(total),max(purchasedate) from imsinvoice where cid ="+JTCusTable.getValueAt(rowNum, 0);
+			rsInv = stCus.executeQuery(sql);
+			if(rsInv.next()){
+				JTCusTable.setValueAt(rsCus.getString("sum(total)"), 0, 4);
+				JTCusTable.setValueAt(rsCus.getString("max(purchasedate)"), 0, 5);
+				//Content[rowNum][5] = "" + rsCus.getString("max(purchasedate)");
+				System.out.println(rsCus.getString("max(purchasedate)"));
 			}
 		}catch(Exception eE){
 		}

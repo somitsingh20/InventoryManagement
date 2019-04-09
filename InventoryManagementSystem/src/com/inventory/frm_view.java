@@ -94,12 +94,10 @@ public class frm_view extends JDialog {
 				model.setValueAt(rsV.getString("to_char(purchasetime,'hh24:mi:ss')"), count, 2);
 				model.setValueAt(rsV.getString("total"), count, 3);
 				total = total + Integer.parseInt(model.getValueAt(count, 3).toString());
-				//System.out.println(total);
 				count++;
 				}
 			JTFInvoiceTotal.setText(total+"");
 			total = 0;
-			//System.out.println(total);
 			}
 		catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -180,7 +178,7 @@ public class frm_view extends JDialog {
 					try{
 						if(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()) != null){
 							//System.out.println("Selected row from invoice list :"+table.getValueAt(table.getSelectedRow(),1));
-								JDialog JDView = new FrmViewInvoiceDetails(false,JFParentFrame,cnV,"SELECT * FROM imssalesrecord WHERE invoice_number = " + table.getValueAt(table.getSelectedRow(), 1));
+								JDialog JDView = new FrmViewInvoiceDetails(false,JFParentFrame,cnV,"SELECT * FROM imssalesrecord WHERE invoice_number = " + table.getValueAt(table.getSelectedRow(), 1)+" ORDER BY productname");
 								JDView.show();
 							}
 					}catch(Exception sqlE){

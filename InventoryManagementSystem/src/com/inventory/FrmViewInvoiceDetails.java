@@ -62,7 +62,6 @@ public class FrmViewInvoiceDetails extends JDialog {
 				gtotal+= Integer.parseInt(model.getValueAt(count, 2).toString());
 				JTFInvoiceNumber.setText(rsVID.getString("invoice_number"));
 				count++;
-				System.out.println(model.getDataVector());
 			}
 			JTFGrandTotal.setText(gtotal+"");
 			gtotal=0;
