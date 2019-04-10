@@ -55,7 +55,8 @@ public class FrmCustomer extends JInternalFrame{
 
 		cnCus = srcCon;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT * FROM imscustomer ORDER BY datetime desc";
+		//strSQL = "SELECT * FROM imscustomer ORDER BY datetime desc";
+		strSQL = "SELECT * FROM view_customer ORDER BY last desc";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -278,6 +279,8 @@ public class FrmCustomer extends JInternalFrame{
 					Content[rowNum][1] = "" + rsCus.getString("cname");
 					Content[rowNum][2] = "" + rsCus.getString("phone");
 					Content[rowNum][3] = "" + rsCus.getString("datetime");
+					Content[rowNum][4] = "" + rsCus.getString("gtotal");
+					Content[rowNum][5] = "" + rsCus.getString("last");
 					rowNum++;
 				}
 			}else{
@@ -288,14 +291,6 @@ public class FrmCustomer extends JInternalFrame{
 				Content[0][3] = " ";
 				Content[0][4] = " ";
 				Content[0][5] = " ";
-			}
-			String sql = "Select sum(total),max(purchasedate) from imsinvoice where cid ="+JTCusTable.getValueAt(rowNum, 0);
-			rsInv = stCus.executeQuery(sql);
-			if(rsInv.next()){
-				JTCusTable.setValueAt(rsCus.getString("sum(total)"), 0, 4);
-				JTCusTable.setValueAt(rsCus.getString("max(purchasedate)"), 0, 5);
-				//Content[rowNum][5] = "" + rsCus.getString("max(purchasedate)");
-				System.out.println(rsCus.getString("max(purchasedate)"));
 			}
 		}catch(Exception eE){
 		}
@@ -308,10 +303,12 @@ public class FrmCustomer extends JInternalFrame{
 		NewTable.setPreferredScrollableViewportSize(new Dimension(727, 320));
 		NewTable.setBackground(Color.white);
 
-		NewTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-		NewTable.getColumnModel().getColumn(1).setPreferredWidth(300);
-		NewTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		NewTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+		NewTable.getColumnModel().getColumn(1).setPreferredWidth(160);
+		NewTable.getColumnModel().getColumn(2).setPreferredWidth(120);
 		NewTable.getColumnModel().getColumn(3).setPreferredWidth(200);
+		NewTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+		NewTable.getColumnModel().getColumn(5).setPreferredWidth(160);
 		
 		ColumnHeaderName=null;
 		Content=null;
