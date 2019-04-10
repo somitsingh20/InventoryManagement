@@ -101,7 +101,7 @@ public class FrmSales extends JInternalFrame {
 	HashMap<String, Long> cusData = new HashMap<>();
 	
 	static DefaultTableModel model = new DefaultTableModel(
-			new Object[] { "ProductName", "Unit Price", "AvailableQty", "Purchase Qty", "Total Price" }, 0);
+			new Object[] { "ProductName", "UnitPrice", "AvlQty", "PurchaseQty","DiscPrice", "Total Price" }, 0);
 	
 	// constructor
 	public FrmSales(Connection srcCon, JFrame getParentFrame) throws SQLException {
@@ -323,7 +323,7 @@ public class FrmSales extends JInternalFrame {
 					numdata.add(model.getValueAt(count, 1).toString()); // unit price
 					numdata.add(model.getValueAt(count, 2).toString()); // available qty
 					numdata.add(model.getValueAt(count, 3).toString()); // buy quantity
-					numdata.add(model.getValueAt(count, 4).toString());
+					numdata.add(model.getValueAt(count, 5).toString());
 					//Updating sales record
 					strSQL = "INSERT INTO imssalesrecord(cname,productname,qty,datetime,phone,invoice_number,cost) "
 							+ "VALUES ('" + JTFCustomerName.getText() + "','" + numdata.get(0) + "', '" + numdata.get(3)
@@ -413,9 +413,10 @@ public class FrmSales extends JInternalFrame {
 				int noOfRows = model.getRowCount();
 				for (int i = 0; i < noOfRows; i++) {
 					int qty = Integer.parseInt(model.getValueAt(i, 3).toString());
-					int sellingprice = Integer.parseInt(model.getValueAt(i, 1).toString());
-					int sprice = qty * sellingprice;
-					model.setValueAt(sprice, i, 4);
+					//int sellingprice = Integer.parseInt(model.getValueAt(i, 1).toString());
+					int disprice = Integer.parseInt(model.getValueAt(i, 4).toString());
+					int sprice = qty * disprice;
+					model.setValueAt(sprice, i, 5);
 					total = total + sprice;
 				}
 				model.fireTableDataChanged();
@@ -472,22 +473,25 @@ public class FrmSales extends JInternalFrame {
 			model.setRowCount(rows + 1);
 			rsSale = stSale.executeQuery(strSQL);
 			while (rsSale.next()) {
-				System.out.println(rsSale.getString("productname"));
+				//System.out.println(rsSale.getString("productname"));
 				values[0] = "" + rsSale.getString("productname");
 				values[1] = "" + rsSale.getString("sprice");
 				values[2] = "" + rsSale.getString("quantity");
+				values[3] = "" + rsSale.getString("discountedprice");
 				if (count == 0) {
 					model.setValueAt(values[0], 0, 0);
 					model.setValueAt(values[1], 0, 1);
 					model.setValueAt(values[2], 0, 2);
 					model.setValueAt(null, 0, 3);
-					model.setValueAt(null, 0, 4);
+					model.setValueAt(values[3], 0, 4);
+					model.setValueAt(null, 0, 5);
 				} else {
 					model.setValueAt(values[0], count, 0);
 					model.setValueAt(values[1], count, 1);
 					model.setValueAt(values[2], count, 2);
 					model.setValueAt(null, count, 3);
-					model.setValueAt(null, count, 4);
+					model.setValueAt(values[3], count, 4);
+					model.setValueAt(null, count, 5);
 					//count=0;
 				}
 			}
