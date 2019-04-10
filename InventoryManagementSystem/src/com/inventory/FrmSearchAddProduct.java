@@ -127,7 +127,7 @@ public class FrmSearchAddProduct extends JDialog {
 		public void actionPerformed(ActionEvent e){
 			String srcObj = e.getActionCommand();
 			if(srcObj=="search"){
-					FrmSales.reloadRecord("SELECT productname,quantity,sprice FROM imsproducts WHERE productname='" + JCBSearchProduct.getSelectedItem().toString()+ "'");
+					FrmSales.reloadRecord("SELECT productname,quantity,sprice,discountedprice FROM imsproducts WHERE productname='" + JCBSearchProduct.getSelectedItem().toString()+ "'");
 					dispose();
 				}
 			else{
