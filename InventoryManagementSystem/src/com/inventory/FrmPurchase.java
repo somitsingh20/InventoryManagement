@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.table.*;
+import javax.swing.text.JTextComponent;
+
 import java.awt.PrintJob;
 import java.util.*;
 import java.text.*;
@@ -54,7 +56,7 @@ public class FrmPurchase extends JInternalFrame{
 
 		cnPur = srcCon;
 		stPur = cnPur.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT orderid,product,quantity,supplierid,suppliername,suppliername,cost,to_char(orderdate, 'DD.MM.YYYY hh:mi AM') dt,status,suppliercity,to_char(lastupdated, 'DD.MM.YYYY hh:mi AM')last FROM view_purchase";
+		strSQL = "SELECT orderid,product,quantity,supplierid,suppliername,cost,to_char(orderdate, 'DD.MM.YYYY hh:mi AM') dt,status,suppliercity,to_char(lastupdated, 'DD.MM.YYYY hh:mi AM')last FROM view_purchase";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -212,7 +214,7 @@ public class FrmPurchase extends JInternalFrame{
 			else if(srcObj=="status"){
 				try{
 					if(JTPurTable.getValueAt(JTPurTable.getSelectedRow(),JTPurTable.getSelectedColumn()) != null){
-						JDialog JDEdit = new FrmUpdateStatus(JFParentFrame,cnPur,"SELECT orderid,productname,to_char(time, 'DD.MM.YYYY hh:mi AM') dt,currentstatus,comments FROM imsstatus WHERE orderid = '" + JTPurTable.getValueAt(JTPurTable.getSelectedRow(),0)+"'");
+						JDialog JDEdit = new FrmUpdateStatus(JFParentFrame,cnPur,"SELECT orderid,productname,to_char(time, 'DD.MM.YYYY hh:mi AM') dt,currentstatus,comments FROM imsstatus WHERE orderid = '" + JTPurTable.getValueAt(JTPurTable.getSelectedRow(),0)+"' order by time");
 						JDEdit.show();
 					}
 			}catch(Exception sqlE){
@@ -238,7 +240,7 @@ public class FrmPurchase extends JInternalFrame{
 	
 	public static  JTable CreateTable(){
 		String ColumnHeaderName[] = {
-			"OrderID","ProductName","Quantity","SupplierName","SupplierID","Cost","OrderDate","Status","LastUpdated"
+			"OrderID","ProductName","Quantity","SupplierName","SupplierID","SupplierCity","Cost","OrderDate","Status","LastUpdated"
 		};
 		try{
 			rsPur = stPur.executeQuery(strSQL);
@@ -250,21 +252,22 @@ public class FrmPurchase extends JInternalFrame{
 			//Move back to the first record;
 			rsPur.beforeFirst();
 			if(total != 0){
-				Content = new String[total][9];
+				Content = new String[total][10];
 				while(rsPur.next()){
 					Content[rowNum][0] = "" + rsPur.getString("orderid");
 					Content[rowNum][1] = "" + rsPur.getString("product");
 					Content[rowNum][2] = "" + rsPur.getString("quantity");
 					Content[rowNum][3] = "" + rsPur.getString("supplierName");
 					Content[rowNum][4] = "" + rsPur.getString("supplierid");
-					Content[rowNum][5] = "" + rsPur.getString("cost");
-					Content[rowNum][6] = "" + rsPur.getString("dt");
-					Content[rowNum][7] = "" + rsPur.getString("status");
-					Content[rowNum][8] = "" + rsPur.getString("last");
+					Content[rowNum][5] = "" + rsPur.getString("suppliercity");
+					Content[rowNum][6] = "" + rsPur.getString("cost");
+					Content[rowNum][7] = "" + rsPur.getString("dt");
+					Content[rowNum][8] = "" + rsPur.getString("status");
+					Content[rowNum][9] = "" + rsPur.getString("last");
 					rowNum++;
 				}
 			}else{
-				Content = new String[0][9];
+				Content = new String[0][10];
 				Content[0][0] = " ";
 				Content[0][1] = " ";
 				Content[0][2] = " ";
@@ -274,6 +277,7 @@ public class FrmPurchase extends JInternalFrame{
 				Content[0][6] = " ";
 				Content[0][7] = " ";
 				Content[0][8] = " ";
+				Content[0][9] = " ";
 			}
 		}catch(Exception eE){
 		}
@@ -291,10 +295,11 @@ public class FrmPurchase extends JInternalFrame{
 		NewTable.getColumnModel().getColumn(2).setPreferredWidth(55);
 		NewTable.getColumnModel().getColumn(3).setPreferredWidth(100);
 		NewTable.getColumnModel().getColumn(4).setPreferredWidth(70);
-		NewTable.getColumnModel().getColumn(5).setPreferredWidth(50);
-		NewTable.getColumnModel().getColumn(6).setPreferredWidth(120);
-		NewTable.getColumnModel().getColumn(7).setPreferredWidth(70);
-		NewTable.getColumnModel().getColumn(8).setPreferredWidth(130);
+		NewTable.getColumnModel().getColumn(5).setPreferredWidth(80);
+		NewTable.getColumnModel().getColumn(6).setPreferredWidth(50);
+		NewTable.getColumnModel().getColumn(7).setPreferredWidth(130);
+		NewTable.getColumnModel().getColumn(8).setPreferredWidth(70);
+		NewTable.getColumnModel().getColumn(9).setPreferredWidth(130);
 		
 		ColumnHeaderName=null;
 		Content=null;
@@ -317,6 +322,22 @@ public class FrmPurchase extends JInternalFrame{
 				JTPurTable=CreateTable();
 				PurTableJSP.getViewport().add(JTPurTable);
 				JPContainer.repaint();
+	}
+
+	public static void updateProducts(String strSQL) throws SQLException {
+		
+		rsPur = stPur.executeQuery(strSQL);
+		if(!rsPur.next()){
+			String insertProduct = "Insert into imsproducts(pid,productname,quantity,unitcost,sid,datetime) values(12,'"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),5)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),4)+"',sysdate)";
+			stPur.executeUpdate(insertProduct);
+		}
+		else{
+			int existingQty = Integer.parseInt(rsPur.getString("quantity"));
+			int addedQty = Integer.parseInt(JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2).toString());
+			int newQty = existingQty+addedQty;
+			String updateProduct = "UPDATE imsproducts SET quantity='"+newQty+"' where productname = '"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"'";
+			stPur.executeUpdate(updateProduct);
+		}
 	}
 
 }
