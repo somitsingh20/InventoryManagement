@@ -409,13 +409,13 @@ public class FrmSales extends JInternalFrame {
 			}
 			//Calculate Grand Total of Invoice Items
 			if (srcObj == "total") {
-				int total = 0;
+				Double total = 0d;
 				int noOfRows = model.getRowCount();
 				for (int i = 0; i < noOfRows; i++) {
 					int qty = Integer.parseInt(model.getValueAt(i, 3).toString());
 					//int sellingprice = Integer.parseInt(model.getValueAt(i, 1).toString());
-					int disprice = Integer.parseInt(model.getValueAt(i, 4).toString());
-					int sprice = qty * disprice;
+					Double disprice = Double.parseDouble(model.getValueAt(i, 4).toString());
+					Double sprice = qty * disprice;
 					model.setValueAt(sprice, i, 5);
 					total = total + sprice;
 				}
