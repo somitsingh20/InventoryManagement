@@ -65,7 +65,7 @@ public class FrmUpdateStatus extends JDialog {
 		}catch( SQLException sqlEx){
 
 		}
-		
+		//Populate Status Update panel and table
 		try {
 			int count = 0;
 			int rows = model.getRowCount();
@@ -85,6 +85,10 @@ public class FrmUpdateStatus extends JDialog {
 				JTFStatus.setEditable(false);
 				JTFOrderID.setEditable(false);
 				JTFProductName.setEditable(false);
+			}
+			else{
+				JTFCommment.setEditable(true);
+				JTFStatus.setEditable(true);
 			}
 			}
 		catch (SQLException e) {
@@ -138,6 +142,7 @@ public class FrmUpdateStatus extends JDialog {
 		setLocation((screen.width - 420) / 2, ((screen.height - 660) / 2));
 	}
 	
+	//Action Listener for SET STATUS button
 	ActionListener JBActionListener = new ActionListener() {
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
@@ -158,8 +163,35 @@ public class FrmUpdateStatus extends JDialog {
 				model.fireTableDataChanged();
 			}
 			if(JTFStatus.getText().equalsIgnoreCase("received")){
+				//Mark product status as received.
 				String updateStatusInPurchaseRecord = "UPDATE imspurchase set status ='received' where orderid='"+JTFOrderID.getText()+"'";
+				
+				//Update status table for current product status
 				String updateStatus = "Insert into imsstatus values('"+JTFOrderID.getText()+"','"+JTFProductName.getText()+"',sysdate,'"+currentStatus+"','"+comments+"')";
+				
+				//Check & Update product quantity OR Add new product in inventory
+				
+				try {
+					FrmPurchase.updateProducts("Select * from imsproducts where productname='"+JTFProductName.getText()+"'");
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				/*String getProducts = "Select * from imsproducts";
+
+				try {
+					rsStat = stStat.executeQuery(getProducts);
+					while(rsStat.next()){
+						if(JTFProductName.getText().equalsIgnoreCase(rsStat.getString("productname"))){
+							int qty = Integer.parseInt(rsStat.getString("quantity")) + 
+							String updateProduct = "UPDATE imsproducts SET quantity";
+						}
+					}
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}*/
+				
 				try {
 					stStat.executeUpdate(updateStatusInPurchaseRecord);
 					stStat.executeUpdate(updateStatus);

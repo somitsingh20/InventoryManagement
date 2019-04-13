@@ -84,7 +84,7 @@ public class FrmViewOrderDetails extends JDialog {
 		try {
 			int count = 0;
 			int rows = model.getRowCount();
-			rsVOD = stVOD.executeQuery("SELECT to_char(time, 'DD.MM.YYYY hh:mi AM') dt,currentstatus,comments FROM imsstatus WHERE orderid = '"+JTFOrderID.getText()+"'");
+			rsVOD = stVOD.executeQuery("SELECT to_char(time, 'DD.MM.YYYY hh:mi AM') dt,currentstatus,comments FROM imsstatus WHERE orderid = '"+JTFOrderID.getText()+"' order by time");
 			while(rsVOD.next()){
 				model.setRowCount(count+1);
 				model.setValueAt(rsVOD.getString("dt"), count, 0);
