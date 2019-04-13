@@ -61,6 +61,7 @@ public class FrmSales extends JInternalFrame {
 	JButton JBPrint = new JButton("Print", new ImageIcon("images/print.png"));
 	JButton JBGrandTotal = new JButton("Grand Total");
 	JButton JBReset = new JButton("Reset", new ImageIcon("images/reload.png"));
+	JButton JBDeleteRow = new JButton("Delete",new ImageIcon("images/delete.png"));
 
 	JLabel JLInvoiceNumber = new JLabel("Invoice Number");
 	JLabel JLCustomerName = new JLabel("Customer Name");
@@ -154,7 +155,7 @@ public class FrmSales extends JInternalFrame {
 		SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yy");
 		JTFDate.setText(sf.format(date));
 
-		JTable table = new JTable(model);
+		table = new JTable(model);
 
 		JLCustomerName.setBounds(5, 5, 100, 20);
 		JLCustomerName.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -218,23 +219,29 @@ public class FrmSales extends JInternalFrame {
 		JPContainer.add(JBGrandTotal);
 		JPContainer.add(JTFGrandTotal);
 
-		JBAddNew.setBounds(20, 390, 120, 20);
+		JBAddNew.setBounds(5, 390, 95, 20);
 		JBAddNew.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBAddNew.addActionListener(JBActionListener);
 		JBAddNew.setActionCommand("add");
 		
-		JBReset.setBounds(150, 390, 120, 20);
+		JBReset.setBounds(105, 390, 100, 20);
 		JBReset.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBReset.addActionListener(JBActionListener);
 		JBReset.setActionCommand("reset");
 		
-		JBPrint.setBounds(280, 390, 120, 20);
+		JBDeleteRow.setBounds(210, 390, 100, 20);
+		JBDeleteRow.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JBDeleteRow.addActionListener(JBActionListener);
+		JBDeleteRow.setActionCommand("deleteproduct");
+		
+		JBPrint.setBounds(315, 390, 90, 20);
 		JBPrint.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBPrint.addActionListener(JBActionListener);
 		JBPrint.setActionCommand("print");
 		
 		JPContainer.add(JBAddNew);
 		JPContainer.add(JBReset);
+		JPContainer.add(JBDeleteRow);
 		JPContainer.add(JBPrint);
 
 		getContentPane().add(JPContainer);
@@ -257,6 +264,11 @@ public class FrmSales extends JInternalFrame {
 			if (srcObj == "searchProduct") {
 				JDialog JDSearchRec = new FrmSearchAddProduct(JFParentFrame,cnSale);
 				JDSearchRec.show(true);
+			}
+			if (srcObj == "deleteproduct") {
+				int row = table.getSelectedRow();
+				//System.out.println("Select row is :"+row);
+				model.removeRow(row);
 			}
 			//Print invoice
 			if (srcObj == "print") {
