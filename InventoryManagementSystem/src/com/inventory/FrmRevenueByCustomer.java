@@ -97,6 +97,7 @@ public class FrmRevenueByCustomer extends JDialog {
 		JPDialogContainer.add(JLBanner);
 		
 		JRBCustId.setBounds(25,70,100,25);
+		JRBCustId.setSelected(true);
 		JCBSearchById.setBounds(130,70,100,25);
 		JPDialogContainer.add(JRBCustId);
 		JPDialogContainer.add(JCBSearchById);

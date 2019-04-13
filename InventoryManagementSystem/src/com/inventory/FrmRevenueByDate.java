@@ -54,6 +54,7 @@ public class FrmRevenueByDate extends JDialog{
 		JPDialogContainer.add(JLBanner);
 		
 		JRBSingleDate.setBounds(60, 50, 220, 30);
+		JRBSingleDate.setSelected(true);
 		JPDialogContainer.add(JRBSingleDate);
 		
 		datePicker.setBounds(60, 85, 220, 30);
