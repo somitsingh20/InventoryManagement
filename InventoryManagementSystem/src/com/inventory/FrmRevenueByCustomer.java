@@ -96,21 +96,21 @@ public class FrmRevenueByCustomer extends JDialog {
 		JLBanner.setFont(new Font("Dialog",Font.PLAIN,12));
 		JPDialogContainer.add(JLBanner);
 		
-		JRBCustId.setBounds(25,70,100,25);
+		JRBCustId.setBounds(25,70,150,25);
 		JRBCustId.setSelected(true);
-		JCBSearchById.setBounds(130,70,100,25);
+		JCBSearchById.setBounds(180,70,120,25);
 		JPDialogContainer.add(JRBCustId);
 		JPDialogContainer.add(JCBSearchById);
 		
-		JRBCustName.setBounds(25,120,100,25);
-		JCBSearchByName.setBounds(130,120,100,25);
+		JRBCustName.setBounds(25,120,150,25);
+		JCBSearchByName.setBounds(180,120,120,25);
 		JPDialogContainer.add(JRBCustName);
 		JPDialogContainer.add(JCBSearchByName);
 		
 		BGroup.add(JRBCustId);
 		BGroup.add(JRBCustName);
 		
-		JBSearch.setBounds(290,120,70,28);
+		JBSearch.setBounds(170,180,70,28);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBSearch.setMnemonic(KeyEvent.VK_S);
 		JBSearch.addActionListener(JBActionListener);
@@ -129,11 +129,11 @@ public class FrmRevenueByCustomer extends JDialog {
 			if(srcObj=="search"){
 				
 					if(JRBCustId.isSelected()){
-						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM view_revenue WHERE cid="+JCBSearchById.getSelectedItem());
+						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt,cname,phone FROM view_revenue WHERE cid="+JCBSearchById.getSelectedItem());
 						dispose();
 					}
 					else if (JRBCustName.isSelected()){
-						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM view_revenue WHERE cname='"+JCBSearchByName.getSelectedItem()+"'");
+						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt,cname,phone FROM view_revenue WHERE cname='"+JCBSearchByName.getSelectedItem()+"'");
 						dispose();
 					}
 			}else{

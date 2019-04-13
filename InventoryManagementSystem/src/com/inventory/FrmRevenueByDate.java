@@ -142,7 +142,7 @@ public class FrmRevenueByDate extends JDialog{
 					int year = model.getYear();
 					String selectedDate =  day+"/"+month+"/"+year;
 					//System.out.println("0"+day+"/"+month+"/"+year);
-					FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM imsRevenueRecord WHERE datetime='" + selectedDate+"'");
+					FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt,cname,phone FROM view_revenue WHERE datetime='" + selectedDate+"'");
 					dispose();
 					}
 					else if(JRBDateRange.isSelected()){
@@ -243,7 +243,7 @@ public class FrmRevenueByDate extends JDialog{
 						}
 						int year1 = model2.getYear();
 						String selectedDate1 =  day1+"/"+month2+"/"+year1;
-						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM imsRevenueRecord WHERE datetime between '" + selectedDate+"' and '" + selectedDate1+"'");
+						FrmRevenueRecord.reloadRecord("SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt,cname,phone FROM view_revenue WHERE datetime between '" + selectedDate+"' and '" + selectedDate1+"'");
 						dispose();
 					}
 			}else{

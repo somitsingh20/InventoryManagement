@@ -57,7 +57,7 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 		cnSlr = srcCon;
 		stSlr = cnSlr.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt FROM imsRevenueRecord order by invoice_number desc";
+		strSQL = "SELECT invoice_number,sales,to_char(datetime, 'DD.MM.YYYY') dt,cname,phone FROM view_revenue order by invoice_number desc";
 
 		JLPicture1.setBounds(5, 5, 48, 48);
 		JPContainer.add(JLPicture1);
@@ -68,7 +68,7 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 		JTSlrTable = CreateTable();
 		SlrTableJSP.getViewport().add(JTSlrTable);
-		SlrTableJSP.setBounds(5, 55, 427, 220);
+		SlrTableJSP.setBounds(5, 55, 580, 220);
 		JPContainer.add(SlrTableJSP);
 
 		/*JBAddNew.setBounds(5, 382, 105, 25);
@@ -87,14 +87,14 @@ public class FrmRevenueRecord extends JInternalFrame {
 		JPContainer.add(JLTotalSales);
 		JPContainer.add(JTFTotalSales);
 		
-		JBSearch.setBounds(20, 382, 150, 25);
+		JBSearch.setBounds(70, 382, 150, 25);
 		JBSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBSearch.setMnemonic(KeyEvent.VK_S);
 		JBSearch.addActionListener(JBActionListener);
 		JBSearch.setActionCommand("search");
 		JPContainer.add(JBSearch);
 		
-		JBCustSearch.setBounds(210, 382, 180, 25);
+		JBCustSearch.setBounds(300, 382, 180, 25);
 		JBCustSearch.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JBCustSearch.setMnemonic(KeyEvent.VK_S);
 		JBCustSearch.addActionListener(JBActionListener);
@@ -124,8 +124,8 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 		getContentPane().add(JPContainer);
 
-		setSize(447, 450);
-		setLocation((screen.width - 447) / 2, ((screen.height - 450) / 2) - 45);
+		setSize(600, 450);
+		setLocation((screen.width - 600) / 2, ((screen.height - 450) / 2) - 45);
 		setFrameIcon(new ImageIcon("images/SalesRep.png"));
 
 	}
@@ -134,33 +134,6 @@ public class FrmRevenueRecord extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			String srcObj = e.getActionCommand();
 
-			/*if (srcObj == "add") {
-				JDialog JDAdd = new frm_add_edit_salesrep(true, JFParentFrame, cnSlr, "");
-				JDAdd.show();
-
-			} else if (srcObj == "modify") {
-				if (total != 0) {
-					try {
-						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
-								JTSlrTable.getSelectedColumn()) != null) {
-							JDialog JDEdit = new frm_add_edit_salesrep(false, JFParentFrame, cnSlr,
-									"SELECT * FROM tblSalesRep WHERE SalesRepIndex = "
-											+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 1));
-							JDEdit.show();
-
-						}
-					} catch (Exception sqlE) {
-						if (sqlE.getMessage() != null) {
-							System.out.println(sqlE.getMessage());
-						} else {
-							JOptionPane.showMessageDialog(null, "Please select a record in the list to modify.",
-									"No Record Selected", JOptionPane.INFORMATION_MESSAGE);
-						}
-
-					}
-				}
-
-			}*/
 			if (srcObj == "search") {
 				JDialog JDSearchRec = new FrmRevenueByDate(JFParentFrame);
 				JDSearchRec.setVisible(true);
@@ -172,102 +145,11 @@ public class FrmRevenueRecord extends JInternalFrame {
 				JDSearchRec.setVisible(true);
 
 			}
-			/*else if (srcObj == "print") {
-				if (total != 0) {
-					try {
-						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
-								JTSlrTable.getSelectedColumn()) != null) {
-							clsPublicMethods PrintingClass = new clsPublicMethods();
-							ResultSet rsPrint = stSlr.executeQuery("SELECT * FROM tblSalesRep WHERE SalesRepIndex = "
-									+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
-							if (rsPrint.next() == true) {
-								String RecordToPrint = "";
-								java.util.Date CurrentDate = new java.util.Date();
-								SimpleDateFormat SDFDateFormatter = new SimpleDateFormat("MMM. dd, yyyy",
-										Locale.getDefault());
-
-								RecordToPrint += "                    S U P P L I E R   R E C O R D                        \n";
-								RecordToPrint += "                              "
-										+ SDFDateFormatter.format(CurrentDate).toString() + "\n\n\n";
-
-								RecordToPrint += "-----------------------------------------------------------------------\n\n";
-
-								RecordToPrint += " SalesRep ID: " + rsPrint.getString("SalesRepID")
-										+ "           SalesRep Name: " + rsPrint.getString("Name") + "\n\n";
-
-								RecordToPrint += " Primary Address: " + rsPrint.getString("Address") + "\n";
-								RecordToPrint += " City: " + rsPrint.getString("Citytown") + "\n";
-								RecordToPrint += " State/Province: " + rsPrint.getString("StateProvince") + "\n";
-								RecordToPrint += " Zip Code: " + rsPrint.getString("ZipCode") + "\n";
-								RecordToPrint += " Contact No: " + rsPrint.getString("ContactNo") + "\n";
-								RecordToPrint += " Emergency Contact No: " + rsPrint.getString("EmerContactNo") + "\n\n";
-								
-								RecordToPrint += "-----------------------------------------------------------------------\n\n\n";
-
-								PrintingClass.printRecord(RecordToPrint, JFParentFrame);
-
-								CurrentDate = null;
-								SDFDateFormatter = null;
-								RecordToPrint = null;
-
-							} else {
-								JOptionPane.showMessageDialog(null,
-										"The selected record has been change since last modified. Please click the 'Reload' button and try again!",
-										"No record to print", JOptionPane.WARNING_MESSAGE);
-							}
-
-							rsPrint = null;
-
-						}
-					} catch (Exception sqlE) {
-						if (sqlE.getMessage() != null) {
-							System.out.println(sqlE.getMessage());
-						} else {
-							JOptionPane.showMessageDialog(null, "Please select a record in the list to print.",
-									"No Record Selected", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-				}
-
-			} else if (srcObj == "delete") {
-				if (total != 0) {
-					try {
-						if (JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(),
-								JTSlrTable.getSelectedColumn()) != null) {
-							String ObjButtons[] = { "Yes", "No" };
-							int PromptResult = JOptionPane.showOptionDialog(null,
-									"Are you sure you want to delete the selected record?", "Delete Record",
-									JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, ObjButtons,
-									ObjButtons[1]);
-							if (PromptResult == 0) {
-								stSlr.execute("DELETE FROM tblSalesRep WHERE SalesRepIndex = "
-										+ JTSlrTable.getValueAt(JTSlrTable.getSelectedRow(), 0));
-								reloadRecord();
-								JOptionPane.showMessageDialog(null, "Record has been successfully deleted.",
-										"Comfirm Delete", JOptionPane.INFORMATION_MESSAGE);
-							}
-						}
-					} catch (Exception sqlE) {
-						if (sqlE.getMessage() != null) {
-							JOptionPane.showMessageDialog(null,
-									"You cannot delete this SalesRep because it already used in product table.\nIn order to delete this SalesRep, delete all the product of this SalesRep.",
-									"Comfirm Delete", JOptionPane.WARNING_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(null, "Please select a record in the list to deleted.",
-									"No Record Selected", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-				}
-
-			} else if (srcObj == "reload") {
-				reloadRecord();
-
-			}*/
 		}
 	};
 
 	public static JTable CreateTable() {
-		String ColumnHeaderName[] = { "Invoice Number", "Sales", "Date" };
+		String ColumnHeaderName[] = { "Invoice Number", "Sales", "Date","Customer Name","Phone" };
 		int totalSales = 0;
 		try {
 			rsSlr = stSlr.executeQuery(strSQL);
@@ -280,19 +162,23 @@ public class FrmRevenueRecord extends JInternalFrame {
 
 			rsSlr.beforeFirst();
 			if (total != 0) {
-				Content = new String[total][3];
+				Content = new String[total][5];
 				while (rsSlr.next()) {
 					Content[rowNum][0] = "" + rsSlr.getString("invoice_number");
 					Content[rowNum][1] = "" + rsSlr.getString("sales");
 					Content[rowNum][2] = "" + rsSlr.getString("dt");
+					Content[rowNum][3] = "" + rsSlr.getString("cname");
+					Content[rowNum][4] = "" + rsSlr.getString("phone");
 					totalSales = totalSales + Integer.parseInt(rsSlr.getString("sales"));
 					rowNum++;
 				}
 			} else {
-				Content = new String[0][3];
+				Content = new String[0][5];
 				Content[0][0] = " ";
 				Content[0][1] = " ";
 				Content[0][2] = " ";
+				Content[0][3] = " ";
+				Content[0][4] = " ";
 			}
 			JTFTotalSales.setText(totalSales+"");
 		} catch (Exception eE) {
@@ -307,8 +193,10 @@ public class FrmRevenueRecord extends JInternalFrame {
 		NewTable.setBackground(Color.white);
 
 		NewTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-		NewTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-		NewTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		NewTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+		NewTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		NewTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+		NewTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
 		ColumnHeaderName = null;
 		Content = null;
