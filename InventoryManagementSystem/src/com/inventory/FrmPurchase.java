@@ -34,12 +34,14 @@ public class FrmPurchase extends JInternalFrame{
 	public static Statement stPur;
 
 	public static ResultSet rsPur;
+	public static ResultSet rsPur1;
 
 	public static String strSQL;
 	public static String Content[][];
 
 	public static int rowNum = 0;
 	public static int total = 0;
+	public static int productid=0;
 
 	boolean goEOF;
 
@@ -56,8 +58,16 @@ public class FrmPurchase extends JInternalFrame{
 
 		cnPur = srcCon;
 		stPur = cnPur.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-		strSQL = "SELECT orderid,product,quantity,supplierid,suppliername,cost,to_char(orderdate, 'DD.MM.YYYY hh:mi AM') dt,status,suppliercity,to_char(lastupdated, 'DD.MM.YYYY hh:mi AM')last FROM view_purchase";
-
+		strSQL = "SELECT orderid,product,quantity,supplierid,suppliername,cost,to_char(orderdate, 'DD.MM.YYYY hh:mi AM') dt,status,suppliercity,to_char(lastupdated, 'DD.MM.YYYY hh:mi AM')last FROM view_purchase order by lastupdated desc";
+		
+		String prodSQL = "Select MAX(pid) as productid from imsproducts";
+		rsPur1 = srcCon.createStatement().executeQuery(prodSQL);
+		if(rsPur1.next()){
+			productid = Integer.parseInt(rsPur1.getString("productid"));
+			productid++;
+		}
+		//System.out.println(productid);
+		
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
 
@@ -328,7 +338,7 @@ public class FrmPurchase extends JInternalFrame{
 		
 		rsPur = stPur.executeQuery(strSQL);
 		if(!rsPur.next()){
-			String insertProduct = "Insert into imsproducts(pid,productname,quantity,unitcost,sid,datetime) values(12,'"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),5)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),4)+"',sysdate)";
+			String insertProduct = "Insert into imsproducts(pid,productname,quantity,unitcost,sid,datetime) values('"+productid+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),5)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),4)+"',sysdate)";
 			stPur.executeUpdate(insertProduct);
 		}
 		else{
