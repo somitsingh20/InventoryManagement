@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,12 +39,14 @@ public class FrmUpdateStatus extends JDialog {
 	JLabel JLProductName = new JLabel("Product Name");
 	JLabel JLOrderID = new JLabel("Order ID");
 	
-	public static JTextField JTFStatus = new JTextField();
+	//public static JTextField JTFStatus = new JTextField();
 	public static JTextField JTFCommment = new JTextField();
 	public static JTextField JTFProductName = new JTextField();
 	public static JTextField JTFOrderID = new JTextField();
 	
 	JButton JBStatus = new JButton("SET");
+	
+	JComboBox JCStatus;
 	
 	public static String currentStatus="";
 	public static String comments = "";
@@ -66,6 +69,11 @@ public class FrmUpdateStatus extends JDialog {
 		}catch( SQLException sqlEx){
 
 		}
+		//Set Values in Status ComboBox
+		String StrListItem[]={"processing","shipped","intransit","received","cancelled"};
+		JCStatus = new JComboBox(StrListItem);
+		StrListItem = null;
+		
 		//Populate Status Update panel and table
 		try {
 			int count = 0;
@@ -83,13 +91,13 @@ public class FrmUpdateStatus extends JDialog {
 			lstat = model.getValueAt(count-1, 1).toString();
 			if(lstat.equalsIgnoreCase("received") || lstat.equalsIgnoreCase("cancelled")){
 				JTFCommment.setEditable(false);
-				JTFStatus.setEditable(false);
+				//JCStatus.setEnabled(false);
 				JTFOrderID.setEditable(false);
 				JTFProductName.setEditable(false);
 			}
 			else{
 				JTFCommment.setEditable(true);
-				JTFStatus.setEditable(true);
+				//JCStatus.setEnabled(JCStatus.setSelectedIndex(0));
 			}
 			}
 		catch (SQLException e) {
@@ -123,11 +131,11 @@ public class FrmUpdateStatus extends JDialog {
 		JPContainer.add(JLStatus);
 		JPContainer.add(JLComment);
 		
-		JTFStatus.setBounds(50,380,150,25);
-		JTFStatus.setFont(new Font("Dialog", Font.PLAIN, 12));
+		JCStatus.setBounds(50,380,150,25);
+		JCStatus.setFont(new Font("Dialog", Font.PLAIN, 12));
 		JTFCommment.setBounds(220, 380, 250, 25);
 		JTFCommment.setFont(new Font("Dialog", Font.PLAIN, 12));
-		JPContainer.add(JTFStatus);
+		JPContainer.add(JCStatus);
 		JPContainer.add(JTFCommment);
 		
 		JBStatus.setBounds(200, 415, 100, 25);
@@ -161,14 +169,14 @@ public class FrmUpdateStatus extends JDialog {
 			model.setRowCount(row + 1);
 			String srcObj = e.getActionCommand();
 			if(srcObj=="set"){
-				currentStatus = JTFStatus.getText();
+				currentStatus = JCStatus.getSelectedItem().toString();
 				comments = JTFCommment.getText();
 				model.setValueAt(currentStatus, row, 1);
 				model.setValueAt(comments, row, 2);
 				model.setValueAt(formattedTime, row, 0);
 				model.fireTableDataChanged();
 			}
-			if(JTFStatus.getText().equalsIgnoreCase("received")){
+			if(JCStatus.getSelectedItem().toString().equalsIgnoreCase("received")){
 				//Mark product status as received.
 				String updateStatusInPurchaseRecord = "UPDATE imspurchase set status ='received' where orderid='"+JTFOrderID.getText()+"'";
 				
@@ -193,7 +201,7 @@ public class FrmUpdateStatus extends JDialog {
 					e1.printStackTrace();
 				}
 			}
-			else if(JTFStatus.getText().equalsIgnoreCase("cancelled")){
+			else if(JCStatus.getSelectedItem().toString().equalsIgnoreCase("cancelled")){
 				String updateStatusInPurchaseRecord = "UPDATE imspurchase set status ='cancelled' where orderid='"+JTFOrderID.getText()+"'";
 				String updateStatus = "Insert into imsstatus values('"+JTFOrderID.getText()+"','"+JTFProductName.getText()+"',sysdate,'"+currentStatus+"','"+comments+"')";
 				
