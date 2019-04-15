@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -80,7 +81,7 @@ public class FrmUpdateStatus extends JDialog {
 				count++;
 				}
 			lstat = model.getValueAt(count-1, 1).toString();
-			if(lstat.equalsIgnoreCase("received")){
+			if(lstat.equalsIgnoreCase("received") || lstat.equalsIgnoreCase("cancelled")){
 				JTFCommment.setEditable(false);
 				JTFStatus.setEditable(false);
 				JTFOrderID.setEditable(false);
@@ -147,8 +148,13 @@ public class FrmUpdateStatus extends JDialog {
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
 			String com = "commit";
-			Calendar cal = Calendar.getInstance();
-	        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			/*Calendar cal = Calendar.getInstance();
+	        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");*/
+	        
+	        Date date = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy h:mm a");
+	        String formattedTime = sdf.format(date);
+	        
 	        int count = 1;
 	        
 	        int row = model.getRowCount();
@@ -159,7 +165,7 @@ public class FrmUpdateStatus extends JDialog {
 				comments = JTFCommment.getText();
 				model.setValueAt(currentStatus, row, 1);
 				model.setValueAt(comments, row, 2);
-				model.setValueAt(sdf.format(cal.getTime()), row, 0);
+				model.setValueAt(formattedTime, row, 0);
 				model.fireTableDataChanged();
 			}
 			if(JTFStatus.getText().equalsIgnoreCase("received")){
@@ -177,20 +183,6 @@ public class FrmUpdateStatus extends JDialog {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-				/*String getProducts = "Select * from imsproducts";
-
-				try {
-					rsStat = stStat.executeQuery(getProducts);
-					while(rsStat.next()){
-						if(JTFProductName.getText().equalsIgnoreCase(rsStat.getString("productname"))){
-							int qty = Integer.parseInt(rsStat.getString("quantity")) + 
-							String updateProduct = "UPDATE imsproducts SET quantity";
-						}
-					}
-				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}*/
 				
 				try {
 					stStat.executeUpdate(updateStatusInPurchaseRecord);
@@ -200,6 +192,20 @@ public class FrmUpdateStatus extends JDialog {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}
+			else if(JTFStatus.getText().equalsIgnoreCase("cancelled")){
+				String updateStatusInPurchaseRecord = "UPDATE imspurchase set status ='cancelled' where orderid='"+JTFOrderID.getText()+"'";
+				String updateStatus = "Insert into imsstatus values('"+JTFOrderID.getText()+"','"+JTFProductName.getText()+"',sysdate,'"+currentStatus+"','"+comments+"')";
+				
+				try {
+					stStat.executeUpdate(updateStatusInPurchaseRecord);
+					stStat.executeUpdate(updateStatus);
+					stStat.executeUpdate(com);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 			else{
 				String updateStatus = "Insert into imsstatus values('"+JTFOrderID.getText()+"','"+JTFProductName.getText()+"',sysdate,'"+currentStatus+"','"+comments+"')";
