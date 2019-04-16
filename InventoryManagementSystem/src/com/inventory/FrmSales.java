@@ -269,6 +269,20 @@ public class FrmSales extends JInternalFrame {
 				int row = table.getSelectedRow();
 				//System.out.println("Select row is :"+row);
 				model.removeRow(row);
+				
+				//Recalculate Grand total
+				Double total = 0d;
+				int noOfRows = model.getRowCount();
+				for (int i = 0; i < noOfRows; i++) {
+					int qty = Integer.parseInt(model.getValueAt(i, 3).toString());
+					//int sellingprice = Integer.parseInt(model.getValueAt(i, 1).toString());
+					Double disprice = Double.parseDouble(model.getValueAt(i, 4).toString());
+					Double sprice = qty * disprice;
+					model.setValueAt(sprice, i, 5);
+					total = total + sprice;
+				}
+				model.fireTableDataChanged();
+				JTFGrandTotal.setText(total+"");
 			}
 			//Print invoice
 			if (srcObj == "print") {
