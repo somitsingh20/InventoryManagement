@@ -64,7 +64,6 @@ public class FrmPurchase extends JInternalFrame{
 		rsPur1 = srcCon.createStatement().executeQuery(prodSQL);
 		if(rsPur1.next()){
 			productid = Integer.parseInt(rsPur1.getString("productid"));
-			productid++;
 		}
 		//System.out.println(productid);
 		
@@ -338,7 +337,7 @@ public class FrmPurchase extends JInternalFrame{
 		
 		rsPur = stPur.executeQuery(strSQL);
 		if(!rsPur.next()){
-			String insertProduct = "Insert into imsproducts(pid,productname,quantity,unitcost,sid,datetime) values('"+productid+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),5)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),4)+"',sysdate)";
+			String insertProduct = "Insert into imsproducts(pid,productname,quantity,unitcost,sid,datetime,sprice,discount,discountedprice) values('"+(productid+1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 1)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(), 2)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),6)+"','"+JTPurTable.getValueAt(JTPurTable.getSelectedRow(),4)+"',sysdate,0,0,0)";
 			stPur.executeUpdate(insertProduct);
 		}
 		else{

@@ -56,7 +56,7 @@ public class FrmCustomer extends JInternalFrame{
 		cnCus = srcCon;
 		stCus = cnCus.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 		//strSQL = "SELECT * FROM imscustomer ORDER BY datetime desc";
-		strSQL = "SELECT * FROM view_customer ORDER BY last desc";
+		strSQL = "SELECT cid,cname,phone,to_char(datetime, 'DD.MM.YYYY hh:mi AM') dt,to_char(last, 'DD.MM.YYYY hh:mi AM') lasts,gtotal FROM view_customer ORDER BY last desc";
 
 		JLPicture1.setBounds(5,5,48,48);
 		JPContainer.add(JLPicture1);
@@ -68,7 +68,7 @@ public class FrmCustomer extends JInternalFrame{
 		JTCusTable=CreateTable();
 		CusTableJSP.getViewport().add(JTCusTable);
 		CusTableJSP.setBounds(5,55,727,320);
-		//JTCusTable.setAutoCreateRowSorter(true);  //Enable default sorting in table(all columns)
+		JTCusTable.setAutoCreateRowSorter(true);  //Enable default sorting in table(all columns)
 		JPContainer.add(CusTableJSP);
 
 		JBAddNew.setBounds(5,382,105,25);
@@ -278,9 +278,9 @@ public class FrmCustomer extends JInternalFrame{
 					Content[rowNum][0] = "" + rsCus.getString("cid");
 					Content[rowNum][1] = "" + rsCus.getString("cname");
 					Content[rowNum][2] = "" + rsCus.getString("phone");
-					Content[rowNum][3] = "" + rsCus.getString("datetime");
+					Content[rowNum][3] = "" + rsCus.getString("dt");
 					Content[rowNum][4] = "" + rsCus.getString("gtotal");
-					Content[rowNum][5] = "" + rsCus.getString("last");
+					Content[rowNum][5] = "" + rsCus.getString("lasts");
 					rowNum++;
 				}
 			}else{
